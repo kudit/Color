@@ -19,11 +19,11 @@ This is actively maintained so if there is a feature request or change, we will 
 
 ## Requirements
 
-- iOS 15.2+ (15.2+ minimum required for Swift Playgrounds support)
-- tvOS 15.0+
-- watchOS 6.0+ (UI only supported on watchOS 8.0+)
+- iOS 15+ (15 required for .brown, .cyan, .indigo, .mint, and .teal, 15.2+ minimum required for Swift Playgrounds support)
 - macOS 12+ (macOS 11 required for cgColor conversions, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal)
 - macCatalyst 15.0+
+- tvOS 15.0+ (15 required for .brown, .cyan, .indigo, .mint, and .teal)
+- watchOS 8.0+ (UI only supported on watchOS 8.0+)
 - visionOS 1.0+
 - Theoretically should work with Linux, Windows, and Vapor, but haven't tested.  If you would like to help, please let us know.
 

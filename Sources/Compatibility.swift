@@ -35,4 +35,7 @@ extension DebugLevel {
 
 #if canImport(SwiftUI)
 import SwiftUI
+#Preview {
+    Color.brown
+}
 #endif

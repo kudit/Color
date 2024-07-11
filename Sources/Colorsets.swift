@@ -105,7 +105,7 @@ public struct ColorBarTestView: View {
                     .font(.title)
                     .closure { view in
                         Group {
-                            if #available(tvOS 16.0, macOS 13, *) {
+                            if #available(tvOS 16.0, macOS 13, watchOS 9, *) {
                                 view
                                     .bold()
                                     .foregroundStyle(.white)

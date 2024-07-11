@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B5E5FC502C386144004F2009"
-               BuildableName = "ColorTest.app"
-               BlueprintName = "ColorTest"
-               ReferencedContainer = "container:Color.xcodeproj">
+               BlueprintIdentifier = "Color.swiftpm"
+               BuildableName = "Color.swiftpm"
+               BlueprintName = "Color.swiftpm"
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -40,16 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5E5FC502C386144004F2009"
-            BuildableName = "ColorTest.app"
-            BlueprintName = "ColorTest"
-            ReferencedContainer = "container:Color.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,19 +47,18 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5E5FC502C386144004F2009"
-            BuildableName = "ColorTest.app"
-            BlueprintName = "ColorTest"
-            ReferencedContainer = "container:Color.xcodeproj">
+            BlueprintIdentifier = "Color.swiftpm"
+            BuildableName = "Color.swiftpm"
+            BlueprintName = "Color.swiftpm"
+            ReferencedContainer = "container:">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"

@@ -102,8 +102,19 @@ public struct ColorBarTestView: View {
             }
             if let text {
                 Text(text)
-                    .font(.title).bold()
-                    .foregroundStyle(.white)
+                    .font(.title)
+                    .closure { view in
+                        Group {
+                            if #available(tvOS 16.0, macOS 13, *) {
+                                view
+                                    .bold()
+                                    .foregroundStyle(.white)
+                            } else {
+                                // Fallback on earlier versions
+                                view
+                            }
+                        }
+                    }
                     .shadow(radius: 1)
             }
         }

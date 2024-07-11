@@ -9,10 +9,17 @@
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension Color {
-    static let version = "1.0.0"
+    static let version = "1.0.1"
 }
 
-public protocol KuColor: Codable, Equatable, Identifiable {
+import Compatibility
+
+public extension CGFloat {
+    static let zero = CGFloat(0.0)
+    static let one = CGFloat(1.0)
+}
+
+public protocol KuColor: Codable, Equatable, Hashable, Identifiable {
     /// usually 0-1 double values but SwiftUI supports extended colors beyond 0-1 for extended color spaces.
     init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     init(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)
@@ -61,6 +68,50 @@ public extension KuColor {
     var id: String {
         self.pretty
     }
+    
+    // Fallback color values for platforms that don't support colors or dynamic colors
+    static var fixedBlack: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .one) }
+    static var fixedBlue: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .one) }
+    static var fixedBrown: Self { Self(red: 162/255, green: 132/255, blue: 94/255, alpha: .one) }
+    static var fixedClear: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .zero)}
+    static var fixedCyan: Self { Self(red: 50/255, green: 173/255, blue: 230/255, alpha: .one)}
+    static var fixedGray: Self { Self(red: 142/255, green: 142/255, blue: 147/255, alpha: .one)}
+    static var fixedLightGray: Self { Self(red: 203/255, green: 203/255, blue: 204/255, alpha: .one)}
+    static var fixedDarkGray: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .one)}
+    static var fixedGreen: Self { Self(red: 52/255, green: 199/255, blue: 89/255, alpha: .one)}
+    static var fixedIndigo: Self { Self(red: 88/255, green: 86/255, blue: 214/255, alpha: .one)}
+    static var fixedMagenta: Self { Self(red: .one, green: .zero, blue: .one, alpha: .one)}
+    static var fixedMint: Self { Self(red: .zero, green: 199/255, blue: 190/255, alpha: .one)}
+    static var fixedOrange: Self { Self(red: .one, green: 149/255, blue: .zero, alpha: .one)}
+    static var fixedPink: Self { Self(red: .one, green: 45/255, blue: 85/255, alpha: .one)}
+    static var fixedPurple: Self { Self(red: 175/255, green: 82/255, blue: 222/255, alpha: .one)}
+    static var fixedRed: Self { Self(red: .one, green: 59/255, blue: 48/255, alpha: .one)}
+    static var fixedTeal: Self { Self(red: 48/255, green: 176/255, blue: 199/255, alpha: .one)}
+    static var fixedWhite: Self { Self(red: .one, green: .one, blue: .one, alpha: .one)}
+    static var fixedYellow: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .one)}
+    
+    static var fixedMap: [UnderlyingColorType: Self] {
+        [
+            Self.black: .fixedBlack,
+            Self.blue: .fixedBlue,
+            Self.brown: .fixedBrown,
+            Self.clear: .fixedClear,
+            Self.cyan: .fixedCyan,
+            Self.gray: .fixedGray,
+            Self.lightGray: .fixedLightGray,
+            Self.darkGray: .fixedDarkGray,
+            Self.green: .fixedGreen,
+            Self.indigo: .fixedIndigo,
+            Self.mint: .fixedMint,
+            Self.orange: .fixedOrange,
+            Self.pink: .fixedPink,
+            Self.purple: .fixedPurple,
+            Self.red: .fixedRed,
+            Self.teal: .fixedTeal,
+            Self.white: .fixedWhite,
+            Self.yellow: .fixedYellow,
+        ]
+    }
 }
 
 
@@ -69,24 +120,29 @@ import UIKit
 extension UIColor: KuColor {
     public static var indigo: UIColor {
 #if os(watchOS)
-        return UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1)
+        return .fixedIndigo
 #else
-        return .systemPurple
+        return .systemIndigo
 #endif
     }
 
     public static var mint: UIColor {
 #if os(watchOS)
-        return UIColor(red: 0/255, green: 199/255, blue: 190/255, alpha: 1)
-
+        return .fixedMint
+            
 #else
-        return .systemMint
+        if #available(tvOS 15.0, iOS 15, *) {
+            return .systemMint
+        } else {
+            // Fallback on earlier versions
+            return .fixedMint
+        }
 #endif
     }
 
     public static var pink: UIColor {
 #if os(watchOS)
-        return UIColor(red: 255/255, green: 45/255, blue: 85/255, alpha: 1)
+        return .fixedPink
 
 #else
         return .systemPink
@@ -95,7 +151,7 @@ extension UIColor: KuColor {
 
     public static var teal: UIColor {
 #if os(watchOS)
-        return UIColor(red: 48/255, green: 176/255, blue: 199/255, alpha: 1)
+        return .fixedTeal
 
 #else
         return .systemTeal
@@ -129,16 +185,19 @@ public extension KuColor {
     typealias DefaultColorType = Color
 }
 extension Color: KuColor {
+    // available in UIColor but not SwiftUI.Color
     public static var lightGray: Color {
-        return .init(string: "#CBCBCB", defaultColor: .white)
+        return .fixedLightGray
     }
     
+    // available in UIColor but not SwiftUI.Color
     public static var darkGray: Color {
-        return .init(string: "#515151", defaultColor: .black)
+        return .fixedDarkGray
     }
     
+    // available in UIColor but not SwiftUI.Color
     public static var magenta: Color {
-        return .init(red: 1, green: 0, blue: 1, alpha: 1)
+        return .fixedMagenta
     }
 
     public init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -150,79 +209,50 @@ extension Color: KuColor {
     }
     
     public func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
-        // Switch for built-in colors
-        let zero = CGFloat(0.0)
-        let black = (red: zero, green: zero, blue: zero, alpha: zero)
-        var rgba = black
-        switch self {
-        case .blue:
-            rgba = (red: 0/255, green: 112/255, blue: 255/255, alpha: 1)
-        case .brown:
-            rgba = (red: 162/255, green: 132/255, blue: 94/255, alpha: 1)
-        case .clear:
-            rgba = (red: 0, green: 0, blue: 0, alpha: 0)
-        case .cyan:
-            rgba = (red: 50/255, green: 173/255, blue: 230/255, alpha: 1)
-        case .gray:
-            rgba = (red: 142/255, green: 142/255, blue: 147/255, alpha: 1)
-        case .lightGray:
-            rgba = (red: 204/255, green: 204/255, blue: 204/255, alpha: 1)
-        case .darkGray:
-            rgba = (red: 51/255, green: 51/255, blue: 51/255, alpha: 1)
-        case .green:
-            rgba = (red: 52/255, green: 199/255, blue: 89/255, alpha: 1)
-        case .indigo:
-            rgba = (red: 88/255, green: 86/255, blue: 214/255, alpha: 1)
-        case .mint:
-            rgba = (red: 0/255, green: 199/255, blue: 190/255, alpha: 1)
-        case .orange:
-            rgba = (red: 255/255, green: 149/255, blue: 0/255, alpha: 1)
-        case .pink:
-            rgba = (red: 255/255, green: 45/255, blue: 85/255, alpha: 1)
-        case .purple:
-            rgba = (red: 175/255, green: 82/255, blue: 222/255, alpha: 1)
-        case .red:
-            rgba = (red: 255/255, green: 59/255, blue: 48/255, alpha: 1)
-        case .teal:
-            rgba = (red: 48/255, green: 176/255, blue: 199/255, alpha: 1)
-        case .white: // seems to work already
-            rgba = (red: 1, green: 1, blue: 1, alpha: 1)
-        case .yellow:
-            rgba = (red: 255/255, green: 204/255, blue: 0/255, alpha: 1)
-        default:
-            break
-            // nothing.  Default to black.
-            // Impossible to calculate for accentColor/primary/secondary/.  Perhaps return something else?
-            //print("Unable to determine SwiftUI Color: \(color)")
-        }
-        if rgba != black {
-            // try using defined values first from above
-            red?.pointee = rgba.red
-            green?.pointee = rgba.green
-            blue?.pointee = rgba.blue
-            alpha?.pointee = rgba.alpha
-            return true
+//        if rgba != black {
+//            // try using defined values first from above
+//            red?.pointee = rgba.red
+//            green?.pointee = rgba.green
+//            blue?.pointee = rgba.blue
+//            alpha?.pointee = rgba.alpha
+//            return true
+//        }
+
+        // check for built-in colors that need fixed replacements (if this already is a fixed replacement, don't delegate)
+        if let fixedReplacement = Color.fixedMap[self], fixedReplacement != self {
+            // system values can't get RGBA so use the fixed versions instead
+            return fixedReplacement.getRed(red, green: green, blue: blue, alpha: alpha)
         }
         
-        guard let cgColor = cgColor, let components = cgColor.components, components.count >= 3 else {
+        // not named color
+        // Impossible to calculate for accentColor/primary/secondary/.  Perhaps return something else?
+        
+        if #available(tvOS 14, macOS 11, *) {
+            guard let cgColor = cgColor, let components = cgColor.components, components.count >= 3 else {
+                return false
+            }
+            red?.pointee = components[0]
+            green?.pointee = components[1]
+            blue?.pointee = components[2]
+            alpha?.pointee = cgColor.alpha
+            return true
+        } else {
             return false
         }
-        
-        red?.pointee = components[0]
-        green?.pointee = components[1]
-        blue?.pointee = components[2]
-        alpha?.pointee = cgColor.alpha
-        return true
     }
     
     public func getWhite(_ white: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
-        guard let cgColor = cgColor, let components = cgColor.components, components.count == 2 else {
+        if #available(tvOS 14.0, macOS 11, *) {
+            guard let cgColor = cgColor, let components = cgColor.components, components.count == 2 else {
+                return false
+            }
+            white?.pointee = components[0]
+            alpha?.pointee = cgColor.alpha
+            return true
+        } else {
+            // Fallback on earlier versions
             return false
         }
-        
-        white?.pointee = components[0]
-        alpha?.pointee = cgColor.alpha
-        return true
     }
     
     public func getHue(_ hue: UnsafeMutablePointer<CGFloat>?, saturation: UnsafeMutablePointer<CGFloat>?, brightness: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
@@ -309,13 +339,12 @@ public extension KuColor {
     /// returns the RGBA values of the color if it can be determined and black-clear if not.
     var rgbaComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         get {
-            let zero = CGFloat(0.0)
-            var rgba = (red: zero, green: zero, blue: zero, alpha: zero)
+            var rgba = (red: CGFloat.zero, green: CGFloat.zero, blue: CGFloat.zero, alpha: CGFloat.zero)
             if getRed(&rgba.red, green: &rgba.green, blue: &rgba.blue, alpha: &rgba.alpha) {
                 return rgba
             }
-            var white = zero
-            var alpha = zero
+            var white = CGFloat.zero
+            var alpha = CGFloat.zero
             if getWhite(&white, alpha: &alpha) {
                 rgba.red = white // assign brightness to RGB
                 rgba.green = white // assign brightness to RGB
@@ -345,8 +374,7 @@ public extension KuColor {
     
     var hsbComponents: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat) {
         //print("\(self) HSB COMPONENTS")
-        let zero = CGFloat(0.0)
-        var hsb = (hue: zero, saturation: zero, brightness: zero)
+        var hsb = (hue: CGFloat.zero, saturation: CGFloat.zero, brightness: CGFloat.zero)
         if getHue(&hsb.hue, saturation: &hsb.saturation, brightness: &hsb.brightness, alpha: nil) {
             return hsb
         }
@@ -403,6 +431,7 @@ public extension KuColor {
 }
 
 #if canImport(SwiftUI)
+@available(macOS 11.0, *)
 #Preview("HSV Conversion") {
     HSVConversionTestView()
 }
@@ -487,9 +516,11 @@ public extension KuColor {
 }
 
 #if canImport(SwiftUI)
+@available(macOS 11.0, *)
 #Preview("Color Tinting") {
     ColorTintingTestView()
 }
+@available(macOS 11.0, *)
 #Preview("Lightness Tests") {
     LightnessTestView()
 }
@@ -501,6 +532,7 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
+@available(tvOS 14, macOS 11, *)
 #Preview("All Tests") {
     ColorTestView()
 }

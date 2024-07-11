@@ -9,6 +9,7 @@
 import SwiftUI
 //import Compatibility
 
+@available(macOS 11.0, *)
 struct Swatch: View {
     var color: Color
     var logo: Bool = false
@@ -20,7 +21,7 @@ struct Swatch: View {
         RoundedRectangle(cornerRadius: 15)
             .frame(width: 50, height: 50)
             .foregroundColor(color)
-            .overlay {
+            .backport.overlay {
                 ZStack {
                     if logo {
                         Image(systemName: "applelogo")
@@ -34,12 +35,14 @@ struct Swatch: View {
             }
     }
 }
+@available(macOS 11.0, *)
 struct SwatchTest: View {
     var color: Color
     var body: some View {
         Swatch(color: color, logo: true)
     }
 }
+@available(macOS 11.0, *)
 struct HSVConversionTestView: View {
     public var body: some View {
         VStack {
@@ -60,6 +63,7 @@ struct HSVConversionTestView: View {
     }
 }
 
+@available(macOS 11.0, *)
 struct ColorTintingTestView: View {
     public var body: some View {
         VStack {
@@ -76,6 +80,7 @@ struct ColorTintingTestView: View {
         }
     }
 }
+@available(macOS 11.0, *)
 struct LightnessTestView: View {
     var body: some View {
         VStack {
@@ -133,7 +138,7 @@ struct LightnessTestView: View {
                 }
             }
             
-        }.padding().background(.gray)
+        }.padding().backport.background { Color.gray }
     }
 }
 
@@ -160,11 +165,11 @@ struct NamedColorsListTestView: View {
                     Text(value)
                 }
                 .padding()
-                .background {
+                .backport.background {
                     RoundedRectangle(cornerRadius: 25)
                         .fill(color)
                 }
-                .foregroundStyle(color.contrastingColor)
+                .backport.foregroundStyle(color.contrastingColor)
             }
         }
     }
@@ -187,6 +192,7 @@ struct ColorPrettyTestView: View {
     }
 }
 
+@available(macOS 11.0, tvOS 14, *)
 public struct ColorTestView: View {
     public init() {}
     public var body: some View {
@@ -198,11 +204,12 @@ public struct ColorTestView: View {
             NamedColorsListTestView()
             ColorTintingTestView()
         }
-        .tabViewStyle(.pageBackport)
+        .backport.tabViewStyle(.page)
     }
 }
 
 /// For KuditConnect for testing
+@available(tvOS 15, macOS 12, *)
 public extension View {
     func testBackground() -> some View {
         ZStack {
@@ -210,7 +217,7 @@ public extension View {
             self
         }
         .background(.conicGradient(colors: .rainbow, center: .center))
-        .ignoresSafeArea()
+        .backport.ignoresSafeArea()
     }
 }
 

@@ -8,24 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		B52C8E0B2C387BE9008EBD2D /* Color Library in Frameworks */ = {isa = PBXBuildFile; productRef = B52C8E0A2C387BE9008EBD2D /* Color Library */; };
+		B56797382C3F1B8700B6443E /* Compatibility Library in Frameworks */ = {isa = PBXBuildFile; productRef = B56797372C3F1B8700B6443E /* Compatibility Library */; };
+		B567973A2C3F96A700B6443E /* Color Library in Frameworks */ = {isa = PBXBuildFile; productRef = B56797392C3F96A700B6443E /* Color Library */; };
+		B567973C2C3F96A700B6443E /* Compatibility Library in Frameworks */ = {isa = PBXBuildFile; productRef = B567973B2C3F96A700B6443E /* Compatibility Library */; };
 		B5847DFC2C3A4C480078A794 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC3A2C3860EC004F2009 /* MyApp.swift */; };
 		B5847DFD2C3A4C490078A794 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC3A2C3860EC004F2009 /* MyApp.swift */; };
 		B5847DFE2C3A4C4F0078A794 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC382C3860EC004F2009 /* DemoViews.swift */; };
 		B5847DFF2C3A4C4F0078A794 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC382C3860EC004F2009 /* DemoViews.swift */; };
-		B5E5FC7D2C3861CC004F2009 /* ColorTest Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B5E5FC672C3861A3004F2009 /* ColorTest Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B5E5FC832C3863B9004F2009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5FC822C3863B9004F2009 /* Assets.xcassets */; };
 		B5E5FC842C3863B9004F2009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5FC822C3863B9004F2009 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B5E5FC7E2C3861CC004F2009 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B50E7B632C385BD8002D3F53 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B5E5FC662C3861A3004F2009;
-			remoteInfo = "ColorTest Watch App";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		B5E5FC802C3861CC004F2009 /* Embed Watch Content */ = {
@@ -34,7 +26,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				B5E5FC7D2C3861CC004F2009 /* ColorTest Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56797382C3F1B8700B6443E /* Compatibility Library in Frameworks */,
 				B52C8E0B2C387BE9008EBD2D /* Color Library in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +59,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B567973C2C3F96A700B6443E /* Compatibility Library in Frameworks */,
+				B567973A2C3F96A700B6443E /* Color Library in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,11 +130,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				B5E5FC7F2C3861CC004F2009 /* PBXTargetDependency */,
 			);
 			name = ColorTest;
 			packageProductDependencies = (
 				B52C8E0A2C387BE9008EBD2D /* Color Library */,
+				B56797372C3F1B8700B6443E /* Compatibility Library */,
 			);
 			productName = ColorTest;
 			productReference = B5E5FC512C386144004F2009 /* ColorTest.app */;
@@ -159,6 +153,10 @@
 			dependencies = (
 			);
 			name = "ColorTest Watch App";
+			packageProductDependencies = (
+				B56797392C3F96A700B6443E /* Color Library */,
+				B567973B2C3F96A700B6443E /* Compatibility Library */,
+			);
 			productName = "ColorTest Watch App Watch App";
 			productReference = B5E5FC672C3861A3004F2009 /* ColorTest Watch App.app */;
 			productType = "com.apple.product-type.application";
@@ -191,6 +189,7 @@
 			);
 			mainGroup = B50E7B622C385BD8002D3F53;
 			packageReferences = (
+				B56797362C3F1B8700B6443E /* XCRemoteSwiftPackageReference "Compatibility" */,
 			);
 			productRefGroup = B50E7B6D2C385BD8002D3F53 /* Products */;
 			projectDirPath = "";
@@ -241,15 +240,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B5E5FC7F2C3861CC004F2009 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = B5E5FC662C3861A3004F2009 /* ColorTest Watch App */;
-			targetProxy = B5E5FC7E2C3861CC004F2009 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B50E7B7E2C385BD8002D3F53 /* Debug */ = {
@@ -305,15 +295,20 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 1.0.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -364,13 +359,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 1.0.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
@@ -396,11 +396,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -411,6 +410,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 			};
 			name = Debug;
 		};
@@ -436,11 +436,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -451,6 +450,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 			};
 			name = Release;
 		};
@@ -471,7 +471,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -479,7 +478,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
@@ -500,7 +499,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -509,7 +507,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};
@@ -545,10 +543,35 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B56797362C3F1B8700B6443E /* XCRemoteSwiftPackageReference "Compatibility" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kudit/Compatibility";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		B52C8E0A2C387BE9008EBD2D /* Color Library */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "Color Library";
+		};
+		B56797372C3F1B8700B6443E /* Compatibility Library */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B56797362C3F1B8700B6443E /* XCRemoteSwiftPackageReference "Compatibility" */;
+			productName = "Compatibility Library";
+		};
+		B56797392C3F96A700B6443E /* Color Library */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Color Library";
+		};
+		B567973B2C3F96A700B6443E /* Compatibility Library */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B56797362C3F1B8700B6443E /* XCRemoteSwiftPackageReference "Compatibility" */;
+			productName = "Compatibility Library";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

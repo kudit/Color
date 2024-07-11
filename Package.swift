@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.0"
+let version = "1.0.1"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -31,10 +31,11 @@ var targets = [
 ]
 
 var platforms: [SupportedPlatform] = [
-	.iOS("15.2"), // minimum for Swift Playgrounds support
-	.macOS("12"), // 10.15 minimum for SwiftUI on macOS, macOS 11 required for cgColor support, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal.
-	.tvOS("9"),
-	.watchOS("2"),
+    .iOS("15.2"), // minimum for Swift Playgrounds support
+    .macOS("12"), // 10.15 minimum for SwiftUI on macOS, macOS 11 required for cgColor support, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal.
+    .tvOS("15"), // 13 minimum for SwiftUI, 17 minimum for Menu
+    .watchOS("8"), // minimum for SwiftUI, watchOS 8 minimum for .brown, .cyan, .indigo, .mint, and .teal.
+
 ]
 
 #if os(visionOS)

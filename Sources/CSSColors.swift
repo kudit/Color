@@ -228,7 +228,9 @@ public extension KuColor {
             
             // String should be 6 or 3 characters
             guard source.count == 6 || source.count == 3 else {
-                debug("Unknown color string: \(string)", level: DebugLevel.colorLogging ? .WARNING : .SILENT)
+                main {
+                    debug("Unknown color string: \(string)", level: DebugLevel.colorLogging ? .WARNING : .SILENT)
+                }
                 return nil
             }
             let shortForm = (source.count == 3)
@@ -285,7 +287,9 @@ public extension KuColor {
             var alphaValue:Double = 1.0
             if includesAlpha {
                 guard let componentAlpha = componentValues[3] else {
-                    debug("Could not parse alpha value: \(components[3])", level: !DebugLevel.colorLogging ? .SILENT : .DEBUG)
+                    main {
+                        debug("Could not parse alpha value: \(components[3])", level: !DebugLevel.colorLogging ? .SILENT : .DEBUG)
+                    }
                     return nil
                 }
                 alphaValue = Double(componentAlpha)
@@ -311,7 +315,9 @@ public extension KuColor {
                     return
                 }
             }
-            debug("Unknown named color: \(string)", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
+            main {
+                debug("Unknown named color: \(string)", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
+            }
             return nil
         }
     }
@@ -357,7 +363,9 @@ public extension KuColor {
         }
         // convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space)
         guard hexColor == self else {
-            debug("This color can't be represented as hex: \(self) != \(hexColor) (saving as: \(cssString))", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
+            main {
+                debug("This color can't be represented as hex: \(self) != \(hexColor) (saving as: \(cssString))", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
+            }
             return cssString
         }
         // we should show named color names if available

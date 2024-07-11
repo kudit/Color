@@ -7,10 +7,13 @@
 
 import Foundation
 
-#if canImport(Compatiblity)
 import Compatibility
 
 extension DebugLevel {
+    /// Set this to `true` to log failed color parsing notices when returning `nil`
+    @MainActor
+    public static var colorLogging = false
+
     public var color: any KuColor {
         let type = KuColor.DefaultColorType.self
         switch self {
@@ -29,4 +32,7 @@ extension DebugLevel {
         }
     }
 }
+
+#if canImport(SwiftUI)
+import SwiftUI
 #endif

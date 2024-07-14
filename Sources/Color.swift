@@ -9,7 +9,7 @@
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension Color {
-    static let version = "1.0.2"
+    static let version = "1.0.3"
 }
 
 import Compatibility
@@ -114,6 +114,65 @@ public extension KuColor {
     }
 }
 
+#if os(macOS) // NOT available in macCataylst canImport(AppKit)
+// TODO: Make this a protocol for adding this automatically for NSColor and UIColor without duplicating code.
+import AppKit
+extension NSColor: KuColor {
+    public func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
+        // Make sure doesn't crash with extended colorspace colors.
+        if let color = self.usingColorSpace(.extendedSRGB), color != self { // no change
+            return color.getRed(red, green: green, blue: blue, alpha: alpha)
+        }
+        let _: Void = getRed(red, green: green, blue: blue, alpha: alpha)
+        return true
+    }
+    
+    public func getWhite(_ white: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
+        let _: Void = getWhite(white, alpha: alpha)
+        return true
+    }
+    
+    public func getHue(_ hue: UnsafeMutablePointer<CGFloat>?, saturation: UnsafeMutablePointer<CGFloat>?, brightness: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
+        let _: Void = getHue(hue, saturation: saturation, brightness: brightness, alpha: alpha)
+        return true
+    }
+    
+    public static var indigo: NSColor {
+        return .systemIndigo
+    }
+
+    public static var mint: NSColor {
+        return .systemMint
+    }
+
+    public static var pink: NSColor {
+        return .systemPink
+    }
+
+    public static var teal: NSColor {
+        return .systemTeal
+    }
+}
+public extension KuColor {
+    var nsColor: NSColor {
+        let components = rgbaComponents
+        return NSColor(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
+    }
+}
+public extension NSColor {
+    // for coding assistance
+    func asData() throws -> Data {
+        return try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)
+    }
+    convenience init?(_ data: Data) {
+        guard let c = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSColor.self, from: data) else {
+            return nil
+        }
+        // init with values
+        self.init(red: c.redComponent, green: c.greenComponent, blue: c.blueComponent, alpha: c.alphaComponent)
+    }
+}
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -339,6 +398,7 @@ public extension KuColor {
     /// returns the RGBA values of the color if it can be determined and black-clear if not.
     var rgbaComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         get {
+            // TODO: Store in cache so we don't have to re-calculate?
             var rgba = (red: CGFloat.zero, green: CGFloat.zero, blue: CGFloat.zero, alpha: CGFloat.zero)
             if getRed(&rgba.red, green: &rgba.green, blue: &rgba.blue, alpha: &rgba.alpha) {
                 return rgba
@@ -498,7 +558,19 @@ public extension KuColor {
     }
     /// returns either white or black depending on the base color to make sure it's visible against the background.  In the future we may want to change this to some sort of vibrancy.  Note, if you're using this on accentColor on a view that has changed the tint, will give a contrassting color for the Asset color named "AccentColor" and not the actual color value since actual color values can't be read.
     var contrastingColor: Color {
-#if canImport(UIKit) && !os(watchOS) && !os(tvOS)
+#if os(macOS)
+        if let color = self as? Color, color == .primary || color == .secondary {
+            return Color(NSColor.windowBackgroundColor)
+//            let mode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle")
+//            return mode == "Dark"
+        }
+        if let color = self as? Color, color == .accentColor {
+            // pull from assets rather than from the color which will just return a blue color
+            if let nsColor = NSColor(named: "AccentColor") {
+                return nsColor.contrastingColor
+            }
+        }
+#elseif canImport(UIKit) && !os(watchOS) && !os(tvOS)
         // Fix so primary color - dark mode shows black
         if let color = self as? Color, color == .primary || color == .secondary {
             return Color(UIColor.systemBackground)
@@ -522,7 +594,7 @@ public extension KuColor {
 }
 @available(macOS 11.0, *)
 #Preview("Lightness Tests") {
-    LightnessTestView()
+    ContrastingTestView()
 }
 #endif
 

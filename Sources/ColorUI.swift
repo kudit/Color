@@ -12,23 +12,28 @@ import SwiftUI
 @available(macOS 11.0, *)
 struct Swatch: View {
     var color: Color
-    var logo: Bool = false
+    var label: String?
     init(color: Color, logo: Bool = false) {
-        self.color = color
-        self.logo = logo
+        let label = logo ? nil : color.hexString
+        self.init(color: color, label: label)
     }
+    init(color: Color, label: String?) {
+        self.color = color
+        self.label = label
+    }
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .frame(width: 50, height: 50)
             .foregroundColor(color)
             .backport.overlay {
                 ZStack {
-                    if logo {
+                    if let label {
+                        Text("\(label)")
+                            .bold()
+                    } else {
                         Image(systemName: "applelogo")
                             .imageScale(.large)
-                    } else {
-                        Text("\(self.color.hexString)")
-                            .bold()
                     }
                 }
                 .foregroundColor(color.contrastingColor) // isDark ? .white : .black
@@ -62,15 +67,23 @@ struct HSVConversionTestView: View {
         }
     }
 }
-
+@available(macOS 11, *)
+#Preview("HSV") {
+    HSVConversionTestView()
+}
 @available(macOS 11.0, *)
 struct ColorTintingTestView: View {
     public var body: some View {
         VStack {
             Text("Color Tinting")
-            HStack {
+            VStack {
+                HStack {
+                    Swatch(color: .lightGray, label: "Light")
+                    Swatch(color: .gray, label: "Normal")
+                    Swatch(color: .darkGray, label: "Dark")
+                }.font(.caption)
                 ForEach([Color].rainbow, id: \.self) { color in
-                    VStack {
+                    HStack {
                         Swatch(color: color.lighterColor)
                         Swatch(color: color)
                         Swatch(color: color.darkerColor)
@@ -80,11 +93,15 @@ struct ColorTintingTestView: View {
         }
     }
 }
+@available(macOS 11, *)
+#Preview("Color Tinting") {
+    ColorTintingTestView()
+}
 @available(macOS 11.0, *)
-struct LightnessTestView: View {
+struct ContrastingTestView: View {
     var body: some View {
         VStack {
-            Text("Lightness Tests")
+            Text("Contrasting Tests")
                 .bold()
             HStack(spacing: 0) {
                 VStack(spacing: 0) {
@@ -141,6 +158,10 @@ struct LightnessTestView: View {
         }.padding().backport.background { Color.gray }
     }
 }
+@available(macOS 11, *)
+#Preview("Lightness") {
+    ContrastingTestView()
+}
 
 struct NamedColorsListTestView: View {
     public var body: some View {
@@ -166,7 +187,7 @@ struct NamedColorsListTestView: View {
                 }
                 .padding()
                 .backport.background {
-                    RoundedRectangle(cornerRadius: 25)
+                    RoundedRectangle(cornerRadius: 15)
                         .fill(color)
                 }
                 .backport.foregroundStyle(color.contrastingColor)
@@ -174,37 +195,102 @@ struct NamedColorsListTestView: View {
         }
     }
 }
+@available(macOS 11, *)
+#Preview("Named") {
+    NamedColorsListTestView()
+}
+
+struct PrettySwatch: View {
+    var source: String
+    var color: Color {
+        Color(string: source, defaultColor: .primary)
+    }
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundColor(color)
+            VStack {
+                HStack {
+                    Text(source)
+                        .italic()
+                    Spacer()
+                }
+                Spacer()
+                HStack {
+                    Spacer()
+                    Text(color.pretty)
+                        .font(.title.monospaced())
+                        .bold()
+                }
+            }
+            .padding()
+            .foregroundStyle(color.contrastingColor)
+        }
+    }
+}
+
+//#Preview("Pretty Swatch") {
+//    PrettySwatch(source: "red")
+//        .frame(height: 100)
+//        .padding()
+//}
 
 struct ColorPrettyTestView: View {
+    let prettyTests = [
+        "red",
+        "rgb(0, 255, 0)",
+        "rgba(0, 0, 255, 1)",
+        "rgba(255, 0, 128, 0.5)",
+        "#ff0",
+        "#c0ffee",
+        "rgba(0,281,0,1)", // expanded colorspace
+        "white",
+        "black",
+    ]
     public var body: some View {
         VStack {
             Text("Pretty output of various colors.")
                 .font(.title)
-            Text("red -> \"\(Color(string: "red", defaultColor: .black).pretty)\"")
-            Text("red rgb -> \"\(Color(red: 1, green: 0, blue: 0, alpha: 1).pretty)\"")
-            Text("red alpha color -> \"\(Color(red: 1, green: 0, blue: 0, alpha: 0.5).pretty)\"")
-            Text("red rgba -> \"\(Color(string: "rgba(255,0,0,0.5)", defaultColor: .black).pretty)\"")
-            Text("red hex -> \"\(Color(string: "#F00", defaultColor: .black).pretty)\"")
-            Text("red rgb expanded -> \"\(Color(red: 1.1, green: 0, blue: 0, alpha: 1).pretty)\"")
-            Text("white -> \"\(Color.white.pretty)\"")
-            Text("black -> \"\(Color.black.pretty)\"")
+            ForEach(prettyTests, id: \.self) { test in
+                PrettySwatch(source: test)
+            }
+//            Text("red -> \"\(Color(string: "red", defaultColor: .black).pretty)\"")
+//            Text("red rgb -> \"\(Color(red: 1, green: 0, blue: 0, alpha: 1).pretty)\"")
+//            Text("red alpha color -> \"\(Color(red: 1, green: 0, blue: 0, alpha: 0.5).pretty)\"")
+//            Text("red rgba -> \"\(Color(string: "rgba(255,0,0,0.5)", defaultColor: .black).pretty)\"")
+//            Text("red hex -> \"\(Color(string: "#F00", defaultColor: .black).pretty)\"")
+//            Text("red rgb expanded -> \"\(Color(red: 1.1, green: 0, blue: 0, alpha: 1).pretty)\"")
+//            Text("white -> \"\(Color.white.pretty)\"")
+//            Text("black -> \"\(Color.black.pretty)\"")
         }
     }
+}
+@available(macOS 11, *)
+#Preview("Pretty") {
+    ColorPrettyTestView()
 }
 
 @available(macOS 11.0, tvOS 14, *)
 public struct ColorTestView: View {
     public init() {}
-    public var body: some View {
+    var tabs: some View {
         TabView {
             ColorsetsTestView()
             HSVConversionTestView()
-            LightnessTestView()
+            ContrastingTestView()
             ColorPrettyTestView()
             NamedColorsListTestView()
             ColorTintingTestView()
         }
         .backport.tabViewStyle(.page)
+    }
+    public var body: some View {
+        GeometryReader { proxy in // TODO: Move this to have scroll views within each tab rather than wrapping the tab view.  Might fix tvOS and macOS.
+            ScrollView {
+                tabs
+                    .frame(minHeight: proxy.size.height)
+            }
+        }
     }
 }
 

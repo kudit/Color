@@ -117,11 +117,13 @@ public struct ColorBarTestView: View {
                     }
                     .shadow(radius: 1)
             }
+        }.mask {
+            RoundedRectangle(cornerRadius: 15)
         }
     }
 }
 
-struct ColorsetsTestView: View {
+public struct ColorsetsTestView: View {
     var colorsets = [Color].namedColorsets
     public var body: some View {
         VStack {

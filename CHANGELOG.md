@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.0.3 7/14/2024 Updated Compatibility version to fix Linux support.  Added improved tinting view.  Rounded colorset tests view.  Improved Pretty test view to have panels and better example cases.  Was completely missing NSColor support and was only using SwiftUI color.  Added scratch code for NSColor support for macOS but doesn't work with extended color space which causes issues.  Fixed lightness test for macOS light gray.
+
 v1.0.2 7/11/2024 Updated Compatibility version which supports older versions.  Updated so playgrounds can run while the package supports older iOS versions.
 
 v1.0.1 7/11/2024 Made changes from 0 and 1 to .zero and .one constants.  Created fallback versions of named colors so can fallback when the named colors are not present.  Re-worked to update Compatibility for watchOS and tvOS compatibility.  Increased minimum tvOS and watchOS and macOS to match iOS requirement.  Moved colorLogging debug statements onto the main thread so can check the current colorLogging state.  Raised minimum iOS to 15.2 since that is usually what Compatibility will need.
@@ -16,8 +18,7 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 ## Bugs to fix:
 Known issues that need to be addressed.
 
-- [ ] Get UI working on watchOS and tvOS.
-- [ ] Lightness test seems to fail on macOS light gray.
+- [ ] Get UI working on watchOS and tvOS (looks okay but paging doesn't seem to work in tvOS).
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.

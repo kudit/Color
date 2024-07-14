@@ -214,7 +214,7 @@ public extension KuColor {
         "YellowGreen":"#9ACD32"]}
     
     /**
-     KF: Creates a Color from the given string in #HEX format, named CSS string, rgb(), or rgba() format.  Important to have named parameter string: to differentiate from SwiftUI Color(_:String) init from a named color in an asset bundle.
+     KF: Creates a Color from the given string in #HEX format, named CSS string, rgb(), or rgba() format.  Important to have named parameter string: to differentiate from SwiftUI Color(_:String) init for a named color in an asset bundle.
      
      - Parameter string: The string to be converted.
      

@@ -9,10 +9,13 @@ import Compatibility
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            ZStack(alignment: .bottomTrailing) {
-                ColorTestView()
-                Text("Color v\(Color.version) © 2024 Kudit LLC").font(.caption).padding().backport.foregroundStyle(.white)
-            }
+            ColorTestView()
+                .safeAreaInset(edge: .bottom) {
+                    HStack {
+                        Spacer()
+                        Text("Color v\(Color.version) © 2024 Kudit LLC").font(.caption)
+                    }.padding()
+                }
         }
     }
 }

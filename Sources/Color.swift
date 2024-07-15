@@ -9,7 +9,7 @@
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension Color {
-    static let version = "1.0.3"
+    static let version = "1.0.4"
 }
 
 import Compatibility
@@ -570,10 +570,14 @@ public extension KuColor {
                 return nsColor.contrastingColor
             }
         }
-#elseif canImport(UIKit) && !os(watchOS) && !os(tvOS)
+#elseif canImport(UIKit)
         // Fix so primary color - dark mode shows black
         if let color = self as? Color, color == .primary || color == .secondary {
+#if os(watchOS) || os(tvOS) || os(visionOS) // no dark/light mode
+            return .black
+#else
             return Color(UIColor.systemBackground)
+#endif
         }
         if let color = self as? Color, color == .accentColor {
             // pull from assets rather than from the color which will just return a blue color

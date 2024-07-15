@@ -35,6 +35,7 @@ struct Swatch: View {
                         Image(systemName: "applelogo")
                             .imageScale(.large)
                     }
+                    //Text("\(Int(color.luminance * 100))").shadow(color: color, radius: 1)
                 }
                 .foregroundColor(color.contrastingColor) // isDark ? .white : .black
             }
@@ -191,6 +192,31 @@ struct NamedColorsListTestView: View {
                         .fill(color)
                 }
                 .backport.foregroundStyle(color.contrastingColor)
+                .closure { view in
+#if !os(tvOS) && !os(watchOS)
+                    Group {
+                        if #available(iOS 15, macOS 13, *) {
+                            view.listRowSeparator(.hidden)
+                        } else {
+                            view
+                        }
+                    }
+#else
+                    view
+#endif
+                }
+            }
+        }
+        .listStyle(.plain)
+        .closure { view in
+            Group {
+                if #available(iOS 17.0, macOS 99, tvOS 17, watchOS 10, *) {
+                    view
+                        .contentMargins(.bottom, Self.bottomMargin, for: .automatic)
+                } else {
+                    // Fallback on earlier versions
+                    view
+                }
             }
         }
     }
@@ -273,22 +299,87 @@ struct ColorPrettyTestView: View {
 @available(macOS 11.0, tvOS 14, *)
 public struct ColorTestView: View {
     public init() {}
-    var tabs: some View {
+    public var body: some View {
         TabView {
-            ColorsetsTestView()
-            HSVConversionTestView()
             ContrastingTestView()
+                .colorTestWrapper()
+                .tabItem {
+                    Text("Contrast")
+                }
+            ColorsetsTestView()
+                .padding()
+                .colorTestWrapper()
+                .tabItem {
+                    Text("Colorset")
+                }
+            HSVConversionTestView()
+                .colorTestWrapper()
+                .tabItem {
+                    Text("HSV")
+                }
             ColorPrettyTestView()
+                .padding()
+                .colorTestWrapper()
+                .tabItem {
+                    Text("Pretty")
+                }
             NamedColorsListTestView()
+                .tabItem {
+                    Text("Named CSS")
+                }
             ColorTintingTestView()
+                .colorTestWrapper()
+                .tabItem {
+                    Text("Tinting")
+                }
         }
         .backport.tabViewStyle(.page)
+        .closure { view in
+#if os(macOS) || os(tvOS)
+            view
+#else
+            view.ignoresSafeArea()
+#endif
+        }
     }
-    public var body: some View {
+}
+
+@available(macOS 11.0, tvOS 14, *)
+#Preview("All Tests") {
+    ColorTestView()
+}
+
+@available(watchOS 6.0, iOS 13, tvOS 13, *)
+public extension View {
+    static var bottomMargin: Double { 35 }
+    func colorTestWrapper() -> some View {
         GeometryReader { proxy in // TODO: Move this to have scroll views within each tab rather than wrapping the tab view.  Might fix tvOS and macOS.
             ScrollView {
-                tabs
-                    .frame(minHeight: proxy.size.height)
+                self
+                    .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
+                    .closure { view in
+                        Group {
+                            if #available(iOS 17.0, macOS 14, tvOS 17, watchOS 10, *) {
+                                view
+                                    .safeAreaPadding(.init(top: 0, leading: 0, bottom: 20, trailing: 0))
+                            } else {
+                                // Fallback on earlier versions
+                                view
+                            }
+                        }
+                    }
+            }
+            .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
+            .closure { view in
+                Group {
+                    if #available(iOS 17.0, macOS 99, tvOS 17, watchOS 10, *) {
+                        view
+                            .contentMargins(.bottom, Self.bottomMargin, for: .scrollIndicators)
+                    } else {
+                        // Fallback on earlier versions
+                        view
+                    }
+                }
             }
         }
     }

@@ -6,6 +6,10 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+VisionOS contrast not working
+
+v1.0.4 7/15/2024 Updated Compatibility to fix watchOS and Linux support.  Updated icon for new themeing.  Re-worked demo app for better compatibility on various platforms and clearing safe areas.  UI works on watchOS now.  Fixed contrastingColor in watchOS and visionOS for primary and secondary colors.
+
 v1.0.3 7/14/2024 Updated Compatibility version to fix Linux support.  Added improved tinting view.  Rounded colorset tests view.  Improved Pretty test view to have panels and better example cases.  Was completely missing NSColor support and was only using SwiftUI color.  Added scratch code for NSColor support for macOS but doesn't work with extended color space which causes issues.  Fixed lightness test for macOS light gray.
 
 v1.0.2 7/11/2024 Updated Compatibility version which supports older versions.  Updated so playgrounds can run while the package supports older iOS versions.
@@ -18,7 +22,8 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 ## Bugs to fix:
 Known issues that need to be addressed.
 
-- [ ] Get UI working on watchOS and tvOS (looks okay but paging doesn't seem to work in tvOS).
+- [ ] Get UI working on tvOS (looks okay but paging doesn't seem to work in tvOS).
+- [ ] Page indicators are nearly invisible when in light mode on iOS.
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.

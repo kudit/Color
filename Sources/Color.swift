@@ -9,7 +9,7 @@
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension Color {
-    static let version = "1.0.4"
+    static let version = "1.0.5"
 }
 
 import Compatibility

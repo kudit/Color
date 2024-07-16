@@ -13,8 +13,6 @@
 		B567973C2C3F96A700B6443E /* Compatibility Library in Frameworks */ = {isa = PBXBuildFile; productRef = B567973B2C3F96A700B6443E /* Compatibility Library */; };
 		B5847DFC2C3A4C480078A794 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC3A2C3860EC004F2009 /* MyApp.swift */; };
 		B5847DFD2C3A4C490078A794 /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC3A2C3860EC004F2009 /* MyApp.swift */; };
-		B5847DFE2C3A4C4F0078A794 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC382C3860EC004F2009 /* DemoViews.swift */; };
-		B5847DFF2C3A4C4F0078A794 /* DemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5FC382C3860EC004F2009 /* DemoViews.swift */; };
 		B5E5FC832C3863B9004F2009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5FC822C3863B9004F2009 /* Assets.xcassets */; };
 		B5E5FC842C3863B9004F2009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5FC822C3863B9004F2009 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -35,7 +33,6 @@
 /* Begin PBXFileReference section */
 		B52C8E082C386F2D008EBD2D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B572419B2C386E660096A00F /* Color.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Color.swiftpm; path = ..; sourceTree = "<group>"; };
-		B5E5FC382C3860EC004F2009 /* DemoViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViews.swift; sourceTree = "<group>"; };
 		B5E5FC3A2C3860EC004F2009 /* MyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 		B5E5FC3E2C3860EC004F2009 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		B5E5FC442C3860EC004F2009 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE.txt; path = ../LICENSE.txt; sourceTree = "<group>"; };
@@ -101,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				B5E5FC812C38638B004F2009 /* Resources */,
-				B5E5FC382C3860EC004F2009 /* DemoViews.swift */,
 				B5E5FC3A2C3860EC004F2009 /* MyApp.swift */,
 			);
 			name = Development;
@@ -226,7 +222,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5847DFC2C3A4C480078A794 /* MyApp.swift in Sources */,
-				B5847DFE2C3A4C4F0078A794 /* DemoViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +230,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5847DFD2C3A4C490078A794 /* MyApp.swift in Sources */,
-				B5847DFF2C3A4C4F0078A794 /* DemoViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +292,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -362,7 +356,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -549,7 +543,7 @@
 			repositoryURL = "https://github.com/kudit/Compatibility";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.0.17;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

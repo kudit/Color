@@ -7,7 +7,7 @@
 
 #if canImport(SwiftUI)
 import SwiftUI
-//import Compatibility
+import Compatibility
 
 @available(macOS 11.0, *)
 struct Swatch: View {
@@ -296,6 +296,29 @@ struct ColorPrettyTestView: View {
     ColorPrettyTestView()
 }
 
+@available(macOS 11, *)
+public struct SimpleDemoRainbowView: View {
+    public init() {}
+    public var body: some View {
+        List {
+            ForEach([Color].rainbow) { color in
+                HStack {
+                    Image(systemName: "globe")
+                        .imageScale(.large)
+                    Text("Compatibility v\(Compatibility.version)")
+                    Spacer()
+                }
+                .foregroundColor(color)
+            }
+        }
+    }
+}
+
+@available(macOS 11, *)
+#Preview("Demo") {
+    SimpleDemoRainbowView()
+}
+
 @available(macOS 11.0, tvOS 14, *)
 public struct ColorTestView: View {
     public init() {}
@@ -331,6 +354,10 @@ public struct ColorTestView: View {
                 .colorTestWrapper()
                 .tabItem {
                     Text("Tinting")
+                }
+            SimpleDemoRainbowView()
+                .tabItem {
+                    Text("Demo")
                 }
         }
         .backport.tabViewStyle(.page)

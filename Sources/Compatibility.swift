@@ -5,8 +5,6 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
-import Foundation
-
 import Compatibility
 
 extension DebugLevel {

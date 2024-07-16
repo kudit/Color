@@ -13,7 +13,7 @@ struct MyApp: App {
                 .safeAreaInset(edge: .bottom) {
                     HStack {
                         Spacer()
-                        Text("Color v\(Color.version) © 2024 Kudit LLC").font(.caption)
+                        Text("Color v\(Color.version) © 2024 Kudit LLC").font(.caption) // (C\(Compatibility.version))
                     }.padding()
                 }
         }
@@ -25,7 +25,7 @@ struct MyApp: App {
     ColorTestView()
 }
 #Preview("Demo") {
-    SimpleDemoView()
+    SimpleDemoRainbowView()
 }
 #endif
 #endif

@@ -9,7 +9,7 @@
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension Color {
-    static let version = "1.0.5"
+    static let version = "1.0.6"
 }
 
 import Compatibility
@@ -111,6 +111,70 @@ public extension KuColor {
             Self.white: .fixedWhite,
             Self.yellow: .fixedYellow,
         ]
+    }
+    
+    /// conversion from HSB to RGB
+    static func convert(hue: CGFloat, saturation: CGFloat, brightness: CGFloat) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+        if saturation == 0 { return (brightness, brightness, brightness) } // Achromatic grey
+        
+        let angle = (hue >= 360 ? 0 : hue)
+        let sector = angle / 60 // Sector
+        let i = floor(sector)
+        let f = sector - i // Factorial part of h
+        
+        let p = brightness * (1 - saturation)
+        let q = brightness * (1 - (saturation * f))
+        let t = brightness * (1 - (saturation * (1 - f)))
+        
+        switch(i) {
+        case 0:
+            return (brightness, t, p)
+        case 1:
+            return (q, brightness, p)
+        case 2:
+            return (p, brightness, t)
+        case 3:
+            return (p, q, brightness)
+        case 4:
+            return (t, p, brightness)
+        default:
+            return (brightness, p, q)
+        }
+    }
+    
+    static func convert(red: CGFloat, green: CGFloat, blue: CGFloat) -> (hue: CGFloat, saturation: CGFloat, brightness: CGFloat) {
+        //hsb.saturation = 1.0
+        //_ = getWhite(&hsb.brightness, alpha: nil)
+        
+        // attempt to convert from RGBA
+        // based off of https://gist.github.com/FredrikSjoberg/cdea97af68c6bdb0a89e3aba57a966ce
+        let r = red
+        let g = green
+        let b = blue
+        let min = r < g ? (r < b ? r : b) : (g < b ? g : b)
+        let max = r > g ? (r > b ? r : b) : (g > b ? g : b)
+        
+        let v = max
+        let delta = max - min
+        
+        guard delta > 0.00001 else {
+            //print("Delta \(self) too small \(min) | \(max)")
+            // hue difference is negligable, so likely a grayscale color
+            return (0, 0, max) }
+        guard max > 0 else {
+            //print("Max \(self) too small \(max)")
+            return (-1, 0, v) } // Undefined, achromatic grey
+        let s = delta / max
+        let hue: (CGFloat, CGFloat) -> CGFloat = { max, delta -> CGFloat in
+            if r == max { return (g-b)/delta } // between yellow & magenta
+            else if g == max { return 2 + (b-r)/delta } // between cyan & yellow
+            else { return 4 + (r-g)/delta } // between magenta & cyan
+        }
+        
+        var h = hue(max, delta) * 60 // In degrees
+        // make sure not less than 0 and then scale to 0-1
+        h = (h < 0 ? h+360 : h) / 360
+        return (h,s,v)
     }
 }
 
@@ -338,34 +402,71 @@ public extension KuColor {
 }
 // create a Color struct that can be used to store color data
 public struct Color: KuColor {
+    // Provide missing color support manually using fixed versions
+    public static var black: Color = .fixedBlack
+    public static var blue: Color = .fixedBlue
+    public static var brown: Color = .fixedBrown
+    public static var clear: Color = .fixedClear
+    public static var cyan: Color = .fixedCyan
+    public static var green: Color = .fixedGreen
+    public static var indigo: Color = .fixedIndigo
+    public static var mint: Color = .fixedMint
+    public static var orange: Color = .fixedOrange
+    public static var pink: Color = .fixedPink
+    public static var purple: Color = .fixedPurple
+    public static var red: Color = .fixedRed
+    public static var teal: Color = .fixedTeal
+    public static var white: Color = .fixedWhite
+    public static var yellow: Color = .fixedYellow
+    public static var magenta: Color = .fixedMagenta
+    public static var gray: Color = .fixedGray
+    public static var lightGray: Color = .fixedLightGray
+    public static var darkGray: Color = .fixedDarkGray
+    
     // all values should be 0-1
     public var red: CGFloat
     public var green: CGFloat
     public var blue: CGFloat
     public var alpha: CGFloat
     
+    public init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    }
+    
+    public init(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
+        // do calculations to convert to RGB
+        let (red, green, blue) = Self.convert(hue: hue, saturation: saturation, brightness: brightness)
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    }
+        
     // functions to get around native implementation change with no return
     public func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
-        if var red {
+        if let red {
             red.pointee = self.red
         }
-        if var green {
+        if let green {
             green.pointee = self.green
         }
-        if var blue {
+        if let blue {
             blue.pointee = self.blue
         }
-        if var alpha {
+        if let alpha {
             alpha.pointee = self.alpha
         }
         return true
     }
     
     public func getWhite(_ white: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
-        if var white {
-            white.pointee = (self.red + self.green + self.blue) / 3
+        if let white {
+            white.pointee = (red + green + blue) / 3
         }
-        if var alpha {
+        if let alpha {
             alpha.pointee = self.alpha
         }
         return true
@@ -374,16 +475,16 @@ public struct Color: KuColor {
     public func getHue(_ hue: UnsafeMutablePointer<CGFloat>?, saturation: UnsafeMutablePointer<CGFloat>?, brightness: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
         // use KuColor calculations of HSB
         let components = hsbComponents
-        if var hue {
+        if let hue {
             hue.pointee = components.hue
         }
-        if var saturation {
+        if let saturation {
             saturation.pointee = components.saturation
         }
-        if var brightness {
+        if let brightness {
             brightness.pointee = components.brightness
         }
-        if var alpha {
+        if let alpha {
             alpha.pointee = self.alpha
         }
         return true
@@ -435,44 +536,13 @@ public extension KuColor {
     var hsbComponents: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat) {
         //print("\(self) HSB COMPONENTS")
         var hsb = (hue: CGFloat.zero, saturation: CGFloat.zero, brightness: CGFloat.zero)
+        // Try to use native conversions if possible
         if getHue(&hsb.hue, saturation: &hsb.saturation, brightness: &hsb.brightness, alpha: nil) {
             return hsb
         }
-        //hsb.saturation = 1.0
-        //_ = getWhite(&hsb.brightness, alpha: nil)
-        
-        // attempt to convert from RGBA
-        // based off of https://gist.github.com/FredrikSjoberg/cdea97af68c6bdb0a89e3aba57a966ce
-        let rgba = rgbaComponents
-        let r = rgba.red
-        let g = rgba.green
-        let b = rgba.blue
-        let min = r < g ? (r < b ? r : b) : (g < b ? g : b)
-        let max = r > g ? (r > b ? r : b) : (g > b ? g : b)
-        
-        let v = max
-        let delta = max - min
-        
-        guard delta > 0.00001 else {
-            //print("Delta \(self) too small \(min) | \(max)")
-            // hue difference is negligable, so likely a grayscale color
-            return (0, 0, max) }
-        guard max > 0 else {
-            //print("Max \(self) too small \(max)")
-            return (-1, 0, v) } // Undefined, achromatic grey
-        let s = delta / max
-        let hue: (CGFloat, CGFloat) -> CGFloat = { max, delta -> CGFloat in
-            if r == max { return (g-b)/delta } // between yellow & magenta
-            else if g == max { return 2 + (b-r)/delta } // between cyan & yellow
-            else { return 4 + (r-g)/delta } // between magenta & cyan
-        }
-        
-        var h = hue(max, delta) * 60 // In degrees
-        // make sure not less than 0 and then scale to 0-1
-        h = (h < 0 ? h+360 : h) / 360
-        hsb = (h,s,v)
-        //print("\(self) calculated HSB: \(hsb)")
-        return hsb
+        // fallback to internal conversions
+        let rgbaComponents = self.rgbaComponents
+        return Self.convert(red: rgbaComponents.red, green: rgbaComponents.green, blue: rgbaComponents.blue)
     }
     var hueComponent: CGFloat {
         return hsbComponents.hue

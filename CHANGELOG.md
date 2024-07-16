@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Tag with matching version in GitHub.
 
+v1.0.6 7/16/2024 Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor.
+
 v1.0.5 7/15/2024 Not sure why SwiftPackageIndex wasn't picking up the update to Compatibility to fix Linux and watchOS support... Forced package minimum to Compatibility 1.0.17 to hopefully fix this.  May also have been Package.resolved was using the older version (test in Swift Playgrounds in the future to make sure Package.resolved gets updated).  Moved Demo color list to ColorUI rather than in MyApp so can be used elsewhere and exposes the Compatibility version.
 
 v1.0.4 7/15/2024 Updated Compatibility to fix watchOS and Linux support.  Updated icon for new themeing.  Re-worked demo app for better compatibility on various platforms and clearing safe areas.  UI works on watchOS now.  Fixed contrastingColor in watchOS and visionOS for primary and secondary colors.

@@ -5,45 +5,56 @@
 # Color.swiftpm
 Color simplifies color objects into a standard syntax that can be used cross platform and adds basic Codable and string representation and conversion for HTML colors and hexadecimal colors.
 
-The primary goals are to be easily maintainable by multiple individuals and be able to be used across all platforms.
+The primary goals are to be easily maintainable by multiple individuals, employ a consistent API that can be used across all platforms, and to be maintainable using Swift Playgrounds on iPad and macOS.  APIs are typically present even on platforms that don't support all features so that availability checks do not have to be performed in external code, and where irrelevant, code can simply return optionals.
 
 This is actively maintained so if there is a feature request or change, we will strive to address within a week.
 
-## Features
 
-- [x] Named CSS colors.
-- [x] Hexadecimal colors.
-- [x] Allows consistent API usage with SwiftUI Color, NSColor, and UIColor so code can be platform agnostic.
-- [x] Adds `.magenta`, `.lightGray`, and `.darkGray` to the standard named colors and ensures `.pink` is available on all platforms.
-- [x] Has preset color lists that can be iterated.
+## Features
+- Can develop and modify without Xcode using Swift Playgrounds on iPad!
+- String initialization with the following formats:
+	- Named CSS/HTML colors (case insensitive, ex: "LightSteelBlue")
+	- Hexadecimal colors (3 or 6 character format, case insensitive, ex: "#c3a", "#cc33aa", "#C0FFEE")
+	- CSS rgb/a colors (case insensitive, space insensitive, values out of 255 but extended colors beyond this are supported, optional alpha parameter should be between 0.0 and 1.0, eg: "rgb(255, 0,0)", "rgb(238, 130, 238, 0.2)")
+- Allows consistent API usage with SwiftUI Color, NSColor, and UIColor so code can be platform agnostic.
+- Adds `.magenta`, `.lightGray`, and `.darkGray` to the standard named colors and ensures `.pink` is available on all platforms.
+- Ability to get lighter and darker colors from a base color.
+- Ability to determine if colors are "light" or "dark" to ensure contrasting colors are used.
+- Has preset color lists that can be iterated like `[Color].rainbow`.
+- Standard color names for DOT signage colors.
+
 
 ## Requirements
-
-- iOS 15+ (15 required for .brown, .cyan, .indigo, .mint, and .teal, 15.2+ minimum required for Swift Playgrounds support)
-- macOS 12+ (macOS 11 required for cgColor conversions, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal)
-- macCatalyst 15.0+
-- tvOS 15.0+ (15 required for .brown, .cyan, .indigo, .mint, and .teal)
-- watchOS 8.0+ (UI only supported on watchOS 8.0+)
-- visionOS 1.0+
+- iOS 11+ (15 required for .brown, .cyan, .indigo, .mint, and .teal, 15.2+ minimum required for Swift Playgrounds support)
+- macOS 10.5+ (macOS 11 required for cgColor conversions, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal)
+- macCatalyst 13+ (first version available)
+- tvOS 11+ (15 required for .brown, .cyan, .indigo, .mint, and .teal)
+- watchOS 4+ (UI only supported on watchOS 8+)
+- visionOS 1+
 - Theoretically should work with Linux, Windows, and Vapor, but haven't tested.  If you would like to help, please let us know.
 
+
 ## Known Issues
-None
+*See CHANGELOG.md for known issues and roadmap*
+
 
 ## Installation
 Install by adding this as a package dependency to your code.  This can be done in Xcode or Swift Playgrounds!
 
 ### Swift Package Manager
 
-#### Swift 5
+#### Swift 5+
+You can try these examples in a Swift Playground by adding package: `https://github.com/kudit/Color`
+
+If the repository is private, use the following link to import: `https://<your-PAT-string>@github.com/kudit/Color.git`
+
+Or you can manually enter the following in the Package.swift file:
 ```swift
 dependencies: [
     .package(url: "https://github.com/kudit/Color.git", from: "1.0.0"),
-    /// ...
 ]
 ```
 
-You can try these examples in a Swift Playground by adding package: https://github.com/kudit/Color
 
 ## Usage
 First make sure to import the framework:
@@ -52,6 +63,11 @@ import Color
 ```
 
 Here are some usage examples.
+
+### Get the version of Color that is imported.
+```swift
+let version = Color.version
+```
 
 ### Create a color from a hex string.
 ```swift
@@ -68,13 +84,24 @@ let color: Color = "red" // should create a red color
 let colors: [Color] = .rainbow
 ```
 
-All these tests can be demonstrated using the previews in the file DemoViews.swift which can be viewed in Xcode Previews or in Swift Playgrounds!
+All these tests can be demonstrated using previews or by running the app executable that is bundled in the Development folder of the module.
+
 
 ## Contributing
 If you have the need for a specific feature that you want implemented or if you experienced a bug, please open an issue.
+If you extended the functionality yourself and want others to use it too, please submit a pull request.
+
 
 ## Donations
 This was a lot of work.  If you find this useful particularly if you use this in a commercial product, please consider making a donation to http://paypal.me/kudit
+
+
+## License
+Feel free to use this in projects, however, please include a link back to this project and credit somewhere in the app.  Example Markdown and string interpolation for the version:
+```swift
+Text("Open Source projects used include [Color](https://github.com/kudit/Color) v\(Color.version)
+```
+
 
 ## Contributors
 The complete list of people who contributed to this project is available [here](https://github.com/kudit/Color/graphs/contributors).

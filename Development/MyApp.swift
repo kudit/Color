@@ -1,10 +1,10 @@
 #if canImport(SwiftUI)
 import SwiftUI
-#if canImport(Color)
+#if canImport(Color) // since this is needed in XCode but is unavailable in Playgrounds.
 import Color
 #endif
-import Compatibility
 
+@available(iOS 15.0, macOS 12, tvOS 17, watchOS 8, *)
 @main
 struct MyApp: App {
     var body: some Scene {
@@ -21,9 +21,11 @@ struct MyApp: App {
 }
 #if swift(>=5.9)
 // README examples
+@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 #Preview("ColorTest") {
     ColorTestView()
 }
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }

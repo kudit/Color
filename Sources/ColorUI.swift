@@ -9,7 +9,7 @@
 import SwiftUI
 import Compatibility
 
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 struct Swatch: View {
     var color: Color
     var label: String?
@@ -41,14 +41,14 @@ struct Swatch: View {
             }
     }
 }
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 struct SwatchTest: View {
     var color: Color
     var body: some View {
         Swatch(color: color, logo: true)
     }
 }
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 struct HSVConversionTestView: View {
     public var body: some View {
         VStack {
@@ -68,11 +68,11 @@ struct HSVConversionTestView: View {
         }
     }
 }
-@available(macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("HSV") {
     HSVConversionTestView()
 }
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 struct ColorTintingTestView: View {
     public var body: some View {
         VStack {
@@ -94,11 +94,11 @@ struct ColorTintingTestView: View {
         }
     }
 }
-@available(macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Color Tinting") {
     ColorTintingTestView()
 }
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 struct ContrastingTestView: View {
     var body: some View {
         VStack {
@@ -140,30 +140,31 @@ struct ContrastingTestView: View {
                 }
                 VStack(spacing: 0) {
                     SwatchTest(color: Color(string:Color.pink.hexString) ?? .black)
-                    SwatchTest(color: Color(string:Color.brown.hexString) ?? .black)
-                    SwatchTest(color: Color(string:Color.mint.hexString) ?? .black)
-                    SwatchTest(color: Color(string:Color.teal.hexString) ?? .black)
-                    SwatchTest(color: Color(string:Color.cyan.hexString) ?? .black)
-                    SwatchTest(color: Color(string:Color.indigo.hexString) ?? .black)
+                    SwatchTest(color: Color(string:Color.brownBackport.hexString) ?? .black)
+                    SwatchTest(color: Color(string:Color.mintBackport.hexString) ?? .black)
+                    SwatchTest(color: Color(string:Color.tealBackport.hexString) ?? .black)
+                    SwatchTest(color: Color(string:Color.cyanBackport.hexString) ?? .black)
+                    SwatchTest(color: Color(string:Color.indigoBackport.hexString) ?? .black)
                 }
                 VStack(spacing: 0) {
                     SwatchTest(color: .pink)
-                    SwatchTest(color: .brown)
-                    SwatchTest(color: .mint)
-                    SwatchTest(color: .teal)
-                    SwatchTest(color: .cyan)
-                    SwatchTest(color: .indigo)
+                    SwatchTest(color: .brownBackport)
+                    SwatchTest(color: .mintBackport)
+                    SwatchTest(color: .tealBackport)
+                    SwatchTest(color: .cyanBackport)
+                    SwatchTest(color: .indigoBackport)
                 }
             }
             
         }.padding().backport.background { Color.gray }
     }
 }
-@available(macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Lightness") {
     ContrastingTestView()
 }
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 struct NamedColorsListTestView: View {
     public var body: some View {
         List {
@@ -221,11 +222,12 @@ struct NamedColorsListTestView: View {
         }
     }
 }
-@available(macOS 11, *)
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview("Named") {
     NamedColorsListTestView()
 }
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 struct PrettySwatch: View {
     var source: String
     var color: Color {
@@ -244,13 +246,20 @@ struct PrettySwatch: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text(color.pretty)
-                        .font(.title.monospaced())
-                        .bold()
+                    if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+                        Text(color.pretty)
+                            .font(.title.monospaced())
+                            .bold()
+                    } else {
+                        // Fallback on earlier versions
+                        Text(color.pretty)
+                            .font(Font.custom("San Francisco", size: 28).monospacedDigit())
+                            .bold()
+                    }
                 }
             }
             .padding()
-            .foregroundStyle(color.contrastingColor)
+            .backport.foregroundStyle(color.contrastingColor)
         }
     }
 }
@@ -261,6 +270,7 @@ struct PrettySwatch: View {
 //        .padding()
 //}
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 struct ColorPrettyTestView: View {
     let prettyTests = [
         "red",
@@ -291,12 +301,12 @@ struct ColorPrettyTestView: View {
         }
     }
 }
-@available(macOS 11, *)
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview("Pretty") {
     ColorPrettyTestView()
 }
 
-@available(macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 public struct SimpleDemoRainbowView: View {
     public init() {}
     public var body: some View {
@@ -314,64 +324,84 @@ public struct SimpleDemoRainbowView: View {
     }
 }
 
-@available(macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }
 
-@available(macOS 11.0, tvOS 14, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 public struct ColorTestView: View {
     public init() {}
+    @State private var tabSelection = 0
     public var body: some View {
-        TabView {
+        TabView(selection: $tabSelection.animation()) {
             ContrastingTestView()
                 .colorTestWrapper()
                 .tabItem {
                     Text("Contrast")
                 }
+                .tag(0)
             ColorsetsTestView()
                 .padding()
                 .colorTestWrapper()
                 .tabItem {
                     Text("Colorset")
                 }
+                .tag(1)
             HSVConversionTestView()
                 .colorTestWrapper()
                 .tabItem {
                     Text("HSV")
                 }
+                .tag(2)
             ColorPrettyTestView()
                 .padding()
                 .colorTestWrapper()
                 .tabItem {
                     Text("Pretty")
                 }
+                .tag(3)
             NamedColorsListTestView()
                 .tabItem {
                     Text("Named CSS")
                 }
+                .tag(4)
             ColorTintingTestView()
                 .colorTestWrapper()
                 .tabItem {
                     Text("Tinting")
                 }
+                .tag(5)
             SimpleDemoRainbowView()
                 .tabItem {
                     Text("Demo")
                 }
+                .tag(6)
         }
         .backport.tabViewStyle(.page)
-        .closure { view in
-#if os(macOS) || os(tvOS)
-            view
-#else
-            view.ignoresSafeArea()
-#endif
-        }
+//        .tabViewStyle(.page(indexDisplayMode: .never))
+//        .safeAreaInset(edge: .bottom) {
+//            HStack(spacing: 6){
+//                ForEach(0..<7, id: \.self) { i in
+//                    Image(systemName: "circle.fill")
+//                        .font(.system(size: 9))
+//                        .foregroundStyle(tabSelection == i ? .primary : .tertiary)
+//                }
+//            }
+//            .padding()
+//            .background(.clear)
+//        }
+//        .closure { view in
+//#if os(macOS) || os(tvOS)
+//            view
+//#else
+//            view.ignoresSafeArea()
+//#endif
+//        }
     }
 }
 
-@available(macOS 11.0, tvOS 14, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 #Preview("All Tests") {
     ColorTestView()
 }
@@ -413,7 +443,7 @@ public extension View {
 }
 
 /// For KuditConnect for testing
-@available(tvOS 15, macOS 12, *)
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension View {
     func testBackground() -> some View {
         ZStack {

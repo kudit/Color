@@ -1,25 +1,27 @@
 //
 //  Color.swift
-//  KuditFrameworks
+//  
 //
 //  Created by Ben Ku on 9/26/16.
-//  Copyright © 2016 Kudit. All rights reserved.
+//  Copyright © 2016 Kudit, LLC. All rights reserved.
 //
 
-// http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
-
+@available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
-    static let version = "1.0.6"
+    /// The version of the Color Library since cannot get directly from Package.swift.
+    static let version: Version = "1.1.0"
 }
-
 import Compatibility
+
+// http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension CGFloat {
     static let zero = CGFloat(0.0)
     static let one = CGFloat(1.0)
 }
 
-public protocol KuColor: Codable, Equatable, Hashable, Identifiable {
+// Does conform to Identifiable but can't add for older iOS    @available(iOS 13, tvOS 13, watchOS 6, *)
+public protocol KuColor: Codable, Equatable, Hashable {
     /// usually 0-1 double values but SwiftUI supports extended colors beyond 0-1 for extended color spaces.
     init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     init(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)
@@ -31,18 +33,28 @@ public protocol KuColor: Codable, Equatable, Hashable, Identifiable {
     associatedtype UnderlyingColorType: KuColor // cannot use Self because UIColor is non-final.  But apparently Swift compiler can infer this type without having to manually define it! :)
     static var black: UnderlyingColorType { get }
     static var blue: UnderlyingColorType { get }
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     static var brown: UnderlyingColorType { get }
+    static var brownBackport: UnderlyingColorType { get }
     static var clear: UnderlyingColorType { get }
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     static var cyan: UnderlyingColorType { get }
+    static var cyanBackport: UnderlyingColorType { get }
     static var gray: UnderlyingColorType { get }
     static var green: UnderlyingColorType { get }
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     static var indigo: UnderlyingColorType { get }
+    static var indigoBackport: UnderlyingColorType { get }
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     static var mint: UnderlyingColorType { get }
+    static var mintBackport: UnderlyingColorType { get }
     static var orange: UnderlyingColorType { get }
     static var pink: UnderlyingColorType { get }
     static var purple: UnderlyingColorType { get }
     static var red: UnderlyingColorType { get }
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     static var teal: UnderlyingColorType { get }
+    static var tealBackport: UnderlyingColorType { get }
     static var white: UnderlyingColorType { get }
     static var yellow: UnderlyingColorType { get }
     // Kudit Added
@@ -50,7 +62,6 @@ public protocol KuColor: Codable, Equatable, Hashable, Identifiable {
     static var lightGray: UnderlyingColorType { get }
     static var darkGray: UnderlyingColorType { get }
 }
-
 
 // the LosslessStringConvertible extension does not work for KuColor since a color may be initialized by a string but the corresponding unlabelled init function is not the one we want since it returns an optional.
 public extension KuColor {
@@ -70,49 +81,118 @@ public extension KuColor {
     }
     
     // Fallback color values for platforms that don't support colors or dynamic colors
-    static var fixedBlack: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .one) }
-    static var fixedBlue: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .one) }
-    static var fixedBrown: Self { Self(red: 162/255, green: 132/255, blue: 94/255, alpha: .one) }
-    static var fixedClear: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .zero)}
-    static var fixedCyan: Self { Self(red: 50/255, green: 173/255, blue: 230/255, alpha: .one)}
-    static var fixedGray: Self { Self(red: 142/255, green: 142/255, blue: 147/255, alpha: .one)}
-    static var fixedLightGray: Self { Self(red: 203/255, green: 203/255, blue: 204/255, alpha: .one)}
-    static var fixedDarkGray: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .one)}
-    static var fixedGreen: Self { Self(red: 52/255, green: 199/255, blue: 89/255, alpha: .one)}
-    static var fixedIndigo: Self { Self(red: 88/255, green: 86/255, blue: 214/255, alpha: .one)}
-    static var fixedMagenta: Self { Self(red: .one, green: .zero, blue: .one, alpha: .one)}
-    static var fixedMint: Self { Self(red: .zero, green: 199/255, blue: 190/255, alpha: .one)}
-    static var fixedOrange: Self { Self(red: .one, green: 149/255, blue: .zero, alpha: .one)}
-    static var fixedPink: Self { Self(red: .one, green: 45/255, blue: 85/255, alpha: .one)}
-    static var fixedPurple: Self { Self(red: 175/255, green: 82/255, blue: 222/255, alpha: .one)}
-    static var fixedRed: Self { Self(red: .one, green: 59/255, blue: 48/255, alpha: .one)}
-    static var fixedTeal: Self { Self(red: 48/255, green: 176/255, blue: 199/255, alpha: .one)}
-    static var fixedWhite: Self { Self(red: .one, green: .one, blue: .one, alpha: .one)}
-    static var fixedYellow: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .one)}
+    static var blackFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .one) }
+    static var blueFixed: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .one) }
+    static var brownFixed: Self { Self(red: 162/255, green: 132/255, blue: 94/255, alpha: .one) }
+    static var clearFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .zero)}
+    static var cyanFixed: Self { Self(red: 50/255, green: 173/255, blue: 230/255, alpha: .one)}
+    static var grayFixed: Self { Self(red: 142/255, green: 142/255, blue: 147/255, alpha: .one)}
+    static var lightGrayFixed: Self { Self(red: 203/255, green: 203/255, blue: 204/255, alpha: .one)}
+    static var darkGrayFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .one)}
+    static var greenFixed: Self { Self(red: 52/255, green: 199/255, blue: 89/255, alpha: .one)}
+    static var indigoFixed: Self { Self(red: 88/255, green: 86/255, blue: 214/255, alpha: .one)}
+    static var magentaFixed: Self { Self(red: .one, green: .zero, blue: .one, alpha: .one)}
+    static var mintFixed: Self { Self(red: .zero, green: 199/255, blue: 190/255, alpha: .one)}
+    static var orangeFixed: Self { Self(red: .one, green: 149/255, blue: .zero, alpha: .one)}
+    static var pinkFixed: Self { Self(red: .one, green: 45/255, blue: 85/255, alpha: .one)}
+    static var purpleFixed: Self { Self(red: 175/255, green: 82/255, blue: 222/255, alpha: .one)}
+    static var redFixed: Self { Self(red: .one, green: 59/255, blue: 48/255, alpha: .one)}
+    static var tealFixed: Self { Self(red: 48/255, green: 176/255, blue: 199/255, alpha: .one)}
+    static var whiteFixed: Self { Self(red: .one, green: .one, blue: .one, alpha: .one)}
+    static var yellowFixed: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .one)}
     
     static var fixedMap: [UnderlyingColorType: Self] {
-        [
-            Self.black: .fixedBlack,
-            Self.blue: .fixedBlue,
-            Self.brown: .fixedBrown,
-            Self.clear: .fixedClear,
-            Self.cyan: .fixedCyan,
-            Self.gray: .fixedGray,
-            Self.lightGray: .fixedLightGray,
-            Self.darkGray: .fixedDarkGray,
-            Self.green: .fixedGreen,
-            Self.indigo: .fixedIndigo,
-            Self.mint: .fixedMint,
-            Self.orange: .fixedOrange,
-            Self.pink: .fixedPink,
-            Self.purple: .fixedPurple,
-            Self.red: .fixedRed,
-            Self.teal: .fixedTeal,
-            Self.white: .fixedWhite,
-            Self.yellow: .fixedYellow,
-        ]
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) {
+            [
+                Self.black: .blackFixed,
+                Self.blue: .blueFixed,
+                Self.brown: .brownFixed,
+                Self.clear: .clearFixed,
+                Self.cyan: .cyanFixed,
+                Self.gray: .grayFixed,
+                Self.lightGray: .lightGrayFixed,
+                Self.darkGray: .darkGrayFixed,
+                Self.green: .greenFixed,
+                Self.indigo: .indigoFixed,
+                Self.mint: .mintFixed,
+                Self.orange: .orangeFixed,
+                Self.pink: .pinkFixed,
+                Self.purple: .purpleFixed,
+                Self.red: .redFixed,
+                Self.teal: .tealFixed,
+                Self.white: .whiteFixed,
+                Self.yellow: .yellowFixed,
+            ]
+        } else {
+            // Fallback on earlier versions
+            [
+                Self.black: .blackFixed,
+                Self.blue: .blueFixed,
+                Self.brownBackport: .brownFixed,
+                Self.clear: .clearFixed,
+                Self.cyanBackport: .cyanFixed,
+                Self.gray: .grayFixed,
+                Self.lightGray: .lightGrayFixed,
+                Self.darkGray: .darkGrayFixed,
+                Self.green: .greenFixed,
+                Self.indigoBackport: .indigoFixed,
+                Self.mintBackport: .mintFixed,
+                Self.orange: .orangeFixed,
+                Self.pink: .pinkFixed,
+                Self.purple: .purpleFixed,
+                Self.red: .redFixed,
+                Self.tealBackport: .tealFixed,
+                Self.white: .whiteFixed,
+                Self.yellow: .yellowFixed,
+            ]
+        }
     }
     
+    static var brownBackport: UnderlyingColorType {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            Self.brown
+        } else {
+            // Fallback on earlier versions
+            .brownFixed
+        }
+    }
+
+    static var cyanBackport: UnderlyingColorType {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            Self.cyan
+        } else {
+            // Fallback on earlier versions
+            .cyanFixed
+        }
+    }
+    
+    static var indigoBackport: UnderlyingColorType {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            Self.indigo
+        } else {
+            // Fallback on earlier versions
+            .indigoFixed
+        }
+    }
+    
+    static var mintBackport: UnderlyingColorType {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            Self.mint
+        } else {
+            // Fallback on earlier versions
+            .mintFixed
+        }
+    }
+    
+    static var tealBackport: UnderlyingColorType {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            Self.teal
+        } else {
+            // Fallback on earlier versions
+            .tealFixed
+        }
+    }
+
     /// conversion from HSB to RGB
     static func convert(hue: CGFloat, saturation: CGFloat, brightness: CGFloat) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
         if saturation == 0 { return (brightness, brightness, brightness) } // Achromatic grey
@@ -181,6 +261,11 @@ public extension KuColor {
 #if os(macOS) // NOT available in macCataylst canImport(AppKit)
 // TODO: Make this a protocol for adding this automatically for NSColor and UIColor without duplicating code.
 import AppKit
+extension NSColor: Identifiable {
+    public var id: String {
+        self.pretty
+    }
+}
 extension NSColor: KuColor {
     public func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
         // Make sure doesn't crash with extended colorspace colors.
@@ -240,42 +325,42 @@ public extension NSColor {
 
 #if canImport(UIKit)
 import UIKit
+extension UIColor: Identifiable {
+    public var id: String {
+        self.pretty
+    }
+}
 extension UIColor: KuColor {
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     public static var indigo: UIColor {
 #if os(watchOS)
-        return .fixedIndigo
+        return .indigoFixed
 #else
         return .systemIndigo
 #endif
     }
 
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     public static var mint: UIColor {
 #if os(watchOS)
-        return .fixedMint
-            
+        return .mintFixed
 #else
-        if #available(tvOS 15.0, iOS 15, *) {
-            return .systemMint
-        } else {
-            // Fallback on earlier versions
-            return .fixedMint
-        }
+        return .systemMint
 #endif
     }
 
     public static var pink: UIColor {
 #if os(watchOS)
-        return .fixedPink
-
+        return .pinkFixed
 #else
         return .systemPink
 #endif
     }
 
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     public static var teal: UIColor {
 #if os(watchOS)
-        return .fixedTeal
-
+        return .tealFixed
 #else
         return .systemTeal
 #endif
@@ -304,23 +389,31 @@ public extension UIColor {
 
 #if canImport(SwiftUI)
 import SwiftUI
+@available(iOS 13, tvOS 13, watchOS 6, *)
+extension Color: Identifiable {
+    public var id: String {
+        self.pretty
+    }
+}
 public extension KuColor {
+    @available(iOS 13, tvOS 13, watchOS 6, *)
     typealias DefaultColorType = Color
 }
+@available(iOS 13, tvOS 13, watchOS 6, *)
 extension Color: KuColor {
     // available in UIColor but not SwiftUI.Color
     public static var lightGray: Color {
-        return .fixedLightGray
+        return .lightGrayFixed
     }
     
     // available in UIColor but not SwiftUI.Color
     public static var darkGray: Color {
-        return .fixedDarkGray
+        return .darkGrayFixed
     }
     
     // available in UIColor but not SwiftUI.Color
     public static var magenta: Color {
-        return .fixedMagenta
+        return .magentaFixed
     }
 
     public init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -350,7 +443,7 @@ extension Color: KuColor {
         // not named color
         // Impossible to calculate for accentColor/primary/secondary/.  Perhaps return something else?
         
-        if #available(tvOS 14, macOS 11, *) {
+        if #available(iOS 14, macOS 11, tvOS 14, watchOS 8, *) {
             guard let cgColor = cgColor, let components = cgColor.components, components.count >= 3 else {
                 return false
             }
@@ -365,7 +458,7 @@ extension Color: KuColor {
     }
     
     public func getWhite(_ white: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
-        if #available(tvOS 14.0, macOS 11, *) {
+        if #available(iOS 14, macOS 11, tvOS 14, watchOS 7, *) {
             guard let cgColor = cgColor, let components = cgColor.components, components.count == 2 else {
                 return false
             }
@@ -403,25 +496,25 @@ public extension KuColor {
 // create a Color struct that can be used to store color data
 public struct Color: KuColor {
     // Provide missing color support manually using fixed versions
-    public static var black: Color = .fixedBlack
-    public static var blue: Color = .fixedBlue
-    public static var brown: Color = .fixedBrown
-    public static var clear: Color = .fixedClear
-    public static var cyan: Color = .fixedCyan
-    public static var green: Color = .fixedGreen
-    public static var indigo: Color = .fixedIndigo
-    public static var mint: Color = .fixedMint
-    public static var orange: Color = .fixedOrange
-    public static var pink: Color = .fixedPink
-    public static var purple: Color = .fixedPurple
-    public static var red: Color = .fixedRed
-    public static var teal: Color = .fixedTeal
-    public static var white: Color = .fixedWhite
-    public static var yellow: Color = .fixedYellow
-    public static var magenta: Color = .fixedMagenta
-    public static var gray: Color = .fixedGray
-    public static var lightGray: Color = .fixedLightGray
-    public static var darkGray: Color = .fixedDarkGray
+    public static var black: Color = .blackFixed
+    public static var blue: Color = .blueFixed
+    public static var brown: Color = .brownFixed
+    public static var clear: Color = .clearFixed
+    public static var cyan: Color = .cyanFixed
+    public static var green: Color = .greenFixed
+    public static var indigo: Color = .indigoFixed
+    public static var mint: Color = .mintFixed
+    public static var orange: Color = .orangeFixed
+    public static var pink: Color = .pinkFixed
+    public static var purple: Color = .purpleFixed
+    public static var red: Color = .redFixed
+    public static var teal: Color = .tealFixed
+    public static var white: Color = .whiteFixed
+    public static var yellow: Color = .yellowFixed
+    public static var magenta: Color = .magentaFixed
+    public static var gray: Color = .grayFixed
+    public static var lightGray: Color = .lightGrayFixed
+    public static var darkGray: Color = .darkGrayFixed
     
     // all values should be 0-1
     public var red: CGFloat
@@ -561,7 +654,7 @@ public extension KuColor {
 }
 
 #if canImport(SwiftUI)
-@available(macOS 11.0, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("HSV Conversion") {
     HSVConversionTestView()
 }
@@ -627,12 +720,13 @@ public extension KuColor {
         return 0.2126 * self.redComponent + 0.7152 * self.greenComponent + 0.0722 * self.blueComponent
     }
     /// returns either white or black depending on the base color to make sure it's visible against the background.  In the future we may want to change this to some sort of vibrancy.  Note, if you're using this on accentColor on a view that has changed the tint, will give a contrassting color for the Asset color named "AccentColor" and not the actual color value since actual color values can't be read.
+    @available(iOS 13, tvOS 13, watchOS 6, *)
     var contrastingColor: Color {
 #if os(macOS)
         if let color = self as? Color, color == .primary || color == .secondary {
             return Color(NSColor.windowBackgroundColor)
-//            let mode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle")
-//            return mode == "Dark"
+            //            let mode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle")
+            //            return mode == "Dark"
         }
         if let color = self as? Color, color == .accentColor {
             // pull from assets rather than from the color which will just return a blue color
@@ -662,23 +756,18 @@ public extension KuColor {
 }
 
 #if canImport(SwiftUI)
-@available(macOS 11.0, *)
+
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Color Tinting") {
     ColorTintingTestView()
 }
-@available(macOS 11.0, *)
+
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Lightness Tests") {
     ContrastingTestView()
 }
-#endif
 
-
-
-
-#if canImport(SwiftUI)
-import SwiftUI
-
-@available(tvOS 14, macOS 11, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 #Preview("All Tests") {
     ColorTestView()
 }

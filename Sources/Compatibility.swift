@@ -12,6 +12,9 @@ extension DebugLevel {
     @MainActor
     public static var colorLogging = false
 
+    #if canImport(SwiftUI)
+    @available(iOS 13, tvOS 13, watchOS 6, *)
+    #endif
     public var color: any KuColor {
         let type = KuColor.DefaultColorType.self
         switch self {
@@ -33,7 +36,8 @@ extension DebugLevel {
 
 #if canImport(SwiftUI)
 import SwiftUI
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview {
-    Color.brown
+    Color.brownBackport
 }
 #endif

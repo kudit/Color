@@ -14,11 +14,32 @@
 //}
 public extension Array where Element: KuColor, Element.UnderlyingColorType == Element {
     /// ROYGBIV(purple for violet)
-    static var rainbow: [Element] { [.red, .orange, .yellow, .green, .blue, .indigo, .purple] }
+    static var rainbow: [Element] {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
+        } else {
+            // Fallback on earlier versions
+            [.red, .orange, .yellow, .green, .blue, .indigoFixed, .purple]
+        }
+    }
     /// Primary colors, secondary colors, tertiary colors
-    static var prioritized: [Element] { [.red, .green, .blue, .yellow, .magenta, .cyan, .orange, .purple, .mint, .indigo, .brown] }
+    static var prioritized: [Element] {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            [.red, .green, .blue, .yellow, .magenta, .cyan, .orange, .purple, .mint, .indigo, .brown]
+        } else {
+            // Fallback on earlier versions
+            [.red, .green, .blue, .yellow, .magenta, .cyanFixed, .orange, .purple, .mintFixed, .indigoFixed, .brownFixed]
+        }
+    }
     /// All Apple named colors (adds cyan and magenta)
-    static var named: [Element] { [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .magenta, .pink, .brown, .clear, .gray, .black, .white] }
+    static var named: [Element] {
+        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .magenta, .pink, .brown, .clear, .gray, .black, .white]
+        } else {
+            // Fallback on earlier versions
+            [.red, .orange, .yellow, .green, .mintFixed, .tealFixed, .cyanFixed, .blue, .indigoFixed, .purple, .magenta, .pink, .brownFixed, .clear, .gray, .black, .white]
+        }
+    }
     /// Grayscale colors from white to black
     static var grayscale: [Element] { [.white, .lightGray, .gray, .darkGray, .black] }
 }
@@ -75,6 +96,12 @@ public extension Array where Element: KuColor, Element.UnderlyingColorType == El
     }
 }
 
+extension [any KuColor]: Identifiable {
+    public var id: String {
+        map { $0.id }.joined(separator: ",")
+    }
+}
+
 public extension KuColor {
     /// For quickly initializing a color using the nth item in a colorset.  Extension of KuColor so we can type . and start initializing for autocomplete.
     static func nth(_ nth: Int, of colorset: [Self]) -> Self {
@@ -85,6 +112,7 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 public struct ColorBarTestView: View {
     public var text: String?
     public var colors: [Color]
@@ -103,26 +131,16 @@ public struct ColorBarTestView: View {
             if let text {
                 Text(text)
                     .font(.title)
-                    .closure { view in
-                        Group {
-                            if #available(tvOS 16.0, macOS 13, watchOS 9, *) {
-                                view
-                                    .bold()
-                                    .foregroundStyle(.white)
-                            } else {
-                                // Fallback on earlier versions
-                                view
-                            }
-                        }
-                    }
+                    .bold()
+                    .backport.foregroundStyle(.white)
                     .shadow(radius: 1)
+                
             }
-        }.mask {
-            RoundedRectangle(cornerRadius: 15)
-        }
+        }.clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 public struct ColorsetsTestView: View {
     var colorsets = [Color].namedColorsets
     public var body: some View {
@@ -135,6 +153,7 @@ public struct ColorsetsTestView: View {
     }
 }
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview("Colorsets") {
     ColorsetsTestView()
 }

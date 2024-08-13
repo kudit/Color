@@ -4,7 +4,11 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Xcode project version (in build settings - normal and watch targets should inherit)
 - [ ] Package.swift iOSApplication product displayVersion.
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
-- [ ] Tag with matching version in GitHub.
+- [ ] Update changelog and tag with matching version in GitHub.
+
+TODO: Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
+
+v1.1.0 8/13/2024 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Changed from `.fixedBrown` to `.brownFixed` so only have to add suffix.  Also added `.brownBackport` to get the native `.brown` or `.brownFixed` if not available. (same for all the iOS 15 color additions).  Backed up the compatibility versions so can use in Device so that we don't have to re-code a `Color(hex:)` function.  Fixed background tint in icon to match better.
 
 v1.0.6 7/16/2024 Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor.
 
@@ -23,18 +27,19 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 
 ## Bugs to fix:
 Known issues that need to be addressed.
-
 - [ ] Get UI working on tvOS (looks okay but paging doesn't seem to work in tvOS).
 - [ ] Page indicators are nearly invisible when in light mode on iOS.
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
-
 - [ ] Add ability to search named colors view and sort by Name or by Hue.
     - [ ] Add toggle to color tests CSS Named Colors list to order Alphabetically vs ordering .sort { $0.hue < $1.hue }
 - [ ] No planned new features
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.
-
+- [ ] Add additional colorsets:
+    - https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors
+        Create this as a separate package that leverages this but can include additional Crayola information.
+    - https://www.swatchtool.com/copic
 - [ ] Obfuscate KuColor as the basis?

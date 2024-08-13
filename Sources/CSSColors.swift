@@ -31,7 +31,15 @@ public extension KuColor {
             )
 #endif
         } else if let string = try? String(from: decoder) {
-            guard let color = Color(string: string) else {
+            var color: (any KuColor)? = nil
+            #if canImport(SwiftUI)
+            if #available(iOS 13, tvOS 13, watchOS 6, *) {
+                color = Color(string: string)
+            } // else case should never happen
+            #else
+            color = Color(string: string)
+            #endif
+            guard let color else {
                 throw DecodingError.dataCorruptedError(
                     in: try decoder.singleValueContainer(),
                     debugDescription: "Invalid Color String \"\(string)\""
@@ -380,10 +388,12 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview("Named Colors") {
     NamedColorsListTestView()
 }
 
+@available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview("Pretty Text") {
     ColorPrettyTestView()
 }

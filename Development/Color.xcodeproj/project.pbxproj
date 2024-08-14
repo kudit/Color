@@ -33,7 +33,6 @@
 /* Begin PBXFileReference section */
 		B52C8E082C386F2D008EBD2D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		B572419B2C386E660096A00F /* Color.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Color.swiftpm; path = ..; sourceTree = "<group>"; };
-		B5CB1E3D2C6BDE2900CF542B /* ColorTest-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ColorTest-Watch-App-Info.plist"; sourceTree = "<group>"; };
 		B5E5FC3A2C3860EC004F2009 /* MyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 		B5E5FC3E2C3860EC004F2009 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		B5E5FC442C3860EC004F2009 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE.txt; path = ../LICENSE.txt; sourceTree = "<group>"; };
@@ -68,7 +67,6 @@
 		B50E7B622C385BD8002D3F53 = {
 			isa = PBXGroup;
 			children = (
-				B5CB1E3D2C6BDE2900CF542B /* ColorTest-Watch-App-Info.plist */,
 				B5E5FC3E2C3860EC004F2009 /* CHANGELOG.md */,
 				B5E5FC452C3860EC004F2009 /* README.md */,
 				B52C8E082C386F2D008EBD2D /* Package.swift */,
@@ -295,7 +293,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -360,7 +358,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -456,7 +454,6 @@
 				DEVELOPMENT_TEAM = 3QPV894C33;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ColorTest-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ColorTest Watch App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -488,7 +485,6 @@
 				DEVELOPMENT_TEAM = 3QPV894C33;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ColorTest-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ColorTest Watch App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";

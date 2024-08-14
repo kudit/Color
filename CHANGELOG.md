@@ -8,6 +8,9 @@ NOTE: Version needs to be updated in the following places:
 
 TODO: Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
 
+v1.1.2 8/14/2024 Updated Compatibility version to 1.3.6.
+
+*PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*
 v1.1.1 8/13/2024 Updated Compatibility version to 1.3.5.
 
 v1.1.0 8/13/2024 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Changed from `.fixedBrown` to `.brownFixed` so only have to add suffix.  Also added `.brownBackport` to get the native `.brown` or `.brownFixed` if not available. (same for all the iOS 15 color additions).  Backed up the compatibility versions so can use in Device so that we don't have to re-code a `Color(hex:)` function.  Fixed background tint in icon to match better.

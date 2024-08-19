@@ -36,6 +36,19 @@ extension DebugLevel {
 
 #if canImport(SwiftUI)
 import SwiftUI
+
+@available(iOS 13, tvOS 13, watchOS 6, *)
+public extension Color {
+    /// Use this instead of .accentColor so that the color actually appears in tvOS and can properly be used.
+    static var accentColorAsset: Color {
+#if os(tvOS)
+        Color("AccentColor")
+#else
+            .accentColor
+#endif
+    }
+}
+
 @available(iOS 13, tvOS 13, watchOS 6, *)
 #Preview {
     Color.brownBackport

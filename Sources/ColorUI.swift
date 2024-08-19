@@ -336,6 +336,7 @@ public struct ColorTestView: View {
     public var body: some View {
         TabView(selection: $tabSelection.animation()) {
             ContrastingTestView()
+                .border(Color.accentColorAsset, width: 5)
                 .colorTestWrapper()
                 .tabItem {
                     Text("Contrast")

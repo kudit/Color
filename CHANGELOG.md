@@ -8,6 +8,9 @@ NOTE: Version needs to be updated in the following places:
 
 TODO: Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
 
+v1.1.3 8/19/2024 Updated so that we can use `.accentColorAsset` to fix issues with tvOS using color.
+
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.2 8/14/2024 Updated Compatibility version to 1.3.6.
 
 *PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*

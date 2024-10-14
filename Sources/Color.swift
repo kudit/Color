@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.1.3"
+    static let version: Version = "1.1.4"
 }
 import Compatibility
 

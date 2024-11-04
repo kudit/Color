@@ -96,11 +96,11 @@ public extension Array where Element: KuColor, Element.UnderlyingColorType == El
     }
 }
 
-extension [any KuColor]: Identifiable {
-    public var id: String {
-        map { $0.id }.joined(separator: ",")
-    }
-}
+//extension [any KuColor]: Swift.Identifiable {
+//    public var id: String {
+//        map { $0.id }.joined(separator: ",")
+//    }
+//}
 
 public extension KuColor {
     /// For quickly initializing a color using the nth item in a colorset.  Extension of KuColor so we can type . and start initializing for autocomplete.

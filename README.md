@@ -36,6 +36,8 @@ This is actively maintained so if there is a feature request or change, we will 
 
 ## Known Issues
 *See CHANGELOG.md for known issues and roadmap*
+Due to the way SwiftUI Color stores values, an alpha value of "0.2" is stored as "0.20000000298023224" which is wrong, so when exporting as css string, this will round decimals to 7 places.  This does mean that alpha values cannot have more than 7 digits of precision, but typically alpha values will be nice numbers so this will usually be the correct behavior for expected results.
+Note: versions previous to 1.2.0 could be iterated in lists directly.  Identifiable conformance removed to be more compatible and silence Xcode 16 warnings so in order to iterate in SwiftUI List or ForEach, add `id: \.pretty` to the iterator.
 
 
 ## Installation

@@ -6,10 +6,12 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-TODO: Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
+v1.2.0 11/4/2024 Extracted Codable code to separate file.  Added codable tests to test conversion to/from JSON and data formats.  Switched around so pretty string is the preferable encoding method.  Addressed conformance warnings.  Removed Identifiable conformance automatically (if needed, use `id: \.pretty`).  Fixed pretty coding so that it doesn't have rounding issues (will round to 8 decimal places).  Added symantic colors and backport and storage as special named colors.  Updated so ANY KuColor can be compared to another KuColor no matter the type.
 
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.4 10/14/2024 Updated Compatibility to good version 1.3.15
 
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.3 8/19/2024 Updated so that we can use `.accentColorAsset` to fix issues with tvOS using color.
 
 *PASSES ALL SWIFTPACKAGEINDEX TESTS*
@@ -40,12 +42,12 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 Known issues that need to be addressed.
 - [ ] Get UI working on tvOS (looks okay but paging doesn't seem to work in tvOS).
 - [ ] Page indicators are nearly invisible when in light mode on iOS.
+- [ ] Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
 
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
 - [ ] Add ability to search named colors view and sort by Name or by Hue.
     - [ ] Add toggle to color tests CSS Named Colors list to order Alphabetically vs ordering .sort { $0.hue < $1.hue }
-- [ ] No planned new features
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.

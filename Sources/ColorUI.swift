@@ -132,11 +132,11 @@ struct ContrastingTestView: View {
                 VStack(spacing: 0) {
                     
                     SwatchTest(color: .accentColor)
+                    SwatchTest(color: .accentColorBackport)
                     SwatchTest(color: .primary)
+                    SwatchTest(color: .primaryBackport)
                     SwatchTest(color: .secondary)
-                    SwatchTest(color: Color(string:"SkyBlue") ?? .black)
-                    SwatchTest(color: Color(string:"Beige") ?? .black)
-                    SwatchTest(color: Color(string:"LightGray") ?? .black)
+                    SwatchTest(color: .secondaryBackport)
                 }
                 VStack(spacing: 0) {
                     SwatchTest(color: Color(string:Color.pink.hexString) ?? .black)
@@ -211,7 +211,7 @@ struct NamedColorsListTestView: View {
         .listStyle(.plain)
         .closure { view in
             Group {
-                if #available(iOS 17.0, macOS 99, tvOS 17, watchOS 10, *) {
+                if #available(iOS 17, macOS 99, tvOS 17, watchOS 10, *) {
                     view
                         .contentMargins(.bottom, Self.bottomMargin, for: .automatic)
                 } else {
@@ -311,7 +311,7 @@ public struct SimpleDemoRainbowView: View {
     public init() {}
     public var body: some View {
         List {
-            ForEach([Color].rainbow) { color in
+            ForEach([Color].rainbow, id: \.pretty) { color in
                 HStack {
                     Image(systemName: "globe")
                         .imageScale(.large)
@@ -378,6 +378,11 @@ public struct ColorTestView: View {
                     Text("Demo")
                 }
                 .tag(6)
+            CodingDemoView()
+                .tabItem {
+                    Text("Coding")
+                }
+                .tag(7)
         }
         .backport.tabViewStyle(.page)
 //        .tabViewStyle(.page(indexDisplayMode: .never))
@@ -407,7 +412,7 @@ public struct ColorTestView: View {
     ColorTestView()
 }
 
-@available(watchOS 6.0, iOS 13, tvOS 13, *)
+@available(watchOS 6, iOS 13, tvOS 13, *)
 public extension View {
     static var bottomMargin: Double { 35 }
     func colorTestWrapper() -> some View {
@@ -417,7 +422,7 @@ public extension View {
                     .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
                     .closure { view in
                         Group {
-                            if #available(iOS 17.0, macOS 14, tvOS 17, watchOS 10, *) {
+                            if #available(iOS 17, macOS 14, tvOS 17, watchOS 10, *) {
                                 view
                                     .safeAreaPadding(.init(top: 0, leading: 0, bottom: 20, trailing: 0))
                             } else {
@@ -430,7 +435,7 @@ public extension View {
             .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
             .closure { view in
                 Group {
-                    if #available(iOS 17.0, macOS 99, tvOS 17, watchOS 10, *) {
+                    if #available(iOS 17, macOS 99, tvOS 17, watchOS 10, *) {
                         view
                             .contentMargins(.bottom, Self.bottomMargin, for: .scrollIndicators)
                     } else {

@@ -9,74 +9,6 @@
 import Compatibility
 
 public extension KuColor {
-    // MARK: Codable
-    // Kudit Codable conformance (simplified) based off of
-    //https://gist.github.com/ConfusedVorlon/276bd7ac6c41a99ea0514a34ee9afc3d?permalink_comment_id=4096859#gistcomment-4096859
-    init(from decoder: Decoder) throws {
-        if let data = try? Data(from: decoder) {
-            // likely data representation of UIColor
-#if canImport(UIKit)
-            guard let color = UIColor(data) else {
-                throw DecodingError.dataCorruptedError(
-                    in: try decoder.singleValueContainer(),
-                    debugDescription: "Invalid Color Data"
-                )
-            }
-            // convert in case this is actually a SwiftUI Color initing from a UIColor as in ShoutIt legacy data
-            self.init(color: color)
-#else
-            throw DecodingError.dataCorruptedError(
-                in: try decoder.singleValueContainer(),
-                debugDescription: "Decoding color from data is not supported in macOS without catalyst."
-            )
-#endif
-        } else if let string = try? String(from: decoder) {
-            var color: (any KuColor)? = nil
-            #if canImport(SwiftUI)
-            if #available(iOS 13, tvOS 13, watchOS 6, *) {
-                color = Color(string: string)
-            } // else case should never happen
-            #else
-            color = Color(string: string)
-            #endif
-            guard let color else {
-                throw DecodingError.dataCorruptedError(
-                    in: try decoder.singleValueContainer(),
-                    debugDescription: "Invalid Color String \"\(string)\""
-                )
-            }
-            self.init(color: color)
-        } else {
-            throw DecodingError.dataCorruptedError(
-                in: try decoder.singleValueContainer(),
-                debugDescription: "Could not decode Color"
-            )
-        }
-        //        let data = try container.decode(Data.self)
-        //        guard let color = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data) else {
-        //            throw DecodingError.dataCorruptedError(
-        //                in: container,
-        //                debugDescription: "Invalid color"
-        //            )
-        //        }
-        //        wrappedValue = color
-        //
-        //        else if let data = try? UIColor
-        //        } else if let data = try? Data(from: decoder), let uiColor = UIColor(data)
-        //
-        //        }
-        // TODO: check to see if we can value decode this?  • Unable to decode Color data: Foundation.(unknown context at $181152d90).JSONDecoderImpl
-        //decoder.singleValueContainer().decode()
-        throw CustomError("Unable to decode Color data: \(String(describing: decoder))")
-        //        self.init(string: string)!
-    }
-    
-    // for coding
-    func encode(to encoder: Encoder) throws {
-        try pretty.encode(to: encoder)
-    }
-    
-    
     // MARK: Parsing and Rendering
     static var namedColorMap: [String:String] {[
         "AliceBlue":"#F0F8FF",
@@ -277,16 +209,22 @@ public extension KuColor {
             // Separate into components by removing commas and spaces
             let components = source.components(separatedBy: ",")
             if (components.count != 4 && includesAlpha) || (components.count != 3 && !includesAlpha) {
-                debug("Invalid color: \(string)", level: .DEBUG)
+                main {
+                    debug("Invalid color string: \(string)", level: DebugLevel.colorLogging ? .DEBUG : .SILENT)
+                }
                 return nil
             }
             
             let componentValues = components.map { Double($0) }
+
+//            debug("Strings: \(components)\nDoubles: \(componentValues)")
             
             // make sure cast succeeded
             for value in componentValues {
                 guard value != nil else {
-                    print("Could not parse rgb value: \(string)")
+                    main {
+                        debug("Could not parse rgb value: \(string)", level: DebugLevel.colorLogging ? .DEBUG : .SILENT)
+                    }
                     return nil
                 }
             }
@@ -294,16 +232,18 @@ public extension KuColor {
             // Create the color
             var alphaValue:Double = 1.0
             if includesAlpha {
+                // componentValues[3] may be nil if Double(stringValue) didn't parse properly
                 guard let componentAlpha = componentValues[3] else {
                     main {
-                        debug("Could not parse alpha value: \(components[3])", level: !DebugLevel.colorLogging ? .SILENT : .DEBUG)
+                        debug("Could not parse alpha value: \(components[3]) (original string: \(string)", level: !DebugLevel.colorLogging ? .SILENT : .DEBUG)
                     }
                     return nil
                 }
-                alphaValue = Double(componentAlpha)
+//                debug("Component Alpha: \(componentAlpha)")
+                alphaValue = componentAlpha
             }
             // determine if 0—1 double value or a 255 number
-            if components[0].contains(".") {
+            if components[0].contains(".") || components[1].contains(".") || components[2].contains(".") {
                 self.init(red: Double(componentValues[0]!),
                           green: Double(componentValues[1]!),
                           blue: Double(componentValues[2]!),
@@ -313,6 +253,13 @@ public extension KuColor {
                           green: Double(componentValues[1]!)/255.0,
                           blue: Double(componentValues[2]!)/255.0,
                           alpha: alphaValue)
+            }
+            // convert to dynamic/symantic representation if this is one
+            for (dynamic, fixed) in Self.fixedMap {
+                if fixed.pretty == self.pretty {
+                    self = dynamic as! Self
+                    return
+                }
             }
         } else {
             // check for HTML/CSS named colors.
@@ -334,10 +281,12 @@ public extension KuColor {
     var cssString: String {
         let components = rgbaComponents
         let eightBits = "\(Int(components.red*255.0)),\(Int(components.green*255.0)),\(Int(components.blue*255.0))"
-        let opaque = components.alpha == 1.0
-        let alphaComponentString = opaque ? "" : ",\(components.alpha)"
+        // the way alpha is stored, "0.2" could end up "0.20000000298023224" which is wrong.  This does mean that cannot have more than 7 digits of precision, but typically alpha values will be nice numbers so probably okay in practice.
+        let fixedAlpha = Double(components.alpha).precision(7)
+//        debug("Alpha: \(components.alpha) -> fixed:\(fixedAlpha)")
+        let opaque = fixedAlpha == 1.0
+        let alphaComponentString = opaque ? "" : ",\(fixedAlpha)"
         let string = "rgb\(opaque ? "" : "a")(\(eightBits)\(alphaComponentString))"
-        //print(string)
         return string
     }
     
@@ -361,21 +310,13 @@ public extension KuColor {
     }
     /// Returns the "nicest" version of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha..
     var pretty: String {
-        guard alphaComponent == 1.0 else {
+        // this will fail if we're using an extended color space...
+        // alpha, convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space).  Also make sure that the color accuracy works with 256 mapping otherwise we want to use css for the increased fidelity.
+        guard alphaComponent == 1.0, let hexColor = Self(string: hexString), hexColor.cssString == self.cssString else {
+//            debug("Unable to convert color \(self) to hexString \(self.hexString) and back.", level: .ERROR)
             return cssString
         }
-        guard let hexColor = Self(string: hexString) else {
-            // unable to initialize color from the converted hexString.  This should not be possible.
-            debug("Unable to convert color \(self) to hexString \(self.hexString) and back.", level: .ERROR)
-            return cssString
-        }
-        // convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space)
-        guard hexColor == self else {
-            main {
-                debug("This color can't be represented as hex: \(self) != \(hexColor) (saving as: \(cssString))", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
-            }
-            return cssString
-        }
+        // if we get here, we have a simple hex string.  If this happens to be a named color, use that instead of the hex for clarity and human readability.
         // we should show named color names if available
         if let colorName = Self.namedColorMap.firstKey(for: hexString) {
             return colorName
@@ -388,12 +329,17 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+#Preview("Coding") {
+    CodingDemoView()
+}
+
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Named Colors") {
     NamedColorsListTestView()
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Pretty Text") {
     ColorPrettyTestView()
 }

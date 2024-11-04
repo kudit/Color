@@ -4,7 +4,7 @@ import SwiftUI
 import Color
 #endif
 
-@available(iOS 15.0, macOS 12, tvOS 17, watchOS 8, *)
+@available(iOS 15, macOS 12, tvOS 17, watchOS 8, *)
 @main
 struct MyApp: App {
     var body: some Scene {

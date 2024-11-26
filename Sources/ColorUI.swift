@@ -320,6 +320,10 @@ public struct SimpleDemoRainbowView: View {
                 }
                 .foregroundColor(color)
             }
+            if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+                Text("Color Background")
+                    .testBackground()
+            }
         }
     }
 }
@@ -451,6 +455,7 @@ public extension View {
 /// For KuditConnect for testing
 @available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
 public extension View {
+    @MainActor
     func testBackground() -> some View {
         ZStack {
             Color.clear

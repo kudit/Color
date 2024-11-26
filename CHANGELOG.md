@@ -6,6 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.2.2 11/26/2024 Added test color background and added @MainActor to `testBackground` to silence warnings on SwiftPlaygrounds.  Updated Compatibility framework version.
+
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.2.1 11/4/2024 Updated Compatibility framework since there were watchOS and Linux errors.
 
 v1.2.0 11/4/2024 Extracted Codable code to separate file.  Added codable tests to test conversion to/from JSON and data formats.  Switched around so pretty string is the preferable encoding method.  Addressed conformance warnings.  Removed Identifiable conformance automatically (if needed, use `id: \.pretty`).  Fixed pretty coding so that it doesn't have rounding issues (will round to 8 decimal places).  Added symantic colors and backport and storage as special named colors.  Updated so ANY KuColor can be compared to another KuColor no matter the type.

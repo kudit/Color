@@ -9,17 +9,39 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.2.2"
+    static let version: Version = "1.3.0"
 }
-import Compatibility
+@_exported import Compatibility
 
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
 
 public extension CGFloat {
     static let zero = CGFloat(0.0)
     static let one = CGFloat(1.0)
-    static let fixedAlpha = CGFloat(0.999998)
+    static let dynamicAlpha = CGFloat(0.999998)
     static let symanticAlpha = CGFloat(0.999997)
+    
+    /// Snaps the value to the range 0.0—1.0
+    var snapped: CGFloat {
+        if self < 0.0 { return 0.0 }
+        if self > 1.0 { return 1.0 }
+        return self
+    }
+    
+    /// Scales a 0.0->1.0 value to an integer between 0 and 255
+    var hexIntSnapped: Int {
+        return Int((Double(self.snapped) * .eightBits).rounded())
+    }
+}
+
+public extension Double {
+    static let eightBits = 255.0
+}
+
+public extension UInt64 {
+    var eightBitToDouble: Double {
+        return Double(self) / .eightBits
+    }
 }
 
 // Does conform to Identifiable but can't add for older iOS    @available(iOS 13, tvOS 13, watchOS 6, *)
@@ -93,90 +115,103 @@ public extension KuColor {
         self = color
     }
     
+    /// Returns `self` as the `UnderlyingColorType` (typically for internal usage).
     var underlying: UnderlyingColorType {
         return self as! UnderlyingColorType // should always succeed...
     }
 
-    // Fallback color values for platforms that don't support colors or dynamic colors
+    /// Returns `self` as `Self` type  (Used for initializing colors when converting a fixed version match to the dynamic/symantic variant and for conditional logic when dealing with dynamic/symantic colors.)
+    var symantic: Self? {
+        // convert to dynamic/symantic representation if this is one
+        for (symantic, fixed) in Self.fixedMap {
+            if fixed.stringValue == self.stringValue {
+                return symantic as? Self
+            }
+        }
+        return nil
+    }
+    
+    // Fallback color values for platforms that don't support colors or symantic colors
     static var blackFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .one) }
-    static var blueFixed: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .fixedAlpha) }
-    static var brownFixed: Self { Self(red: 162/255, green: 132/255, blue: 94/255, alpha: .fixedAlpha) }
+    static var blueFixed: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .dynamicAlpha) }
+    static var brownFixed: Self { Self(red: 162/255, green: 132/255, blue: 94/255, alpha: .dynamicAlpha) }
     static var clearFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .zero)}
-    static var cyanFixed: Self { Self(red: 50/255, green: 173/255, blue: 230/255, alpha: .fixedAlpha)}
-    static var grayFixed: Self { Self(red: 142/255, green: 142/255, blue: 147/255, alpha: .fixedAlpha)}
-    static var lightGrayFixed: Self { Self(red: 203/255, green: 203/255, blue: 204/255, alpha: .fixedAlpha)}
-    static var darkGrayFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .fixedAlpha)}
-    static var greenFixed: Self { Self(red: 52/255, green: 199/255, blue: 89/255, alpha: .fixedAlpha)}
-    static var indigoFixed: Self { Self(red: 88/255, green: 86/255, blue: 214/255, alpha: .fixedAlpha)}
-    static var magentaFixed: Self { Self(red: .one, green: .zero, blue: .one, alpha: .fixedAlpha)}
-    static var mintFixed: Self { Self(red: .zero, green: 199/255, blue: 190/255, alpha: .fixedAlpha)}
-    static var orangeFixed: Self { Self(red: .one, green: 149/255, blue: .zero, alpha: .fixedAlpha)}
-    static var pinkFixed: Self { Self(red: .one, green: 45/255, blue: 85/255, alpha: .fixedAlpha)}
-    static var purpleFixed: Self { Self(red: 175/255, green: 82/255, blue: 222/255, alpha: .fixedAlpha)}
-    static var redFixed: Self { Self(red: .one, green: 59/255, blue: 48/255, alpha: .fixedAlpha)}
-    static var tealFixed: Self { Self(red: 48/255, green: 176/255, blue: 199/255, alpha: .fixedAlpha)}
+    static var cyanFixed: Self { Self(red: 50/255, green: 173/255, blue: 230/255, alpha: .dynamicAlpha)}
+    static var grayFixed: Self { Self(red: 142/255, green: 142/255, blue: 147/255, alpha: .dynamicAlpha)}
+    static var lightGrayFixed: Self { Self(red: 203/255, green: 203/255, blue: 204/255, alpha: .dynamicAlpha)}
+    static var darkGrayFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .dynamicAlpha)}
+    static var greenFixed: Self { Self(red: 52/255, green: 199/255, blue: 89/255, alpha: .dynamicAlpha)}
+    static var indigoFixed: Self { Self(red: 88/255, green: 86/255, blue: 214/255, alpha: .dynamicAlpha)}
+    static var magentaFixed: Self { Self(red: .one, green: .zero, blue: .one, alpha: .dynamicAlpha)}
+    static var mintFixed: Self { Self(red: .zero, green: 199/255, blue: 190/255, alpha: .dynamicAlpha)}
+    static var orangeFixed: Self { Self(red: .one, green: 149/255, blue: .zero, alpha: .dynamicAlpha)}
+    static var pinkFixed: Self { Self(red: .one, green: 45/255, blue: 85/255, alpha: .dynamicAlpha)}
+    static var purpleFixed: Self { Self(red: 175/255, green: 82/255, blue: 222/255, alpha: .dynamicAlpha)}
+    static var redFixed: Self { Self(red: .one, green: 59/255, blue: 48/255, alpha: .dynamicAlpha)}
+    static var tealFixed: Self { Self(red: 48/255, green: 176/255, blue: 199/255, alpha: .dynamicAlpha)}
     static var whiteFixed: Self { Self(red: .one, green: .one, blue: .one, alpha: .one)}
-    static var yellowFixed: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .fixedAlpha)}
+    static var yellowFixed: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .dynamicAlpha)}
     static var accentColorFixed: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .symanticAlpha) }
     static var primaryFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .symanticAlpha)}
     static var secondaryFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .symanticAlpha)}
     static var backgroundFixed: Self { Self(red: .one, green: .one, blue: .one, alpha: .symanticAlpha)}
 
     static var fixedMap: [UnderlyingColorType: Self] {
-        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-            [
-                Self.black: .blackFixed,
-                Self.blue: .blueFixed,
-                Self.brown: .brownFixed,
-                Self.clear: .clearFixed,
-                Self.cyan: .cyanFixed,
-                Self.gray: .grayFixed,
-                Self.lightGray: .lightGrayFixed,
-                Self.darkGray: .darkGrayFixed,
-                Self.green: .greenFixed,
-                Self.indigo: .indigoFixed,
-                Self.mint: .mintFixed,
-                Self.orange: .orangeFixed,
-                Self.pink: .pinkFixed,
-                Self.purple: .purpleFixed,
-                Self.red: .redFixed,
-                Self.teal: .tealFixed,
-                Self.white: .whiteFixed,
-                Self.yellow: .yellowFixed,
-                Self.accentColor: .accentColorFixed,
-                Self.primary: .primaryFixed,
-                Self.secondary: .secondaryFixed,
-                Self.background: .backgroundFixed,
-            ]
-        } else {
-            // Fallback on earlier versions
-            [
-                Self.black: .blackFixed,
-                Self.blue: .blueFixed,
-                Self.brownBackport: .brownFixed,
-                Self.clear: .clearFixed,
-                Self.cyanBackport: .cyanFixed,
-                Self.gray: .grayFixed,
-                Self.lightGray: .lightGrayFixed,
-                Self.darkGray: .darkGrayFixed,
-                Self.green: .greenFixed,
-                Self.indigoBackport: .indigoFixed,
-                Self.mintBackport: .mintFixed,
-                Self.orange: .orangeFixed,
-                Self.pink: .pinkFixed,
-                Self.purple: .purpleFixed,
-                Self.red: .redFixed,
-                Self.tealBackport: .tealFixed,
-                Self.white: .whiteFixed,
-                Self.yellow: .yellowFixed,
-                Self.accentColorBackport: .accentColorFixed,
-                Self.primaryBackport: .primaryFixed,
-                Self.secondaryBackport: .secondaryFixed,
-                Self.background: .backgroundFixed,
-            ]
-        }
+        [
+            Self.black: .blackFixed,
+            Self.blue: .blueFixed,
+            Self.brownBackport: .brownFixed,
+            Self.clear: .clearFixed,
+            Self.cyanBackport: .cyanFixed,
+            Self.gray: .grayFixed,
+            Self.lightGray: .lightGrayFixed,
+            Self.darkGray: .darkGrayFixed,
+            Self.green: .greenFixed,
+            Self.indigoBackport: .indigoFixed,
+            Self.magenta: .magentaFixed,
+            Self.mintBackport: .mintFixed,
+            Self.orange: .orangeFixed,
+            Self.pink: .pinkFixed,
+            Self.purple: .purpleFixed,
+            Self.red: .redFixed,
+            Self.tealBackport: .tealFixed,
+            Self.white: .whiteFixed,
+            Self.yellow: .yellowFixed,
+            Self.accentColorBackport: .accentColorFixed,
+            Self.primaryBackport: .primaryFixed,
+            Self.secondaryBackport: .secondaryFixed,
+            Self.background: .backgroundFixed,
+        ]
     }
     
+    static var swiftNameMap: [UnderlyingColorType: String] {
+        [
+            Self.black: "black",
+            Self.blue: "blue",
+            Self.brownBackport: "brown",
+            Self.clear: "clear",
+            Self.cyanBackport: "cyan",
+            Self.gray: "gray",
+            Self.lightGray: "lightGray",
+            Self.darkGray: "darkGray",
+            Self.green: "green",
+            Self.indigoBackport: "indigo",
+            Self.magenta: "magenta",
+            Self.mintBackport: "mint",
+            Self.orange: "orange",
+            Self.pink: "pink",
+            Self.purple: "purple",
+            Self.red: "red",
+            Self.tealBackport: "teal",
+            Self.white: "white",
+            Self.yellow: "yellow",
+            Self.accentColorBackport: "accentColor",
+            Self.primaryBackport: "primary",
+            Self.secondaryBackport: "secondary",
+            Self.background: "background",
+        ]
+    }
+
     static var brownBackport: UnderlyingColorType {
         if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
             Self.brown
@@ -570,7 +605,7 @@ extension Color: KuColor, Codable {
         // check for built-in dynamic and symantic colors that need fixed replacements (if this already is a fixed replacement, don't delegate)
         if let fixedReplacement = Color.fixedMap[self], fixedReplacement != self {
             // system values can't get RGBA so use the fixed versions instead
-//            debug("Mapped value to fixed replacement version.")
+//            debug("Mapped value for \(debugString) to fixed replacement version.")
             return fixedReplacement.getRed(red, green: green, blue: blue, alpha: alpha)
         }
         
@@ -724,8 +759,6 @@ public struct Color: KuColor, Codable {
 #endif
 
 public extension KuColor {
-    // TODO: Standardize 255
-    //    static let eightBitDenominator = 255.0
     // MARK: Get RGB Colors
     /// returns the RGBA values of the color if it can be determined and black-clear if not.
     var rgbaComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -807,7 +840,7 @@ public extension KuColor {
 // adding equatable conformance for colors
 public func ==(lhs: some KuColor, rhs: some KuColor) -> Bool {
     debug("Equating lhs to rhs using pretty")
-    return lhs.pretty == rhs.pretty // this is so dynamic/semantic values work as well by comparing >1 alpha values.
+    return lhs.stringValue == rhs.stringValue // this is so dynamic/semantic values work as well by comparing >1 alpha values.
 }
 public extension KuColor {
     // Converted values for testing/comparing
@@ -822,6 +855,24 @@ public extension KuColor {
     var cssConverted: Self {
         return Self(string: self.cssString, defaultColor: Self(red: 0, green: 0, blue: 0, alpha: 0))
     }
+#if canImport(CoreGraphics)
+    init(cgColor: CGColor) {
+        guard let components = cgColor.components, components.count == 4 else {
+            debug("Unable to get components from CGColor")
+            self = Self.black as! Self
+            return
+        }
+        let redComponent = components[0]
+        let greenComponent = components[1]
+        let blueComponent = components[2]
+        let alphaComponent = components[3]
+        self.init(red: redComponent, green: greenComponent, blue: blueComponent, alpha: alphaComponent)
+    }
+    @available(iOS 13, tvOS 13, watchOS 6, *)
+    var cgColorBackport: CGColor {
+        return CGColor(red: redComponent, green: greenComponent, blue: blueComponent, alpha: alphaComponent)
+    }
+#endif
 }
 
 public extension KuColor {
@@ -841,6 +892,11 @@ public extension KuColor {
     private func _colorWithBrightness(multiplier: CGFloat) -> Self {
         var hsb = hsbComponents
         //print("HSB: \(hsb)")
+        // make sure alpha component is not preserved if this is a dynamic color
+        var alphaComponent = self.alphaComponent
+        if symantic != nil {
+            alphaComponent = 1
+        }
         hsb.brightness *= multiplier
         return Self(hue: hsb.hue, saturation: hsb.saturation, brightness: hsb.brightness, alpha: alphaComponent)
     }

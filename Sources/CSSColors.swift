@@ -6,7 +6,6 @@
 //
 
 // MARK: - CSS/String intialization
-import Compatibility
 
 public extension KuColor {
     // MARK: Parsing and Rendering
@@ -162,50 +161,72 @@ public extension KuColor {
      */
     init?(string: String) {
         var source = string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let includesAlpha = source.contains("rgba(")
         if source.contains("#") {
             // decode hex
             source = source.removing(characters: "#").uppercased()
             
-            // String should be 6 or 3 characters
-            guard source.count == 6 || source.count == 3 else {
+            var shortForm = false
+            // convert to long-form 8 or 4 character for scanning
+            switch source.count {
+            case 8:
+                // all good
+                break
+            case 6:
+                // add alpha FF
+                source += "FF"
+            case 3:
+                source += "F"
+                fallthrough
+            case 4:
+                shortForm = true
+            default:
+                // String should be 6 or 3 (or 8 or 4) characters
                 main {
                     debug("Unknown color string: \(string)", level: DebugLevel.colorLogging ? .WARNING : .SILENT)
                 }
                 return nil
             }
-            let shortForm = (source.count == 3)
             
-            // Separate into r, g, b substrings
+            // Separate into r, g, b, a substrings
             var range = NSRange(location: 0, length: (shortForm == true ? 1 : 2))
             var rString = source.substring(with: range)
             range.location += range.length
             var gString = source.substring(with: range)
             range.location += range.length
             var bString = source.substring(with: range)
-            
+            range.location += range.length
+            var aString = source.substring(with: range)
+
             // expand short form
             if shortForm {
                 rString += rString
                 gString += gString
                 bString += bString
+                aString += aString
             }
             
             // Scan values
             var r: UInt64 = 0
             var g: UInt64 = 0
             var b: UInt64 = 0
+            var a: UInt64 = 0
             Scanner(string: rString).scanHexInt64(&r)
             Scanner(string: gString).scanHexInt64(&g)
             Scanner(string: bString).scanHexInt64(&b)
-            
-            self.init(red: Double(r)/255.0, green: Double(g)/255.0, blue: Double(b)/255.0, alpha: 1.0)
-        } else if source.contains("rgba(") || source.contains("rgb(") {
+            Scanner(string: aString).scanHexInt64(&a)
+
+            self.init(
+                red: r.eightBitToDouble,
+                green: g.eightBitToDouble,
+                blue: b.eightBitToDouble,
+                alpha: a.eightBitToDouble)
+        } else if includesAlpha || source.contains("rgb(") {
             // css rgb color style
-            let includesAlpha = string.contains("rgba(")
             
             // decode RGBA
             source = source.replacingOccurrences(of: ["rgba(","rgb(",")"," "], with: "")
-            
+                        
             // Separate into components by removing commas and spaces
             let components = source.components(separatedBy: ",")
             if (components.count != 4 && includesAlpha) || (components.count != 3 && !includesAlpha) {
@@ -216,8 +237,6 @@ public extension KuColor {
             }
             
             let componentValues = components.map { Double($0) }
-
-//            debug("Strings: \(components)\nDoubles: \(componentValues)")
             
             // make sure cast succeeded
             for value in componentValues {
@@ -239,7 +258,7 @@ public extension KuColor {
                     }
                     return nil
                 }
-//                debug("Component Alpha: \(componentAlpha)")
+                //                debug("Component Alpha: \(componentAlpha)")
                 alphaValue = componentAlpha
             }
             // determine if 0—1 double value or a 255 number
@@ -249,17 +268,14 @@ public extension KuColor {
                           blue: Double(componentValues[2]!),
                           alpha: alphaValue)
             } else {
-                self.init(red: Double(componentValues[0]!)/255.0,
-                          green: Double(componentValues[1]!)/255.0,
-                          blue: Double(componentValues[2]!)/255.0,
+                self.init(red: Double(componentValues[0]!) / .eightBits,
+                          green: Double(componentValues[1]!) / .eightBits,
+                          blue: Double(componentValues[2]!) / .eightBits,
                           alpha: alphaValue)
             }
             // convert to dynamic/symantic representation if this is one
-            for (dynamic, fixed) in Self.fixedMap {
-                if fixed.pretty == self.pretty {
-                    self = dynamic as! Self
-                    return
-                }
+            if let symantic {
+                self = symantic
             }
         } else {
             // check for HTML/CSS named colors.
@@ -277,42 +293,64 @@ public extension KuColor {
         }
     }
     
-    /// Returns a string in the form rgba(R,G,B,A) (should be URL safe as well). Will drop the alpha if it is 1.0 and do rgb(R,G,B) in double numbers from 0 to 255.
-    var cssString: String {
-        let components = rgbaComponents
-        let eightBits = "\(Int(components.red*255.0)),\(Int(components.green*255.0)),\(Int(components.blue*255.0))"
+    static func cssFrom(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> String {
+        // Round each value so that we don't end up flooring values when converting to Int.
+        let eightBits = "\(red.hexIntSnapped),\(green.hexIntSnapped),\(blue.hexIntSnapped)"
         // the way alpha is stored, "0.2" could end up "0.20000000298023224" which is wrong.  This does mean that cannot have more than 7 digits of precision, but typically alpha values will be nice numbers so probably okay in practice.
-        let fixedAlpha = Double(components.alpha).precision(7)
-//        debug("Alpha: \(components.alpha) -> fixed:\(fixedAlpha)")
+        let fixedAlpha = Double(alpha).precision(7)
+        //        debug("Alpha: \(components.alpha) -> fixed:\(fixedAlpha)")
         let opaque = fixedAlpha == 1.0
         let alphaComponentString = opaque ? "" : ",\(fixedAlpha)"
         let string = "rgb\(opaque ? "" : "a")(\(eightBits)\(alphaComponentString))"
         return string
     }
     
+    /// Returns a string in the form rgba(R,G,B,A) (should be URL safe as well). Will drop the alpha if it is 1.0 and do rgb(R,G,B) in double numbers from 0 to 255.
+    var cssString: String {
+        let components = rgbaComponents
+        return Self.cssFrom(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
+    }
+    
+    static func hexFrom(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> String {
+        // Get component values and fix ranges if needed since extended color space isn't suppported.
+        // Convert to hex string between 0x00 and 0xFF (rounding so very close to FF goes to FF rather than being floored to FE).
+        let r = red.hexIntSnapped
+        let g = green.hexIntSnapped
+        let b = blue.hexIntSnapped
+        let a = alpha.hexIntSnapped
+
+        // Convert to hex string between 0x00 and 0xFF (rounding so very close to FF goes to FF rather than being floored to FE).
+        if a == 255 {
+            return String(format: "#%02X%02X%02X", r, g, b)
+        } else {
+            return String(format: "#%02X%02X%02X%02X", r, g, b, a)
+        }
+    }
+    
     var hexString: String {
         let components = rgbaComponents
-        var r = components.red
-        var g = components.green
-        var b = components.blue
-        
-        // Fix range if needed
-        if r < 0.0 { r = 0.0 }
-        if g < 0.0 { g = 0.0 }
-        if b < 0.0 { b = 0.0 }
-        
-        if r > 1.0 { r = 1.0 }
-        if g > 1.0 { g = 1.0 }
-        if b > 1.0 { b = 1.0 }
-        
-        // Convert to hex string between 0x00 and 0xFF (rounding so very close to FF goes to FF rather than being floored to FE).
-        return String(format: "#%02X%02X%02X", Int(round(r * 255.0)), Int(round(g * 255.0)), Int(round(b * 255.0)))
+        return Self.hexFrom(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
     }
-    /// Returns the "nicest" version of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha..
+    
+    @available(*, deprecated, renamed: "stringValue")
+    /// Returns the "nicest" version of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.
+    /// DEPRECATED: Use `stringValue` if we need the nicest text encoding or `debugString` if we want to output something for display/debug instead.
     var pretty: String {
-        // this will fail if we're using an extended color space...
+        return stringValue
+    }
+
+    /// Returns a simplified string representation of the color.  If this is a SwiftUI color, will use the SwiftUI constant with a period prefix.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  NOTE: This is not meant for encoding.  If you need to encode this, use `stringValue`.
+    var debugString: String {
+        if let name = Self.swiftNameMap[self.underlying] {
+            return "." + name
+        }
+        return stringValue
+    }
+    
+    /// Returns the "nicest" string encoding of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  SwiftUI colors use their fixed values.
+    var stringValue: String {
         // alpha, convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space).  Also make sure that the color accuracy works with 256 mapping otherwise we want to use css for the increased fidelity.
-        guard alphaComponent == 1.0, let hexColor = Self(string: hexString), hexColor.cssString == self.cssString else {
+        guard let hexColor = Self(string: hexString), hexColor.cssString == self.cssString else {
 //            debug("Unable to convert color \(self) to hexString \(self.hexString) and back.", level: .ERROR)
             return cssString
         }

@@ -5,7 +5,6 @@
 //  Created by Ben Ku on 11/3/24.
 //
 
-import Compatibility
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -79,7 +78,17 @@ public extension KuColor {
     
     // for coding
     func encode(to encoder: Encoder) throws {
-        try pretty.encode(to: encoder)
+        try stringValue.encode(to: encoder)
+    }
+}
+
+@available(iOS 13, tvOS 13, watchOS 6, *)
+extension CloudStorage where Value: KuColor {
+    public init(wrappedValue: Value, _ key: String) {
+        self.init(
+            keyName: key,
+            syncGet: { Value(string: CloudStorageSync.shared.string(for: key), defaultColor: wrappedValue) },
+            syncSet: { newValue in CloudStorageSync.shared.set(newValue.stringValue, for: key) })
     }
 }
 
@@ -119,7 +128,7 @@ public struct CodingDemoView: View {
     }
     public var colorStrings: [String] {
         guard let colors = try? [String](fromJSON: jsonString) else {
-            return [Color].dotColors.map(\.pretty)
+            return [Color].dotColors.map(\.stringValue)
         }
         return colors
     }
@@ -129,7 +138,7 @@ public struct CodingDemoView: View {
                 .disableSmartQuotes() // prevent converting quotes to "smart" quotes which breaks parsing.
             Text("RoundTripped: \(colors.asJSON())")
             ForEach(colors, id: \.self) { color in
-                PrettySwatch(source: color.pretty)
+                PrettySwatch(source: color.stringValue)
             }
 //            ForEach(colorStrings, id: \.self) { colorString in
 //                PrettySwatch(source: colorString)

@@ -15,30 +15,15 @@
 public extension Array where Element: KuColor, Element.UnderlyingColorType == Element {
     /// ROYGBIV(purple for violet)
     static var rainbow: [Element] {
-        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-            [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
-        } else {
-            // Fallback on earlier versions
-            [.red, .orange, .yellow, .green, .blue, .indigoFixed, .purple]
-        }
+        return [.red, .orange, .yellow, .green, .blue, .indigoBackport, .purple]
     }
     /// Primary colors, secondary colors, tertiary colors
     static var prioritized: [Element] {
-        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-            [.red, .green, .blue, .yellow, .magenta, .cyan, .orange, .purple, .mint, .indigo, .brown]
-        } else {
-            // Fallback on earlier versions
-            [.red, .green, .blue, .yellow, .magenta, .cyanFixed, .orange, .purple, .mintFixed, .indigoFixed, .brownFixed]
-        }
+        return [.red, .green, .blue, .yellow, .magenta, .cyanBackport, .orange, .purple, .mintBackport, .indigoBackport, .brownBackport]
     }
     /// All Apple named colors (adds cyan and magenta)
     static var named: [Element] {
-        if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-            [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .magenta, .pink, .brown, .clear, .gray, .black, .white]
-        } else {
-            // Fallback on earlier versions
-            [.red, .orange, .yellow, .green, .mintFixed, .tealFixed, .cyanFixed, .blue, .indigoFixed, .purple, .magenta, .pink, .brownFixed, .clear, .gray, .black, .white]
-        }
+        return [.red, .orange, .yellow, .green, .mintBackport, .tealBackport, .cyanBackport, .blue, .indigoBackport, .purple, .magenta, .pink, .brownBackport, .clear, .gray, .black, .white]
     }
     /// Grayscale colors from white to black
     static var grayscale: [Element] { [.white, .lightGray, .gray, .darkGray, .black] }

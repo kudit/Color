@@ -7,24 +7,29 @@
 
 #if canImport(SwiftUI)
 import SwiftUI
-import Compatibility
 
 @available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
-struct Swatch: View {
-    var color: Color
-    var label: String?
-    init(color: Color, logo: Bool = false) {
-        let label = logo ? nil : color.hexString
-        self.init(color: color, label: label)
+public struct Swatch: View {
+    public var color: Color
+    public var label: String?
+    public var width: CGFloat
+    public var height: CGFloat
+    public var cornerRadius: CGFloat
+    public init(color: Color, logo: Bool = false, width: CGFloat = 50, height: CGFloat = 50, cornerRadius: CGFloat = 15) {
+        let label = logo ? nil : color.debugString
+        self.init(color: color, label: label, width: width, height: height, cornerRadius: cornerRadius)
     }
-    init(color: Color, label: String?) {
+    public init(color: Color, label: String?, width: CGFloat = 50, height: CGFloat = 50, cornerRadius: CGFloat = 15) {
         self.color = color
         self.label = label
+        self.width = width
+        self.height = height
+        self.cornerRadius = cornerRadius
     }
     
-    var body: some View {
-        RoundedRectangle(cornerRadius: 15)
-            .frame(width: 50, height: 50)
+    public var body: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .frame(width: width, height: height)
             .foregroundColor(color)
             .backport.overlay {
                 ZStack {
@@ -85,9 +90,9 @@ struct ColorTintingTestView: View {
                 }.font(.caption)
                 ForEach([Color].rainbow, id: \.self) { color in
                     HStack {
-                        Swatch(color: color.lighterColor)
+                        Swatch(color: color.lighterColor, label: color.lighterColor.hexString)
                         Swatch(color: color)
-                        Swatch(color: color.darkerColor)
+                        Swatch(color: color.darkerColor, label: color.darkerColor.hexString)
                     }
                 }
             }
@@ -247,12 +252,12 @@ struct PrettySwatch: View {
                 HStack {
                     Spacer()
                     if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-                        Text(color.pretty)
+                        Text(color.stringValue)
                             .font(.title.monospaced())
                             .bold()
                     } else {
                         // Fallback on earlier versions
-                        Text(color.pretty)
+                        Text(color.stringValue)
                             .font(Font.custom("San Francisco", size: 28).monospacedDigit())
                             .bold()
                     }
@@ -264,6 +269,7 @@ struct PrettySwatch: View {
     }
 }
 
+//@available(iOS 13, tvOS 13, watchOS 6, *)
 //#Preview("Pretty Swatch") {
 //    PrettySwatch(source: "red")
 //        .frame(height: 100)
@@ -273,18 +279,20 @@ struct PrettySwatch: View {
 @available(iOS 13, tvOS 13, watchOS 6, *)
 struct ColorPrettyTestView: View {
     let prettyTests = [
-        "red",
-        "rgb(0, 255, 0)",
-        "rgba(0, 0, 255, 1)",
-        "rgba(255, 0, 128, 0.5)",
+        "rEd",
+        "rGb(0, 255, 0)",
+        "rgBa(0, 0, 255, 1)",
+        "rgba(255,  0, 128, 0.5)",
         "#ff0",
         "#c0ffee",
-        "rgba(0,281,0,1)", // expanded colorspace
+        "rgba(0,281,   0,1)", // expanded colorspace
         "white",
-        "black",
+        "junkname",
+        "#f006",
+        "#00f30076",
     ]
     public var body: some View {
-        VStack {
+        List {
             Text("Pretty output of various colors.")
                 .font(.title)
             ForEach(prettyTests, id: \.self) { test in
@@ -301,22 +309,71 @@ struct ColorPrettyTestView: View {
         }
     }
 }
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Pretty") {
     ColorPrettyTestView()
 }
 
 @available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+public extension CGColor {
+    /// Returns a string in the form rgba(R,G,B,A) (should be URL safe as well). Will drop the alpha if it is 1.0 and do rgb(R,G,B) in double numbers from 0 to 255.
+    var cssString: String {
+        guard let components = components, components.count == 4 else {
+            debug("Unable to convert CGColor: \(self) to CSS string")
+            return "UNKNOWN"
+        }
+        return Color.cssFrom(red: components[0], green: components[1], blue: components[2], alpha: components[3])
+    }
+    var hexString: String {
+        guard let components = components, components.count == 4 else {
+            debug("Unable to convert CGColor: \(self) to CSS string")
+            return "UNKNOWN"
+        }
+        return Color.hexFrom(red: components[0], green: components[1], blue: components[2], alpha: components[3])
+    }
+}
+
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 public struct SimpleDemoRainbowView: View {
+    @Environment(\.self) var environment
+    @CloudStorage("chosenColor") var chosenColor = Color.accentColor
+    @State var cgColor = CGColor(red: 1, green: 0, blue: 1, alpha: 1)
+    
+    func setColor(_ color: Color) {
+        chosenColor = color
+        cgColor = color.cgColorBackport
+    }
+    
     public init() {}
     public var body: some View {
+        let binding = Binding<CGColor>(get: {
+            return cgColor
+        }, set: {
+            cgColor = $0
+            chosenColor = Color(cgColor: cgColor)
+        })
         List {
-            ForEach([Color].rainbow, id: \.pretty) { color in
+            #if !os(tvOS) && !os(watchOS)
+            if #available(iOS 14, macOS 11, *) {
+                Section {
+                    ColorPicker("Saved Color", selection: binding)
+                    Swatch(color: Color(cgColor: cgColor), width: 300)
+                    Text("Saved: \(Color(cgColor: cgColor).stringValue)")
+                    Button("Set accent color") {
+                        setColor(.accentColorBackport)
+                    }
+                }
+            }
+            #endif
+            ForEach([Color].named, id: \.stringValue) { color in
                 HStack {
                     Image(systemName: "globe")
                         .imageScale(.large)
-                    Text("Compatibility v\(Compatibility.version)")
+                    Text("Compatibility v\(Compatibility.version) \(color.stringValue)")
                     Spacer()
+                }
+                .backport.onTapGesture {
+                    setColor(color)
                 }
                 .foregroundColor(color)
             }
@@ -324,6 +381,9 @@ public struct SimpleDemoRainbowView: View {
                 Text("Color Background")
                     .testBackground()
             }
+        }
+        .onAppear {
+            cgColor = chosenColor.cgColorBackport
         }
     }
 }
@@ -339,11 +399,9 @@ public struct ColorTestView: View {
     @State private var tabSelection = 0
     public var body: some View {
         TabView(selection: $tabSelection.animation()) {
-            ContrastingTestView()
-                .border(Color.accentColorAsset, width: 5)
-                .colorTestWrapper()
+            SimpleDemoRainbowView()
                 .tabItem {
-                    Text("Contrast")
+                    Text("Demo")
                 }
                 .tag(0)
             ColorsetsTestView()
@@ -377,9 +435,11 @@ public struct ColorTestView: View {
                     Text("Tinting")
                 }
                 .tag(5)
-            SimpleDemoRainbowView()
+            ContrastingTestView()
+                .border(Color.accentColorAsset, width: 5)
+                .colorTestWrapper()
                 .tabItem {
-                    Text("Demo")
+                    Text("Contrast")
                 }
                 .tag(6)
             CodingDemoView()

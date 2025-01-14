@@ -6,6 +6,17 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+TODO: Parse css colors like this: Also, the following values define equal color: rgb(0,0,255) and rgb(0%,0%,100%).
+https://www.w3schools.com/cssref/css_colors_legal.php
+Add HSL color parsing (not for storing): hsl(hue, saturation, lightness)
+#p1 {background-color: hsl(120, 100%, 50%);}   /* green */
+#p2 {background-color: hsl(120, 100%, 75%);}   /* light green */
+#p3 {background-color: hsl(120, 100%, 25%);}   /* dark green */
+hsla(hue, saturation, lightness, alpha)
+
+v1.3.1 1/14/2025 Fixed warning with compatibility.  Moved tapGesture to compatibility.
+
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.3.0 12/10/2024 Made Swatch views public for use in public apps and added optional parameters for styling.  Default label to new `.debugString` version of color.  Updated Compatibility so passes Swift 6 tests.  Created `.stringValue` for compatibility with `@CloudStorage` and `.debugString` for simplified debug output in Swatches.  Deprecated `.pretty` to ensure we use the proper value (`.stringValue` for encoding and `.debugString` for display).  Ensured that lighter/darker versions of symantic colors have a solid alpha.  Added `.symantic` value to get the symantic `Self` version of a color and to test whether the current color is in fact a dynamic/symantic color.  Fixed bug where "rgba" had to be the correct case to work with alpha ("rgBa" was failing but "rGb" was passing due to typo).  Also simplified and standardized logic so only performed once.  Updated colorsets so they use backport versions instead of fixed versions on older versions.  Renamed `fixedAlpha` to `dynamicAlpha` to better describe value.  Fixed issue with css colors getting floored instead of rounded due to Float<->Double conversion issues.  `@_exported` Compatibility to save on import calls.  Standardized algorithm for snapping to Hex so float double issues are rounded away.  Any use of Color should want to import Compatibility too.  Added missing `magenta` to fixed map.  Standardized `255` as `.eightBits`.  `hexString` now exports 8 digit hex if there is an alpha value.  Added support for 8 character and 4 character hex (where the 4th/7th&8th characters are the alpha value).  Added color picker test and conversion to/from CGColor (which is what the color test wants).
 
 v1.2.2 11/26/2024 Added test color background and added @MainActor to `testBackground` to silence warnings on SwiftPlaygrounds.  Updated Compatibility framework version.

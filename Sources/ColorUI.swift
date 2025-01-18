@@ -171,46 +171,52 @@ struct ContrastingTestView: View {
 
 @available(iOS 13, tvOS 13, watchOS 6, *)
 struct NamedColorsListTestView: View {
+    @State private var alphaSort = false
     public var body: some View {
         List {
-//            ForEach(Color.namedColorMap.sorted(by: <), id: \.key) { key, value in
-            ForEach(Color.namedColorMap.sorted { lhs, rhs in
-                // TODO: Migrate this to allowing comparisons of colors to create a color line.
-                let left = Color(string: lhs.value, defaultColor: .gray)
-                let right = Color(string: rhs.value, defaultColor: .gray)
-                guard left.hueComponent == right.hueComponent else {
-                    return left.hueComponent < right.hueComponent
-                }
-                guard left.saturationComponent == right.saturationComponent else {
-                    return left.saturationComponent < right.saturationComponent
-                }
-                return left.brightnessComponent < right.brightnessComponent
-            }, id: \.key) { key, value in
-                let color = Color(string: key, defaultColor: .black)
-                HStack {
-                    Text(key)
-                    Spacer()
-                    Text(value)
-                }
-                .padding()
-                .backport.background {
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(color)
-                }
-                .backport.foregroundStyle(color.contrastingColor)
-                .closure { view in
-#if !os(tvOS) && !os(watchOS)
-                    Group {
-                        if #available(iOS 15, macOS 13, *) {
-                            view.listRowSeparator(.hidden)
-                        } else {
-                            view
-                        }
+            Section {
+                //            ForEach(Color.namedColorMap.sorted(by: <), id: \.key) { key, value in
+                ForEach(Color.namedColorMap.sorted { lhs, rhs in
+                    if alphaSort {
+                        return lhs.key < rhs.key
+                    } else {
+                        let left = Color(string: lhs.value, defaultColor: .gray)
+                        let right = Color(string: rhs.value, defaultColor: .gray)
+                        return left < right
                     }
+                }, id: \.key) { key, value in
+                    let color = Color(string: key, defaultColor: .black)
+                    HStack {
+                        Text(key)
+                        Spacer()
+                        Text(value)
+                    }
+                    .padding()
+                    .backport.background {
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(color)
+                    }
+                    .backport.foregroundStyle(color.contrastingColor)
+                    .closure { view in
+#if !os(tvOS) && !os(watchOS)
+                        Group {
+                            if #available(iOS 15, macOS 13, *) {
+                                view.listRowSeparator(.hidden)
+                            } else {
+                                view
+                            }
+                        }
 #else
-                    view
+                        view
 #endif
+                    }
                 }
+            } header: {
+                Picker("Sort", selection: $alphaSort.animation()) {
+                    Text("Hue").tag(false)
+                    Text("Alphabetical").tag(true)
+                }
+                .pickerStyle(.segmentedBackport)
             }
         }
         .listStyle(.plain)

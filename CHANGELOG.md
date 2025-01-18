@@ -6,14 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-TODO: Parse css colors like this: Also, the following values define equal color: rgb(0,0,255) and rgb(0%,0%,100%).
-https://www.w3schools.com/cssref/css_colors_legal.php
-Add HSL color parsing (not for storing): hsl(hue, saturation, lightness)
-#p1 {background-color: hsl(120, 100%, 50%);}   /* green */
-#p2 {background-color: hsl(120, 100%, 75%);}   /* light green */
-#p3 {background-color: hsl(120, 100%, 25%);}   /* dark green */
-hsla(hue, saturation, lightness, alpha)
+v1.3.2 1/17/2025 Added "Lime" to prioritized colors (not pink since way too close.  Replaced cyan with teal for better distinction from mint).  Re-ordered prioritized colors.  Added control to sort named colors alphabetically or by hue.  Colorsets can be sorted by hue by doing `.sorted()`.
 
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.3.1 1/14/2025 Fixed warning with compatibility.  Moved tapGesture to compatibility.
 
 *PASSES ALL SWIFTPACKAGEINDEX TESTS*
@@ -67,8 +62,14 @@ Known issues that need to be addressed.
 ## Roadmap:
 Planned features and anticipated API changes.  If you want to contribute, this is a great place to start.
 - [ ] Add CGColor wrappers so CGColor can conform to KuColor.
-- [ ] Add ability to search named colors view and sort by Name or by Hue.
-    - [ ] Add toggle to color tests CSS Named Colors list to order Alphabetically vs ordering .sort { $0.hue < $1.hue }
+    TODO: Parse css colors like this: Also, the following values define equal color: rgb(0,0,255) and rgb(0%,0%,100%).
+    https://www.w3schools.com/cssref/css_colors_legal.php
+    Add HSL color parsing (not for storing): hsl(hue, saturation, lightness)
+    #p1 {background-color: hsl(120, 100%, 50%);}   /* green */
+    #p2 {background-color: hsl(120, 100%, 75%);}   /* light green */
+    #p3 {background-color: hsl(120, 100%, 25%);}   /* dark green */
+    hsla(hue, saturation, lightness, alpha)
+- [ ] Add ability to search named colors.
 
 ## Proposals:
 This is where proposals can be discussed for potential movement to the roadmap.

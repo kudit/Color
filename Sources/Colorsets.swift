@@ -19,7 +19,7 @@ public extension Array where Element: KuColor, Element.UnderlyingColorType == El
     }
     /// Primary colors, secondary colors, tertiary colors
     static var prioritized: [Element] {
-        return [.red, .green, .blue, .yellow, .magenta, .cyanBackport, .orange, .purple, .mintBackport, .indigoBackport, .brownBackport]
+        return [.red, .green, .blue, .yellow, .tealBackport, .magenta, .orange, .mintBackport, .purple, .dotYellowGreen, .indigoBackport, .brownBackport]//.sorted()
     }
     /// All Apple named colors (adds cyan and magenta)
     static var named: [Element] {
@@ -86,7 +86,6 @@ public extension Array where Element: KuColor, Element.UnderlyingColorType == El
 //        map { $0.id }.joined(separator: ",")
 //    }
 //}
-
 public extension KuColor {
     /// For quickly initializing a color using the nth item in a colorset.  Extension of KuColor so we can type . and start initializing for autocomplete.
     static func nth(_ nth: Int, of colorset: [Self]) -> Self {

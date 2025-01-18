@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.1"
+    static let version: Version = "1.3.2"
 }
 @_exported import Compatibility
 
@@ -45,7 +45,7 @@ public extension UInt64 {
 }
 
 // Does conform to Identifiable but can't add for older iOS    @available(iOS 13, tvOS 13, watchOS 6, *)
-// Conforms to Codable but can't add here due to Xcode 16 warnings.  Must add anywhere we conform to KuColor.
+// Conforms to Codable and Comparable but can't add here due to Xcode 16 warnings.  Must add anywhere we conform to KuColor.
 public protocol KuColor: Equatable, Hashable {
     /// usually 0-1 double values but SwiftUI supports extended colors beyond 0-1 for extended color spaces.
     init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
@@ -839,9 +839,27 @@ public extension KuColor {
 
 // adding equatable conformance for colors
 public func ==(lhs: some KuColor, rhs: some KuColor) -> Bool {
-    debug("Equating lhs to rhs using pretty")
+    debug("Equating lhs to rhs using stringValue")
     return lhs.stringValue == rhs.stringValue // this is so dynamic/semantic values work as well by comparing >1 alpha values.
 }
+// default hue comparison of colors
+/// by default, colors are compared based off of hue, then saturation, then brightness to allow for creating sorted colors.
+public func <(lhs: some KuColor, rhs: some KuColor) -> Bool {
+    guard lhs.hueComponent == rhs.hueComponent else {
+        return lhs.hueComponent < rhs.hueComponent
+    }
+    guard lhs.saturationComponent == rhs.saturationComponent else {
+        return lhs.saturationComponent < rhs.saturationComponent
+    }
+    return lhs.brightnessComponent < rhs.brightnessComponent
+}
+public extension Array where Element: KuColor, Element.UnderlyingColorType == Element {
+    /// Default comparison sort since we can't have KuColor conform to Comparable.
+    func sorted() -> Self {
+        return self.sorted(by: <)
+    }
+}
+
 public extension KuColor {
     // Converted values for testing/comparing
     var hsvConverted: Self {

@@ -6,6 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.3 3/10/2025 Updated package format for Swift Playgrounds v4.6.  Updated Compatibility.
+
+*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.3.2 1/17/2025 Added "Lime" to prioritized colors (not pink since way too close.  Replaced cyan with teal for better distinction from mint).  Re-ordered prioritized colors.  Added control to sort named colors alphabetically or by hue.  Colorsets can be sorted by hue by doing `.sorted()`.
 
 *PASSES ALL SWIFTPACKAGEINDEX TESTS*

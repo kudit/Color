@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.5 5/14/2025 Updated Compatibility to fixed Linux build visibility issues.  Conditionalized CloudStorage since unavailable on Linux.
+
 v1.3.4 5/14/2025 Updated Compatibility.  Package works again in Swift Playgrounds!
 
 v1.3.3 3/10/2025 Updated package format for Swift Playgrounds v4.6.  Updated Compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS (including Swift 5.8 - 6.1!)*

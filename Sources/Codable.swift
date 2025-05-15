@@ -82,6 +82,7 @@ public extension KuColor {
     }
 }
 
+#if compiler(>=5.9) && canImport(Combine)
 @available(iOS 13, tvOS 13, watchOS 6, *)
 extension CloudStorage where Value: KuColor {
     public init(wrappedValue: Value, _ key: String) {
@@ -91,6 +92,7 @@ extension CloudStorage where Value: KuColor {
             syncSet: { newValue in CloudStorageSync.shared.set(newValue.stringValue, for: key) })
     }
 }
+#endif
 
 #if canImport(SwiftUI)
 import SwiftUI

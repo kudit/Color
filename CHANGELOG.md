@@ -6,40 +6,33 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-v1.3.3 3/10/2025 Updated package format for Swift Playgrounds v4.6.  Updated Compatibility.
+v1.3.4 5/14/2025 Updated Compatibility.  Package works again in Swift Playgrounds!
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
+v1.3.3 3/10/2025 Updated package format for Swift Playgrounds v4.6.  Updated Compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS (including Swift 5.8 - 6.1!)*
+
 v1.3.2 1/17/2025 Added "Lime" to prioritized colors (not pink since way too close.  Replaced cyan with teal for better distinction from mint).  Re-ordered prioritized colors.  Added control to sort named colors alphabetically or by hue.  Colorsets can be sorted by hue by doing `.sorted()`.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
-v1.3.1 1/14/2025 Fixed warning with compatibility.  Moved tapGesture to compatibility.
+v1.3.1 1/14/2025 Fixed warning with compatibility.  Moved tapGesture to compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
-v1.3.0 12/10/2024 Made Swatch views public for use in public apps and added optional parameters for styling.  Default label to new `.debugString` version of color.  Updated Compatibility so passes Swift 6 tests.  Created `.stringValue` for compatibility with `@CloudStorage` and `.debugString` for simplified debug output in Swatches.  Deprecated `.pretty` to ensure we use the proper value (`.stringValue` for encoding and `.debugString` for display).  Ensured that lighter/darker versions of symantic colors have a solid alpha.  Added `.symantic` value to get the symantic `Self` version of a color and to test whether the current color is in fact a dynamic/symantic color.  Fixed bug where "rgba" had to be the correct case to work with alpha ("rgBa" was failing but "rGb" was passing due to typo).  Also simplified and standardized logic so only performed once.  Updated colorsets so they use backport versions instead of fixed versions on older versions.  Renamed `fixedAlpha` to `dynamicAlpha` to better describe value.  Fixed issue with css colors getting floored instead of rounded due to Float<->Double conversion issues.  `@_exported` Compatibility to save on import calls.  Standardized algorithm for snapping to Hex so float double issues are rounded away.  Any use of Color should want to import Compatibility too.  Added missing `magenta` to fixed map.  Standardized `255` as `.eightBits`.  `hexString` now exports 8 digit hex if there is an alpha value.  Added support for 8 character and 4 character hex (where the 4th/7th&8th characters are the alpha value).  Added color picker test and conversion to/from CGColor (which is what the color test wants).
+v1.3.0 12/10/2024 Made Swatch views public for use in public apps and added optional parameters for styling.  Default label to new `.debugString` version of color.  Updated Compatibility so passes Swift 6 tests.  Created `.stringValue` for compatibility with `@CloudStorage` and `.debugString` for simplified debug output in Swatches.  Deprecated `.pretty` to ensure we use the proper value (`.stringValue` for encoding and `.debugString` for display).  Ensured that lighter/darker versions of symantic colors have a solid alpha.  Added `.symantic` value to get the symantic `Self` version of a color and to test whether the current color is in fact a dynamic/symantic color.  Fixed bug where "rgba" had to be the correct case to work with alpha ("rgBa" was failing but "rGb" was passing due to typo).  Also simplified and standardized logic so only performed once.  Updated colorsets so they use backport versions instead of fixed versions on older versions.  Renamed `fixedAlpha` to `dynamicAlpha` to better describe value.  Fixed issue with css colors getting floored instead of rounded due to Float<->Double conversion issues.  `@_exported` Compatibility to save on import calls.  Standardized algorithm for snapping to Hex so float double issues are rounded away.  Any use of Color should want to import Compatibility too.  Added missing `magenta` to fixed map.  Standardized `255` as `.eightBits`.  `hexString` now exports 8 digit hex if there is an alpha value.  Added support for 8 character and 4 character hex (where the 4th/7th&8th characters are the alpha value).  Added color picker test and conversion to/from CGColor (which is what the color test wants). *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
 v1.2.2 11/26/2024 Added test color background and added @MainActor to `testBackground` to silence warnings on SwiftPlaygrounds.  Updated Compatibility framework version.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
-v1.2.1 11/4/2024 Updated Compatibility framework since there were watchOS and Linux errors.
+v1.2.1 11/4/2024 Updated Compatibility framework since there were watchOS and Linux errors. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
 v1.2.0 11/4/2024 Extracted Codable code to separate file.  Added codable tests to test conversion to/from JSON and data formats.  Switched around so pretty string is the preferable encoding method.  Addressed conformance warnings.  Removed Identifiable conformance automatically (if needed, use `id: \.pretty`).  Fixed pretty coding so that it doesn't have rounding issues (will round to 8 decimal places).  Added symantic colors and backport and storage as special named colors.  Updated so ANY KuColor can be compared to another KuColor no matter the type.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.4 10/14/2024 Updated Compatibility to good version 1.3.15
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.3 8/19/2024 Updated so that we can use `.accentColorAsset` to fix issues with tvOS using color.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
 v1.1.2 8/14/2024 Updated Compatibility version to 1.3.6.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*
-v1.1.1 8/13/2024 Updated Compatibility version to 1.3.5.
+v1.1.1 8/13/2024 Updated Compatibility version to 1.3.5. *PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*
 
 v1.1.0 8/13/2024 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Changed from `.fixedBrown` to `.brownFixed` so only have to add suffix.  Also added `.brownBackport` to get the native `.brown` or `.brownFixed` if not available. (same for all the iOS 15 color additions).  Backed up the compatibility versions so can use in Device so that we don't have to re-code a `Color(hex:)` function.  Fixed background tint in icon to match better.
 
-*PASSES ALL SWIFTPACKAGEINDEX TESTS*
-v1.0.6 7/16/2024 Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor.
+v1.0.6 7/16/2024 Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
 v1.0.5 7/15/2024 Not sure why SwiftPackageIndex wasn't picking up the update to Compatibility to fix Linux and watchOS support... Forced package minimum to Compatibility 1.0.17 to hopefully fix this.  May also have been Package.resolved was using the older version (test in Swift Playgrounds in the future to make sure Package.resolved gets updated).  Moved Demo color list to ColorUI rather than in MyApp so can be used elsewhere and exposes the Compatibility version.
 

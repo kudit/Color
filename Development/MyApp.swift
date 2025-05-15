@@ -13,7 +13,7 @@ struct MyApp: App {
                 .safeAreaInset(edge: .bottom) {
                     HStack {
                         Spacer()
-                        Text("Color v\(Color.version) © 2024 Kudit LLC").font(.caption) // (C\(Compatibility.version))
+                        Text("Color v\(Color.version) © \(String(Date.now.year)) Kudit LLC").font(.caption) // (C\(Compatibility.version))
                     }.padding()
                 }
         }

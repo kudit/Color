@@ -29,5 +29,16 @@ struct MyApp: App {
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }
+@available(iOS 13, tvOS 13, watchOS 6, *)
+#Preview("Rainbow Colors") {
+    RadialStack {
+        Group {
+            ForEach([Color].rainbow, id: \.self) { color in
+                Circle().fill(color)
+            }
+        }
+        .frame(size: 80)
+    }
+}
 #endif
 #endif

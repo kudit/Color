@@ -13,6 +13,10 @@
 //    static var grayscale: [UnderlyingColorType] { [Self].grayscale }
 //}
 public extension Array where Element: KuColor, Element.UnderlyingColorType == Element {
+    /// 6 colors in logo order
+    static var apple: [Element] {
+        return [.green, .yellow, .orange, .red, .purple, .blue]
+    }
     /// ROYGBIV(purple for violet)
     static var rainbow: [Element] {
         return [.red, .orange, .yellow, .green, .blue, .indigoBackport, .purple]
@@ -70,9 +74,11 @@ public extension Array where Element: KuColor, Element.UnderlyingColorType == El
     static var dotColors: [Element] { [.dotBlue, .dotBrown, .dotGreen, .dotGreenPavement, .dotOrange, .dotPink, .dotPurple, .dotRed, .dotRedPavement, .dotYellow, .dotYellowGreen] }
     
     /// A list of named color sets for debugging/picking.  Can't just use dictionary since we care about the order.
+    // TODO: Change to OrderedDictionary?
     static var namedColorsets: [(String, [Element])] {
         return [
-            ("Rainbow", [Element].rainbow),
+            ("Apple", .apple),
+            ("Rainbow", .rainbow),
             ("Prioritized", .prioritized),
             ("Named", .named),
             ("Grayscale", .grayscale),

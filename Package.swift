@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.3.5"
+let version = "1.3.6"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -105,10 +105,10 @@ targets += [
 			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
 		],
 		path: "Development"
-//		,exclude: ["Device.xcodeproj/*"]
+		,exclude: ["Resources"]
 		// Include test app resources.
 		,resources: [
-			.process("Resources")
+//			.process("Resources")
 		]
 //		,swiftSettings: [
 //			.enableUpcomingFeature("BareSlashRegexLiterals")
@@ -132,7 +132,7 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-		.package(url: "https://github.com/kudit/Compatibility", "1.9.0"..<"2.0.0"),
+		.package(url: "https://github.com/kudit/Compatibility", "1.10.13"..<"2.0.0"),
 	],
 	targets: targets
 )

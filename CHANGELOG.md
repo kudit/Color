@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.6 6/11/2025 Added Apple colorset.  Updated Compatibility (hopefully fixing WASM and Android failures).  Fixed icon "unassigned child" issues by excluding the Resources folder from the playground and processing and adding a PlaygroundsAssets asset for the icon.  Note: Swift Playgrounds previews only work on MyApp file.  Module source and Compatibility files do not display due to Playgrounds bug.
+
 v1.3.5 5/14/2025 Updated Compatibility to fixed Linux build visibility issues.  Conditionalized CloudStorage since unavailable on Linux.
 
 v1.3.4 5/14/2025 Updated Compatibility.  Package works again in Swift Playgrounds!
@@ -51,6 +53,7 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 
 ## Bugs to fix:
 Known issues that need to be addressed.
+- [ ] Contrasting Tests don't seem to work for dark colors on tvOS.
 - [ ] Figure out why CloudStorage isn't really working for persistence...
 - [ ] Previews in Xcode fail for Color.swift and CSSColors.swift but work fine in ColorUI.swift and when previewed in Playgrounds.
 - [ ] Get UI working on tvOS (looks okay but paging doesn't seem to work in tvOS).

@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.7"
+    static let version: Version = "1.3.8"
 }
 @_exported import Compatibility
 
@@ -346,7 +346,7 @@ public extension KuColor {
     }
 }
 
-extension KuColor where UnderlyingColorType == Self {
+public extension KuColor where UnderlyingColorType == Self {
     static var defaultDarkModeBackgroundFixed: Self {
         #if os(macOS)
         let color = "#272A24" // close, but not quite...

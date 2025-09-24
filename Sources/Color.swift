@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.6"
+    static let version: Version = "1.3.7"
 }
 @_exported import Compatibility
 
@@ -346,6 +346,17 @@ public extension KuColor {
     }
 }
 
+extension KuColor where UnderlyingColorType == Self {
+    static var defaultDarkModeBackgroundFixed: Self {
+        #if os(macOS)
+        let color = "#272A24" // close, but not quite...
+        #else
+        let color = "#1C1C1E"
+        #endif
+        return .init(string: color, defaultColor: .black )
+    }
+}
+
 #if os(macOS) // NOT available in macCataylst canImport(AppKit)
 // TODO: Make this a protocol for adding this automatically for NSColor and UIColor without duplicating code.
 import AppKit
@@ -354,7 +365,12 @@ import AppKit
 //        self.pretty
 //    }
 //}
-extension NSColor: KuColor, Codable {
+#if canImport(Foundation) && compiler(>=6.0)
+extension NSColor: KuColor, @retroactive Codable {}
+#else
+extension NSColor: KuColor, Codable {}
+#endif
+extension NSColor {
     public func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool {
         // Make sure doesn't crash with extended colorspace colors.
         if let color = self.usingColorSpace(.extendedSRGB), color != self { // no change
@@ -434,7 +450,13 @@ import UIKit
 //        self.pretty
 //    }
 //}
-extension UIColor: KuColor, Codable {
+#if canImport(Foundation) && compiler(>=6.0)
+//extension UIColor: @retroactive Decodable {}
+//extension UIColor: @retroactive Encodable {}
+#else
+extension UIColor: @retroactive Codable {}
+#endif
+extension UIColor: KuColor {
     public static var indigo: UIColor {
 #if !os(watchOS)
         if #available(iOS 13, macOS 12, tvOS 13, *) {
@@ -544,7 +566,9 @@ public extension KuColor {
     typealias DefaultColorType = Color
 }
 @available(iOS 13, tvOS 13, watchOS 6, *)
-extension Color: KuColor, Codable {
+extension Color: @retroactive Codable {}
+@available(iOS 13, tvOS 13, watchOS 6, *)
+extension Color: KuColor {
     // available in UIColor but not SwiftUI.Color
     public static var lightGray: Color {
         return .lightGrayFixed

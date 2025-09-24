@@ -6,7 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-v1.3.6 6/11/2025 Added Apple colorset.  Updated Compatibility (hopefully fixing WASM and Android failures).  Fixed icon "unassigned child" issues by excluding the Resources folder from the playground and processing and adding a PlaygroundsAssets asset for the icon.  Note: Swift Playgrounds previews only work on MyApp file.  Module source and Compatibility files do not display due to Playgrounds bug.
+v1.3.7 9/24/2025 Added `defaultDarkModeBackgroundFixed` color since this is definitely not `black`.  Updated Compatibility.  Fixed unassigned icon warning.
+
+v1.3.6 6/11/2025 Added Apple colorset.  Updated Compatibility (hopefully fixing WASM and Android failures).  Fixed icon "unassigned child" issues by excluding the Resources folder from the playground and processing and adding a PlaygroundsAssets asset for the icon.  Note: Swift Playgrounds previews only work on MyApp file.  Module source and Compatibility files do not display due to Playgrounds bug.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks!**
 
 v1.3.5 5/14/2025 Updated Compatibility to fixed Linux build visibility issues.  Conditionalized CloudStorage since unavailable on Linux.
 

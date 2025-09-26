@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.8"
+    static let version: Version = "1.3.9"
 }
 @_exported import Compatibility
 
@@ -450,11 +450,10 @@ import UIKit
 //        self.pretty
 //    }
 //}
-#if canImport(Foundation) && compiler(>=6.0)
-//extension UIColor: @retroactive Decodable {}
-//extension UIColor: @retroactive Encodable {}
-#else
+#if compiler(>=6.0)
 extension UIColor: @retroactive Codable {}
+#else
+extension UIColor: Codable {}
 #endif
 extension UIColor: KuColor {
     public static var indigo: UIColor {
@@ -565,8 +564,13 @@ public extension KuColor {
     @available(iOS 13, tvOS 13, watchOS 6, *)
     typealias DefaultColorType = Color
 }
+#if compiler(>=6.0)
 @available(iOS 13, tvOS 13, watchOS 6, *)
 extension Color: @retroactive Codable {}
+#else
+@available(iOS 13, tvOS 13, watchOS 6, *)
+extension Color: Codable {}
+#endif
 @available(iOS 13, tvOS 13, watchOS 6, *)
 extension Color: KuColor {
     // available in UIColor but not SwiftUI.Color

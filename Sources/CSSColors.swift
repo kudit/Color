@@ -286,7 +286,7 @@ public extension KuColor {
                     return
                 }
             }
-            main {
+            main { // due to colorLogging
                 debug("Unknown named color: \(string)", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
             }
             return nil

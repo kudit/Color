@@ -5,13 +5,24 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
-extension DebugLevel {
+#if (os(WASM) || os(WASI))
+/// Backport of main that does nothing since threads are not supported on WASM
+public func main(_ closure: @Sendable @escaping () -> Void) {
+    closure()
+}
+#endif
+
+
+
+public extension DebugLevel {
     /// Set this to `true` to log failed color parsing notices when returning `nil`
+#if !(os(WASM) || os(WASI))
     @MainActor
-    public static var colorLogging = false
+#endif
+    static var colorLogging = false
 
     @available(iOS 13, tvOS 13, watchOS 6, *)
-    public var color: any KuColor {
+    var color: any KuColor {
         let type = KuColor.DefaultColorType.self
         switch self {
         case .OFF:

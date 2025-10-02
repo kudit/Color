@@ -5,7 +5,7 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && !(os(WASM) || os(WASI))
 import SwiftUI
 
 @available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)

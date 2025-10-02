@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.10 10/1/2025 Fixed AppIconWatch being included in Watch App.  Updated Compatibility to 1.11.18 (which passes all checks).
+
 v1.3.9 9/26/2025 Added fixes for missing @retroactive in Swift < 6.0.  Updated Compatibility.
 
 v1.3.8 9/24/2025 Made `defaultDarkModeBackgroundFixed` public.

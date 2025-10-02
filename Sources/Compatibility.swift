@@ -5,14 +5,6 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
-#if (os(WASM) || os(WASI))
-/// Backport of main that does nothing since threads are not supported on WASM
-public func main(_ closure: @Sendable @escaping () -> Void) {
-    closure()
-}
-#endif
-
-
 
 public extension DebugLevel {
     /// Set this to `true` to log failed color parsing notices when returning `nil`

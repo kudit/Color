@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.12 10/2/2025 Updated Compatibility.  Moved `main {}` backport to Compatibility.
+
 v1.3.11 10/2/2025 Added some @MainActor checks for WASM.  Added `main {}` backport for WASM so we don't have to modify code.
 
 v1.3.10 10/1/2025 Fixed AppIconWatch being included in Watch App.  Updated Compatibility to 1.11.18 (which passes all checks).

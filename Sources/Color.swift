@@ -9,11 +9,16 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.13"
+    static let version: Version = "1.3.14"
 }
 @_exported import Compatibility
 
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
+
+// have to define context for WASM 6.2 and we suspect CGFloat is unavailable in 6.2 due to errors.
+#if ((os(WASM) || os(WASI)) || !canImport(CoreGraphics)) && swift(>=6.2)
+public typealias CGFloat = Double
+#endif
 
 public extension CGFloat {
     static let zero = CGFloat(0.0)
@@ -287,7 +292,11 @@ public extension KuColor {
         
         let angle = (hue >= 360 ? 0 : hue)
         let sector = angle / 60 // Sector
+        #if !(os(WASM) || os(WASI))
         let i = floor(sector)
+        #else
+        let i = Math.floor(sector)
+        #endif
         let f = sector - i // Factorial part of h
         
         let p = brightness * (1 - saturation)

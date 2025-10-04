@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.15 10/3/2025 Math.floor() isn't available in WASM so created a backport.
+
 v1.3.14 10/3/2025 Fixed some issue with determining contextual base for WASM by typealiasing CGFloat and Math.floor().
 
 v1.3.13 10/3/2025 Updated Compatibility.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks (except WASM Swift 6.2 beta)!**

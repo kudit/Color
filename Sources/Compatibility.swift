@@ -5,6 +5,12 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
+#if (os(WASM) || os(WASI))
+public func floor(_ value: Double) -> Int {
+    return value >= 0 ? Int(value) : Int(value) - 1
+}
+#endif
+
 
 public extension DebugLevel {
     /// Set this to `true` to log failed color parsing notices when returning `nil`

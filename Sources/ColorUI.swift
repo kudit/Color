@@ -453,6 +453,13 @@ public struct ColorTestView: View {
                     Text("Coding")
                 }
                 .tag(7)
+            if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+                ClosureTestView()
+                    .tabItem {
+                        Text("Closure")
+                    }
+                    .tag(8)
+            }
         }
         .backport.tabViewStyle(.page)
 //        .tabViewStyle(.page(indexDisplayMode: .never))

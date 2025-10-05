@@ -6,7 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-v1.3.17 10/4/2025 Updated Compatibility.
+v1.3.18 10/4/2025 Updated Compatibility.  Added check for WASILibc for floor.
+
+v1.3.17 10/4/2025 Updated Compatibility (but actually forgot to!).
 
 v1.3.16 10/4/2025 Backport for CGFloat was using `swift()` instead of `compiler()` version checking.  Updated Compatibility.  ** BROKEN because of Compatibility **
 

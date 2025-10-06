@@ -6,7 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-v1.3.18 10/4/2025 Updated Compatibility.  Added check for WASILibc for floor.
+v1.3.19 10/6/2025 Updated Compatibility.  Fixed some issues where NSRange and others aren't available in WASM.  Not sure why this isn't caught in the tests below.  Excluded Codable code from WASM or if Foundation isn't available.
+
+v1.3.18 10/4/2025 Updated Compatibility.  Added check for WASILibc for floor.  ** Passes all Swift Package Index Checks! **
 
 v1.3.17 10/4/2025 Updated Compatibility (but actually forgot to!).
 

@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.18"
+    static let version: Version = "1.3.19"
 }
 @_exported import Compatibility
 
@@ -293,7 +293,7 @@ public extension KuColor {
         let angle = (hue >= 360 ? 0 : hue)
         let sector = angle / 60 // Sector
         let i = floor(sector)
-        let f = sector - i // Factorial part of h
+        let f = sector - i.doubleValue // Factorial part of h // need doubleValue for WASM
         
         let p = brightness * (1 - saturation)
         let q = brightness * (1 - (saturation * f))

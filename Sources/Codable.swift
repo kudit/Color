@@ -11,7 +11,7 @@ import UIKit
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
-
+#if canImport(Foundation) && !(os(WASM) || os(WASI))
 public extension KuColor {
     // MARK: Codable
     // Kudit Codable conformance (simplified) based off of
@@ -153,4 +153,5 @@ public struct CodingDemoView: View {
 #Preview("Coding") {
     CodingDemoView()
 }
+#endif
 #endif

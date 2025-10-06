@@ -187,7 +187,8 @@ public extension KuColor {
                 }
                 return nil
             }
-            
+
+            #if canImport(Foundation)
             // Separate into r, g, b, a substrings
             var range = NSRange(location: 0, length: (shortForm == true ? 1 : 2))
             var rString = source.substring(with: range)
@@ -215,7 +216,37 @@ public extension KuColor {
             Scanner(string: gString).scanHexInt64(&g)
             Scanner(string: bString).scanHexInt64(&b)
             Scanner(string: aString).scanHexInt64(&a)
-
+            #else
+            // Separate into r, g, b, a substrings
+            var position = 0
+            var stride = (shortForm == true ? 1 : 2)
+            var value: UInt64?
+            var chunks = [UInt64]()
+            for character in source {
+                guard let scanned = UInt64(String(character), radix: 16) else {
+                    return nil
+                }
+                if let existingValue = value {
+                    value = existingValue * 16 + scanned
+                    chunks += [value!]
+                    value = nil
+                } else {
+                    if shortForm {
+                        chunks += [scanned * 16 + scanned]
+                    } else {
+                        value = scanned
+                    }
+                }
+            }
+            if chunks.count == 3 {
+                chunks += [255]
+            }
+            var r: UInt64 = chunks[0]
+            var g: UInt64 = chunks[1]
+            var b: UInt64 = chunks[2]
+            var a: UInt64 = chunks[3]
+            #endif
+            
             self.init(
                 red: r.eightBitToDouble,
                 green: g.eightBitToDouble,
@@ -297,7 +328,11 @@ public extension KuColor {
         // Round each value so that we don't end up flooring values when converting to Int.
         let eightBits = "\(red.hexIntSnapped),\(green.hexIntSnapped),\(blue.hexIntSnapped)"
         // the way alpha is stored, "0.2" could end up "0.20000000298023224" which is wrong.  This does mean that cannot have more than 7 digits of precision, but typically alpha values will be nice numbers so probably okay in practice.
+#if canImport(FoundationX)
         let fixedAlpha = Double(alpha).precision(7)
+#else
+        let fixedAlpha = Double(alpha) * 7
+#endif
         //        debug("Alpha: \(components.alpha) -> fixed:\(fixedAlpha)")
         let opaque = fixedAlpha == 1.0
         let alphaComponentString = opaque ? "" : ",\(fixedAlpha)"
@@ -311,6 +346,7 @@ public extension KuColor {
         return Self.cssFrom(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
     }
     
+    /// This will return a string in the form #RRGGBB or #RRGGBBAA where this is the hexadecimal representation.  Note that this isn't necessarily a perfect match as this may round values and values outside 0-255 range will be snapped to that range.
     static func hexFrom(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> String {
         // Get component values and fix ranges if needed since extended color space isn't suppported.
         // Convert to hex string between 0x00 and 0xFF (rounding so very close to FF goes to FF rather than being floored to FE).
@@ -320,11 +356,27 @@ public extension KuColor {
         let a = alpha.hexIntSnapped
 
         // Convert to hex string between 0x00 and 0xFF (rounding so very close to FF goes to FF rather than being floored to FE).
+#if canImport(Foundation)
         if a == 255 {
             return String(format: "#%02X%02X%02X", r, g, b)
         } else {
             return String(format: "#%02X%02X%02X%02X", r, g, b, a)
         }
+#else
+        // TODO: Make this part of compatibility as Int.hexString?  What if larger than 255?
+        func hexString(_ i: Int) -> String {
+            var i = i
+            if i > 255 {
+                i = 255 // snap to max value
+            }
+            return (i < 16 ? "0" : "") + String(i, radix: 16, uppercase: true)
+        }
+        var string = "#" + hexString(r) + hexString(g) + hexString(b)
+        if a != 255 {
+            string += hexString(a)
+        }
+        return string
+#endif
     }
     
     var hexString: String {

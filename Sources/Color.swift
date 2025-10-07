@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.3.19"
+    static let version: Version = "1.3.20"
 }
 @_exported import Compatibility
 
@@ -17,8 +17,21 @@ public extension Color {
 
 // have to define context for WASM 6.2 and we suspect CGFloat is unavailable in 6.2 due to errors.
 #if ((os(WASM) || os(WASI)) || !canImport(CoreGraphics)) && compiler(>=6.2)
+// Make sure CGFloat is available
 public typealias CGFloat = Double
 #endif
+
+// DoubleConvertible may not be implemented in CGFloat if the architecture doesn't use a Double underlying.  This guarantees that CGFloat conforms.
+#if canImport(Foundation) && compiler(>=6.0)
+extension CGFloat: @retroactive DoubleConvertible {}
+#else
+extension CGFloat: DoubleConvertible {}
+#endif
+public extension CGFloat {
+    var doubleValue: Double {
+        return Double(self)
+    }
+}
 
 public extension CGFloat {
     static let zero = CGFloat(0.0)

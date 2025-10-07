@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.3.21 10/7/2025 Updated Compatibility.
+
 v1.3.20 10/6/2025 Added explicit conformance of `CGFloat` to `DoubleConvertible` since it may not conform to `BinaryFloatingPoint` on all platforms.
 
 v1.3.19 10/6/2025 Updated Compatibility.  Fixed some issues where NSRange and others aren't available in WASM.  Not sure why this isn't caught in the tests below.  Excluded Codable code from WASM or if Foundation isn't available.

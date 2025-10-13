@@ -6,7 +6,9 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
-v1.3.22 10/7/2025 Addressed existential issue for DebugLevel color.
+v1.4.0 10/13/2025 Updated Compatibility (moving `floor()` backport to Compatibility).
+
+v1.3.22 10/7/2025 Addressed existential issue for DebugLevel color.  ** Passes all Swift Package Index Checks! **
 
 v1.3.21 10/7/2025 Updated Compatibility.
 

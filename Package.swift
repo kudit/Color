@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.3.22"
+let version = "1.4.0"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.

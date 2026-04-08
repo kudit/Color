@@ -328,11 +328,7 @@ public extension KuColor {
         // Round each value so that we don't end up flooring values when converting to Int.
         let eightBits = "\(red.hexIntSnapped),\(green.hexIntSnapped),\(blue.hexIntSnapped)"
         // the way alpha is stored, "0.2" could end up "0.20000000298023224" which is wrong.  This does mean that cannot have more than 7 digits of precision, but typically alpha values will be nice numbers so probably okay in practice.
-#if canImport(FoundationX)
         let fixedAlpha = Double(alpha).precision(7)
-#else
-        let fixedAlpha = Double(alpha) * 7
-#endif
         //        debug("Alpha: \(components.alpha) -> fixed:\(fixedAlpha)")
         let opaque = fixedAlpha == 1.0
         let alphaComponentString = opaque ? "" : ",\(fixedAlpha)"

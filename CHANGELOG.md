@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.4.2 4/14/2026 Fixed warnings (changed static vars to lets).  Fixed PAT issue in README.
+
 v1.4.1 4/8/2026 Fixed accidental missing FoundationX test (removed check entirely since precision should be available either way due to fallback in Compatibility).
 
 v1.4.0 10/13/2025 Updated Compatibility (moving `floor()` backport to Compatibility). ** Passes all Swift Package Index Checks! **

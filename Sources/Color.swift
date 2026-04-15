@@ -9,7 +9,7 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.4.1"
+    static let version: Version = "1.4.2"
 }
 @_exported import Compatibility
 
@@ -710,30 +710,30 @@ public extension KuColor {
 // create a Color struct that can be used to store color data
 public struct Color: KuColor, Codable {
     // Provide missing color support manually using fixed versions
-    public static var black: Color = .blackFixed
-    public static var blue: Color = .blueFixed
-    public static var brown: Color = .brownFixed
-    public static var clear: Color = .clearFixed
-    public static var cyan: Color = .cyanFixed
-    public static var green: Color = .greenFixed
-    public static var indigo: Color = .indigoFixed
-    public static var mint: Color = .mintFixed
-    public static var orange: Color = .orangeFixed
-    public static var pink: Color = .pinkFixed
-    public static var purple: Color = .purpleFixed
-    public static var red: Color = .redFixed
-    public static var teal: Color = .tealFixed
-    public static var white: Color = .whiteFixed
-    public static var yellow: Color = .yellowFixed
-    public static var magenta: Color = .magentaFixed
-    public static var gray: Color = .grayFixed
-    public static var lightGray: Color = .lightGrayFixed
-    public static var darkGray: Color = .darkGrayFixed
+    public static let black: Color = .blackFixed
+    public static let blue: Color = .blueFixed
+    public static let brown: Color = .brownFixed
+    public static let clear: Color = .clearFixed
+    public static let cyan: Color = .cyanFixed
+    public static let green: Color = .greenFixed
+    public static let indigo: Color = .indigoFixed
+    public static let mint: Color = .mintFixed
+    public static let orange: Color = .orangeFixed
+    public static let pink: Color = .pinkFixed
+    public static let purple: Color = .purpleFixed
+    public static let red: Color = .redFixed
+    public static let teal: Color = .tealFixed
+    public static let white: Color = .whiteFixed
+    public static let yellow: Color = .yellowFixed
+    public static let magenta: Color = .magentaFixed
+    public static let gray: Color = .grayFixed
+    public static let lightGray: Color = .lightGrayFixed
+    public static let darkGray: Color = .darkGrayFixed
     // symantic
-    public static var accentColor: Color = .accentColorFixed
-    public static var primary: Color = .primaryFixed
-    public static var secondary: Color = .secondaryFixed
-    public static var background: Color = .backgroundFixed
+    public static let accentColor: Color = .accentColorFixed
+    public static let primary: Color = .primaryFixed
+    public static let secondary: Color = .secondaryFixed
+    public static let background: Color = .backgroundFixed
     
     // all values should be 0-1
     public var red: CGFloat

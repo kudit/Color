@@ -44,6 +44,7 @@ public struct Swatch: View {
                 }
                 .foregroundColor(color.contrastingColor) // isDark ? .white : .black
             }
+            .backport.focusable()
     }
 }
 @available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
@@ -272,6 +273,7 @@ struct PrettySwatch: View {
             .padding()
             .backport.foregroundStyle(color.contrastingColor)
         }
+        .backport.focusable()
     }
 }
 
@@ -381,6 +383,7 @@ public struct SimpleDemoRainbowView: View {
                 .backport.onTapGesture {
                     setColor(color)
                 }
+                .backport.focusable()
                 .foregroundColor(color)
             }
             if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
@@ -424,8 +427,6 @@ public struct ColorTestView: View {
                 }
                 .tag(2)
             ColorPrettyTestView()
-                .padding()
-                .colorTestWrapper()
                 .tabItem {
                     Text("Pretty")
                 }

@@ -126,7 +126,9 @@ public struct ColorBarTestView: View {
                     .shadow(radius: 1)
                 
             }
-        }.clipShape(RoundedRectangle(cornerRadius: 15))
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .backport.focusable()
     }
 }
 

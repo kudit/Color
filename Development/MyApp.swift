@@ -29,7 +29,7 @@ struct MyApp: App {
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
 #Preview("Rainbow Colors") {
     RadialStack {
         Group {

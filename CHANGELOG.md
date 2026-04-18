@@ -6,9 +6,11 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.4.4 4/17/2026 Updated Compatibility and fixed scrolling on tvOS.
+
 v1.4.3 4/14/2026 Updated Compatibility.
 
-v1.4.2 4/14/2026 Fixed warnings (changed static vars to lets).  Fixed PAT issue in README.
+v1.4.2 4/14/2026 Fixed warnings (changed static vars to lets).  Fixed PAT issue in README. (Check Swift 6.1 Android in future SPI)
 
 v1.4.1 4/8/2026 Fixed accidental missing FoundationX test (removed check entirely since precision should be available either way due to fallback in Compatibility).
 
@@ -93,10 +95,6 @@ v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code
 
 ## Bugs to fix:
 Known issues that need to be addressed.
-- [ ] Contrasting Tests don't seem to work for dark colors on tvOS.
-- [ ] Figure out why CloudStorage isn't really working for persistence...
-- [ ] Previews in Xcode fail for Color.swift and CSSColors.swift but work fine in ColorUI.swift and when previewed in Playgrounds.
-- [ ] Get UI working on tvOS (looks okay but paging doesn't seem to work in tvOS).
 - [ ] Page indicators are nearly invisible when in light mode on iOS.
 - [ ] Update tab view to use backport version that can extend content into safe area but still respects safe area for scrolling and clearing.
 

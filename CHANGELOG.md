@@ -6,6 +6,8 @@ NOTE: Version needs to be updated in the following places:
 - [ ] Color.version constant (must be hard coded since inaccessible in code)
 - [ ] Update changelog and tag with matching version in GitHub.
 
+v1.4.5 5/11/2026 Updated Compatibility to fix watchOS errors.
+
 v1.4.4 4/17/2026 Updated Compatibility and fixed scrolling on tvOS.
 
 v1.4.3 4/14/2026 Updated Compatibility.

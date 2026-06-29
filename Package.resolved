@@ -3,10 +3,10 @@
     {
       "identity" : "compatibility",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kudit/Compatibility",
+      "location" : "https://github.com/kudit/Compatibility.git",
       "state" : {
-        "revision" : "33d3df7098083bb5de21d260ef9e9fd21b26cabf",
-        "version" : "1.12.0"
+        "revision" : "9b8d0934357702c47d5fd36fb26948a70475314a",
+        "version" : "1.14.0"
       }
     }
   ],

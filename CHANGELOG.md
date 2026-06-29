@@ -1,98 +1,140 @@
 # ChangeLog
 
-NOTE: Version needs to be updated in the following places:
-- [ ] Xcode project version (in build settings - normal and watch targets should inherit)
-- [ ] Package.swift iOSApplication product displayVersion.
-- [ ] Color.version constant (must be hard coded since inaccessible in code)
-- [ ] Update changelog and tag with matching version in GitHub.
+## v1.4.6 2026-06-29
+Updated changelog entries to the current heading-based format.
+Updated Compatibility.
 
-v1.4.5 5/11/2026 Updated Compatibility to fix watchOS errors.
+## v1.4.5 2026-05-11
+Updated Compatibility to fix watchOS errors.
 
-v1.4.4 4/17/2026 Updated Compatibility and fixed scrolling on tvOS.
+## v1.4.4 2026-04-17
+Updated Compatibility and fixed scrolling on tvOS.
 
-v1.4.3 4/14/2026 Updated Compatibility.
+## v1.4.3 2026-04-14
+Updated Compatibility.
 
-v1.4.2 4/14/2026 Fixed warnings (changed static vars to lets).  Fixed PAT issue in README. (Check Swift 6.1 Android in future SPI)
+## v1.4.2 2026-04-14
+Fixed warnings (changed static vars to lets).  Fixed PAT issue in README. (Check Swift 6.1 Android in future SPI)
 
-v1.4.1 4/8/2026 Fixed accidental missing FoundationX test (removed check entirely since precision should be available either way due to fallback in Compatibility).
+## v1.4.1 2026-04-08
+Fixed accidental missing FoundationX test (removed check entirely since precision should be available either way due to fallback in Compatibility).
 
-v1.4.0 10/13/2025 Updated Compatibility (moving `floor()` backport to Compatibility). ** Passes all Swift Package Index Checks! **
+## v1.4.0 2025-10-13
+Updated Compatibility (moving `floor()` backport to Compatibility). ** Passes all Swift Package Index Checks! **
 
-v1.3.22 10/7/2025 Addressed existential issue for DebugLevel color.  ** Passes all Swift Package Index Checks! **
+## v1.3.22 2025-10-07
+Addressed existential issue for DebugLevel color.  ** Passes all Swift Package Index Checks! **
 
-v1.3.21 10/7/2025 Updated Compatibility.
+## v1.3.21 2025-10-07
+Updated Compatibility.
 
-v1.3.20 10/6/2025 Added explicit conformance of `CGFloat` to `DoubleConvertible` since it may not conform to `BinaryFloatingPoint` on all platforms.
+## v1.3.20 2025-10-06
+Added explicit conformance of `CGFloat` to `DoubleConvertible` since it may not conform to `BinaryFloatingPoint` on all platforms.
 
-v1.3.19 10/6/2025 Updated Compatibility.  Fixed some issues where NSRange and others aren't available in WASM.  Not sure why this isn't caught in the tests below.  Excluded Codable code from WASM or if Foundation isn't available.
+## v1.3.19 2025-10-06
+Updated Compatibility.  Fixed some issues where NSRange and others aren't available in WASM.  Not sure why this isn't caught in the tests below.  Excluded Codable code from WASM or if Foundation isn't available.
 
-v1.3.18 10/4/2025 Updated Compatibility.  Added check for WASILibc for floor.  ** Passes all Swift Package Index Checks! **
+## v1.3.18 2025-10-04
+Updated Compatibility.  Added check for WASILibc for floor.  ** Passes all Swift Package Index Checks! **
 
-v1.3.17 10/4/2025 Updated Compatibility (but actually forgot to!).
+## v1.3.17 2025-10-04
+Updated Compatibility (but actually forgot to!).
 
-v1.3.16 10/4/2025 Backport for CGFloat was using `swift()` instead of `compiler()` version checking.  Updated Compatibility.  ** BROKEN because of Compatibility **
+## v1.3.16 2025-10-04
+Backport for CGFloat was using `swift()` instead of `compiler()` version checking.  Updated Compatibility.  ** BROKEN because of Compatibility **
 
-v1.3.15 10/3/2025 Math.floor() isn't available in WASM so created a backport.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks (except WASM Swift 6.2)!**
+## v1.3.15 2025-10-03
+Math.floor() isn't available in WASM so created a backport.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks (except WASM Swift 6.2)!**
 
-v1.3.14 10/3/2025 Fixed some issue with determining contextual base for WASM by typealiasing CGFloat and Math.floor().
+## v1.3.14 2025-10-03
+Fixed some issue with determining contextual base for WASM by typealiasing CGFloat and Math.floor().
 
-v1.3.13 10/3/2025 Updated Compatibility.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks (except WASM Swift 6.2 beta)!**
+## v1.3.13 2025-10-03
+Updated Compatibility.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks (except WASM Swift 6.2 beta)!**
 
-v1.3.12 10/2/2025 Updated Compatibility.  Moved `main {}` backport to Compatibility.
+## v1.3.12 2025-10-02
+Updated Compatibility.  Moved `main {}` backport to Compatibility.
 
-v1.3.11 10/2/2025 Added some @MainActor checks for WASM.  Added `main {}` backport for WASM so we don't have to modify code.
+## v1.3.11 2025-10-02
+Added some @MainActor checks for WASM.  Added `main {}` backport for WASM so we don't have to modify code.
 
-v1.3.10 10/1/2025 Fixed AppIconWatch being included in Watch App.  Updated Compatibility to 1.11.18 (which passes all checks).
+## v1.3.10 2025-10-01
+Fixed AppIconWatch being included in Watch App.  Updated Compatibility to 1.11.18 (which passes all checks).
 
-v1.3.9 9/26/2025 Added fixes for missing @retroactive in Swift < 6.0.  Updated Compatibility.
+## v1.3.9 2025-09-26
+Added fixes for missing @retroactive in Swift < 6.0.  Updated Compatibility.
 
-v1.3.8 9/24/2025 Made `defaultDarkModeBackgroundFixed` public.
+## v1.3.8 2025-09-24
+Made `defaultDarkModeBackgroundFixed` public.
 
-v1.3.7 9/24/2025 Added `defaultDarkModeBackgroundFixed` color since this is definitely not `black`.  Updated Compatibility.  Fixed unassigned icon warning.
+## v1.3.7 2025-09-24
+Added `defaultDarkModeBackgroundFixed` color since this is definitely not `black`.  Updated Compatibility.  Fixed unassigned icon warning.
 
-v1.3.6 6/11/2025 Added Apple colorset.  Updated Compatibility (hopefully fixing WASM and Android failures).  Fixed icon "unassigned child" issues by excluding the Resources folder from the playground and processing and adding a PlaygroundsAssets asset for the icon.  Note: Swift Playgrounds previews only work on MyApp file.  Module source and Compatibility files do not display due to Playgrounds bug.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks!**
+## v1.3.6 2025-06-11
+Added Apple colorset.  Updated Compatibility (hopefully fixing WASM and Android failures).  Fixed icon "unassigned child" issues by excluding the Resources folder from the playground and processing and adding a PlaygroundsAssets asset for the icon.  Note: Swift Playgrounds previews only work on MyApp file.  Module source and Compatibility files do not display due to Playgrounds bug.  **Supports all platforms including WASM and Android and passes all Swift Package Index Checks!**
 
-v1.3.5 5/14/2025 Updated Compatibility to fixed Linux build visibility issues.  Conditionalized CloudStorage since unavailable on Linux.
+## v1.3.5 2025-05-14
+Updated Compatibility to fixed Linux build visibility issues.  Conditionalized CloudStorage since unavailable on Linux.
 
-v1.3.4 5/14/2025 Updated Compatibility.  Package works again in Swift Playgrounds!
+## v1.3.4 2025-05-14
+Updated Compatibility.  Package works again in Swift Playgrounds!
 
-v1.3.3 3/10/2025 Updated package format for Swift Playgrounds v4.6.  Updated Compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS (including Swift 5.8 - 6.1!)*
+## v1.3.3 2025-03-10
+Updated package format for Swift Playgrounds v4.6.  Updated Compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS (including Swift 5.8 - 6.1!)*
 
-v1.3.2 1/17/2025 Added "Lime" to prioritized colors (not pink since way too close.  Replaced cyan with teal for better distinction from mint).  Re-ordered prioritized colors.  Added control to sort named colors alphabetically or by hue.  Colorsets can be sorted by hue by doing `.sorted()`.
+## v1.3.2 2025-01-17
+Added "Lime" to prioritized colors (not pink since way too close.  Replaced cyan with teal for better distinction from mint).  Re-ordered prioritized colors.  Added control to sort named colors alphabetically or by hue.  Colorsets can be sorted by hue by doing `.sorted()`.
 
-v1.3.1 1/14/2025 Fixed warning with compatibility.  Moved tapGesture to compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
+## v1.3.1 2025-01-14
+Fixed warning with compatibility.  Moved tapGesture to compatibility. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
-v1.3.0 12/10/2024 Made Swatch views public for use in public apps and added optional parameters for styling.  Default label to new `.debugString` version of color.  Updated Compatibility so passes Swift 6 tests.  Created `.stringValue` for compatibility with `@CloudStorage` and `.debugString` for simplified debug output in Swatches.  Deprecated `.pretty` to ensure we use the proper value (`.stringValue` for encoding and `.debugString` for display).  Ensured that lighter/darker versions of symantic colors have a solid alpha.  Added `.symantic` value to get the symantic `Self` version of a color and to test whether the current color is in fact a dynamic/symantic color.  Fixed bug where "rgba" had to be the correct case to work with alpha ("rgBa" was failing but "rGb" was passing due to typo).  Also simplified and standardized logic so only performed once.  Updated colorsets so they use backport versions instead of fixed versions on older versions.  Renamed `fixedAlpha` to `dynamicAlpha` to better describe value.  Fixed issue with css colors getting floored instead of rounded due to Float<->Double conversion issues.  `@_exported` Compatibility to save on import calls.  Standardized algorithm for snapping to Hex so float double issues are rounded away.  Any use of Color should want to import Compatibility too.  Added missing `magenta` to fixed map.  Standardized `255` as `.eightBits`.  `hexString` now exports 8 digit hex if there is an alpha value.  Added support for 8 character and 4 character hex (where the 4th/7th&8th characters are the alpha value).  Added color picker test and conversion to/from CGColor (which is what the color test wants). *PASSES ALL SWIFTPACKAGEINDEX TESTS*
+## v1.3.0 2024-12-10
+Made Swatch views public for use in public apps and added optional parameters for styling.  Default label to new `.debugString` version of color.  Updated Compatibility so passes Swift 6 tests.  Created `.stringValue` for compatibility with `@CloudStorage` and `.debugString` for simplified debug output in Swatches.  Deprecated `.pretty` to ensure we use the proper value (`.stringValue` for encoding and `.debugString` for display).  Ensured that lighter/darker versions of symantic colors have a solid alpha.  Added `.symantic` value to get the symantic `Self` version of a color and to test whether the current color is in fact a dynamic/symantic color.  Fixed bug where "rgba" had to be the correct case to work with alpha ("rgBa" was failing but "rGb" was passing due to typo).  Also simplified and standardized logic so only performed once.  Updated colorsets so they use backport versions instead of fixed versions on older versions.  Renamed `fixedAlpha` to `dynamicAlpha` to better describe value.  Fixed issue with css colors getting floored instead of rounded due to Float<->Double conversion issues.  `@_exported` Compatibility to save on import calls.  Standardized algorithm for snapping to Hex so float double issues are rounded away.  Any use of Color should want to import Compatibility too.  Added missing `magenta` to fixed map.  Standardized `255` as `.eightBits`.  `hexString` now exports 8 digit hex if there is an alpha value.  Added support for 8 character and 4 character hex (where the 4th/7th&8th characters are the alpha value).  Added color picker test and conversion to/from CGColor (which is what the color test wants). *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
-v1.2.2 11/26/2024 Added test color background and added @MainActor to `testBackground` to silence warnings on SwiftPlaygrounds.  Updated Compatibility framework version.
+## v1.2.2 2024-11-26
+Added test color background and added @MainActor to `testBackground` to silence warnings on SwiftPlaygrounds.  Updated Compatibility framework version.
 
-v1.2.1 11/4/2024 Updated Compatibility framework since there were watchOS and Linux errors. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
+## v1.2.1 2024-11-04
+Updated Compatibility framework since there were watchOS and Linux errors. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
-v1.2.0 11/4/2024 Extracted Codable code to separate file.  Added codable tests to test conversion to/from JSON and data formats.  Switched around so pretty string is the preferable encoding method.  Addressed conformance warnings.  Removed Identifiable conformance automatically (if needed, use `id: \.pretty`).  Fixed pretty coding so that it doesn't have rounding issues (will round to 8 decimal places).  Added symantic colors and backport and storage as special named colors.  Updated so ANY KuColor can be compared to another KuColor no matter the type.
+## v1.2.0 2024-11-04
+Extracted Codable code to separate file.  Added codable tests to test conversion to/from JSON and data formats.  Switched around so pretty string is the preferable encoding method.  Addressed conformance warnings.  Removed Identifiable conformance automatically (if needed, use `id: \.pretty`).  Fixed pretty coding so that it doesn't have rounding issues (will round to 8 decimal places).  Added symantic colors and backport and storage as special named colors.  Updated so ANY KuColor can be compared to another KuColor no matter the type.
 
-v1.1.4 10/14/2024 Updated Compatibility to good version 1.3.15
+## v1.1.4 2024-10-14
+Updated Compatibility to good version 1.3.15
 
-v1.1.3 8/19/2024 Updated so that we can use `.accentColorAsset` to fix issues with tvOS using color.
+## v1.1.3 2024-08-19
+Updated so that we can use `.accentColorAsset` to fix issues with tvOS using color.
 
-v1.1.2 8/14/2024 Updated Compatibility version to 1.3.6.
+## v1.1.2 2024-08-14
+Updated Compatibility version to 1.3.6.
 
-v1.1.1 8/13/2024 Updated Compatibility version to 1.3.5. *PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*
+## v1.1.1 2024-08-13
+Updated Compatibility version to 1.3.5. *PASSES ALL SWIFTPACKAGEINDEX TESTS - but Compatibility does not*
 
-v1.1.0 8/13/2024 Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Changed from `.fixedBrown` to `.brownFixed` so only have to add suffix.  Also added `.brownBackport` to get the native `.brown` or `.brownFixed` if not available. (same for all the iOS 15 color additions).  Backed up the compatibility versions so can use in Device so that we don't have to re-code a `Color(hex:)` function.  Fixed background tint in icon to match better.
+## v1.1.0 2024-08-13
+Standardized Package.swift, CHANGELOG.md, README.md, and LICENSE.txt files.  Standardized deployment targets.  Changed from `.fixedBrown` to `.brownFixed` so only have to add suffix.  Also added `.brownBackport` to get the native `.brown` or `.brownFixed` if not available. (same for all the iOS 15 color additions).  Backed up the compatibility versions so can use in Device so that we don't have to re-code a `Color(hex:)` function.  Fixed background tint in icon to match better.
 
-v1.0.6 7/16/2024 Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
+## v1.0.6 2024-07-16
+Fixing issues with linux version of Color missing some things.  Added manual conversion from HSB to RGB for storage.  Added conversion  from RGB to HSB as well as static function on KuColor. *PASSES ALL SWIFTPACKAGEINDEX TESTS*
 
-v1.0.5 7/15/2024 Not sure why SwiftPackageIndex wasn't picking up the update to Compatibility to fix Linux and watchOS support... Forced package minimum to Compatibility 1.0.17 to hopefully fix this.  May also have been Package.resolved was using the older version (test in Swift Playgrounds in the future to make sure Package.resolved gets updated).  Moved Demo color list to ColorUI rather than in MyApp so can be used elsewhere and exposes the Compatibility version.
+## v1.0.5 2024-07-15
+Not sure why SwiftPackageIndex wasn't picking up the update to Compatibility to fix Linux and watchOS support... Forced package minimum to Compatibility 1.0.17 to hopefully fix this.  May also have been Package.resolved was using the older version (test in Swift Playgrounds in the future to make sure Package.resolved gets updated).  Moved Demo color list to ColorUI rather than in MyApp so can be used elsewhere and exposes the Compatibility version.
 
-v1.0.4 7/15/2024 Updated Compatibility to fix watchOS and Linux support.  Updated icon for new themeing.  Re-worked demo app for better compatibility on various platforms and clearing safe areas.  UI works on watchOS now.  Fixed contrastingColor in watchOS and visionOS for primary and secondary colors.
+## v1.0.4 2024-07-15
+Updated Compatibility to fix watchOS and Linux support.  Updated icon for new themeing.  Re-worked demo app for better compatibility on various platforms and clearing safe areas.  UI works on watchOS now.  Fixed contrastingColor in watchOS and visionOS for primary and secondary colors.
 
-v1.0.3 7/14/2024 Updated Compatibility version to fix Linux support.  Added improved tinting view.  Rounded colorset tests view.  Improved Pretty test view to have panels and better example cases.  Was completely missing NSColor support and was only using SwiftUI color.  Added scratch code for NSColor support for macOS but doesn't work with extended color space which causes issues.  Fixed lightness test for macOS light gray.
+## v1.0.3 2024-07-14
+Updated Compatibility version to fix Linux support.  Added improved tinting view.  Rounded colorset tests view.  Improved Pretty test view to have panels and better example cases.  Was completely missing NSColor support and was only using SwiftUI color.  Added scratch code for NSColor support for macOS but doesn't work with extended color space which causes issues.  Fixed lightness test for macOS light gray.
 
-v1.0.2 7/11/2024 Updated Compatibility version which supports older versions.  Updated so playgrounds can run while the package supports older iOS versions.
+## v1.0.2 2024-07-11
+Updated Compatibility version which supports older versions.  Updated so playgrounds can run while the package supports older iOS versions.
 
-v1.0.1 7/11/2024 Made changes from 0 and 1 to .zero and .one constants.  Created fallback versions of named colors so can fallback when the named colors are not present.  Re-worked to update Compatibility for watchOS and tvOS compatibility.  Increased minimum tvOS and watchOS and macOS to match iOS requirement.  Moved colorLogging debug statements onto the main thread so can check the current colorLogging state.  Raised minimum iOS to 15.2 since that is usually what Compatibility will need.
+## v1.0.1 2024-07-11
+Made changes from 0 and 1 to .zero and .one constants.  Created fallback versions of named colors so can fallback when the named colors are not present.  Re-worked to update Compatibility for watchOS and tvOS compatibility.  Increased minimum tvOS and watchOS and macOS to match iOS requirement.  Moved colorLogging debug statements onto the main thread so can check the current colorLogging state.  Raised minimum iOS to 15.2 since that is usually what Compatibility will need.
 
-v1.0 7/7/2024 Initial code and features pulled from KuditFrameworks.  Broke code up into separate files for clarity since this is all now contained in this module.  Depends on Compatibility for string and threading and debugging and testing functions.
+## v1.0 2024-07-07
+Initial code and features pulled from KuditFrameworks.  Broke code up into separate files for clarity since this is all now contained in this module.  Depends on Compatibility for string and threading and debugging and testing functions.
 
 
 ## Bugs to fix:
@@ -119,3 +161,10 @@ This is where proposals can be discussed for potential movement to the roadmap.
         Create this as a separate package that leverages this but can include additional Crayola information.
     - https://www.swatchtool.com/copic
 - [ ] Obfuscate KuColor as the basis?
+
+## Legacy Reference
+NOTE: Version needs to be updated in the following places:
+- [ ] Xcode project version (in build settings - normal and watch targets should inherit)
+- [ ] Package.swift iOSApplication product displayVersion.
+- [ ] Color.version constant (must be hard coded since inaccessible in code)
+- [ ] Update changelog and tag with matching version in GitHub.

@@ -9,7 +9,8 @@
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
-    static let version: Version = "1.4.5"
+    /// Keep this hard-coded value aligned with Package.swift so apps can display the same version that Swift Playgrounds uses.
+    static let version: Version = "1.4.6"
 }
 @_exported import Compatibility
 

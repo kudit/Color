@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v1.4.7 2026-07-13
+Added SwiftPM tests for common string parsing, rendering, alpha, and Codable round trips without exposing the test target to Swift Playgrounds.
+Updated Compatibility.
+Added Documentation for Swift Package Index.
+Cached CSS lookup indexes and lazily generated named-color sort orders to avoid repeated parsing and sorting during SwiftUI rendering.
+Deferred inactive ColorTestView tabs and replaced expensive string-rendered row identities with stable Hashable color identities.
+
 ## v1.4.6 2026-06-29
 Updated changelog entries to the current heading-based format.
 Updated Compatibility.

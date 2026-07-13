@@ -86,6 +86,21 @@ let colors: [Color] = .rainbow
 
 All these tests can be demonstrated using previews or by running the app executable that is bundled in the Development folder of the module.
 
+### SwiftPM tests
+The `ColorTests` target lives under `Development` so the package keeps its existing Swift Playgrounds layout. The manifest conditionally omits that target when Swift Playgrounds evaluates the package, while SwiftPM and Xcode on macOS can still discover it normally.
+
+From the package directory, run:
+```sh
+swift test
+```
+
+The tests cover representative CSS names, short and long hexadecimal strings, alpha rendering, invalid input, and Codable round trips. UI demonstrations and previews remain in the existing development app because they are useful for visually checking platform-specific color behavior.
+
+### API documentation
+The package includes a DocC catalog with guides for parsing, displaying, and persisting colors. Xcode shows this documentation through **Product > Build Documentation** when the `Color Library` scheme is selected.
+
+Swift Package Index is configured through `.spi.yml` to build and host the `Color` target's documentation automatically. After this change is committed and pushed, the hosted documentation will be available from the package's **Documentation** link when Swift Package Index completes its next documentation build.
+
 
 ## Contributing
 If you have the need for a specific feature that you want implemented or if you experienced a bug, please open an issue.

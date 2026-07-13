@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kudit/Compatibility.git",
       "state" : {
-        "revision" : "9b8d0934357702c47d5fd36fb26948a70475314a",
-        "version" : "1.14.0"
+        "revision" : "5a09303285cbc6de4a9871689813eba9da7d0152",
+        "version" : "1.15.1"
       }
     }
   ],

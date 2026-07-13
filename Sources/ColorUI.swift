@@ -173,31 +173,37 @@ struct ContrastingTestView: View {
 @available(iOS 13, tvOS 13, watchOS 6, *)
 struct NamedColorsListTestView: View {
     @State private var alphaSort = false
+
+    // Parse every CSS color only once when this tab is first opened. The old
+    // sort closure reconstructed both colors for every comparison during each
+    // body evaluation, multiplying an already expensive conversion operation.
+    private static let hueSortedEntries: [(key: String, value: String, color: Color)] =
+        Color.namedColorMap
+            .map { (key: $0.key, value: $0.value, color: Color(string: $0.value, defaultColor: .gray)) }
+            .sorted { $0.color < $1.color }
+
+    // Keep a separately cached alphabetical ordering so changing the picker
+    // swaps arrays instead of sorting the complete CSS table again.
+    private static let alphabeticallySortedEntries: [(key: String, value: String, color: Color)] =
+        Color.namedColorMap
+            .map { (key: $0.key, value: $0.value, color: Color(string: $0.value, defaultColor: .gray)) }
+            .sorted { $0.key < $1.key }
+
     public var body: some View {
         List {
             Section {
-                //            ForEach(Color.namedColorMap.sorted(by: <), id: \.key) { key, value in
-                ForEach(Color.namedColorMap.sorted { lhs, rhs in
-                    if alphaSort {
-                        return lhs.key < rhs.key
-                    } else {
-                        let left = Color(string: lhs.value, defaultColor: .gray)
-                        let right = Color(string: rhs.value, defaultColor: .gray)
-                        return left < right
-                    }
-                }, id: \.key) { key, value in
-                    let color = Color(string: key, defaultColor: .black)
+                ForEach(alphaSort ? Self.alphabeticallySortedEntries : Self.hueSortedEntries, id: \.key) { entry in
                     HStack {
-                        Text(key)
+                        Text(entry.key)
                         Spacer()
-                        Text(value)
+                        Text(entry.value)
                     }
                     .padding()
                     .backport.background {
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(color)
+                            .fill(entry.color)
                     }
-                    .backport.foregroundStyle(color.contrastingColor)
+                    .backport.foregroundStyle(entry.color.contrastingColor)
                     .closure { view in
 #if !os(tvOS) && !os(watchOS)
                         Group {
@@ -373,7 +379,9 @@ public struct SimpleDemoRainbowView: View {
                 }
             }
             #endif
-            ForEach([Color].named, id: \.stringValue) { color in
+            // KuColor already requires Hashable, so the color value provides a
+            // stable row ID without performing the expensive CSS conversion.
+            ForEach([Color].named, id: \.self) { color in
                 HStack {
                     Image(systemName: "globe")
                         .imageScale(.large)
@@ -402,60 +410,107 @@ public struct SimpleDemoRainbowView: View {
     SimpleDemoRainbowView()
 }
 
+/// Defers construction of an expensive test screen until its tab is selected.
+///
+/// SwiftUI may ask every child of a `TabView` for its body while preparing page
+/// navigation. Returning a clear placeholder for inactive tabs prevents color
+/// parsing, sorting, and conversion tests from running during the first frame.
+@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
+private struct LazyColorTestTab<Content: View>: View {
+    let tag: Int
+    @Binding var selection: Int
+    let content: () -> Content
+
+    init(tag: Int, selection: Binding<Int>, @ViewBuilder content: @escaping () -> Content) {
+        self.tag = tag
+        self._selection = selection
+        self.content = content
+    }
+
+    @ViewBuilder
+    var body: some View {
+        if selection == tag {
+            content()
+        } else {
+            // A lightweight placeholder preserves the tab without initializing
+            // the expensive view hierarchy until the user selects it.
+            Color.clear
+        }
+    }
+}
+
 @available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 public struct ColorTestView: View {
     public init() {}
     @State private var tabSelection = 0
     public var body: some View {
         TabView(selection: $tabSelection.animation()) {
-            SimpleDemoRainbowView()
+            LazyColorTestTab(tag: 0, selection: $tabSelection) {
+                SimpleDemoRainbowView()
+            }
                 .tabItem {
                     Text("Demo")
                 }
                 .tag(0)
-            ColorsetsTestView()
-                .padding()
-                .colorTestWrapper()
+            LazyColorTestTab(tag: 1, selection: $tabSelection) {
+                ColorsetsTestView()
+                    .padding()
+                    .colorTestWrapper()
+            }
                 .tabItem {
                     Text("Colorset")
                 }
                 .tag(1)
-            HSVConversionTestView()
-                .colorTestWrapper()
+            LazyColorTestTab(tag: 2, selection: $tabSelection) {
+                HSVConversionTestView()
+                    .colorTestWrapper()
+            }
                 .tabItem {
                     Text("HSV")
                 }
                 .tag(2)
-            ColorPrettyTestView()
+            LazyColorTestTab(tag: 3, selection: $tabSelection) {
+                ColorPrettyTestView()
+            }
                 .tabItem {
                     Text("Pretty")
                 }
                 .tag(3)
-            NamedColorsListTestView()
+            LazyColorTestTab(tag: 4, selection: $tabSelection) {
+                NamedColorsListTestView()
+            }
                 .tabItem {
                     Text("Named CSS")
                 }
                 .tag(4)
-            ColorTintingTestView()
-                .colorTestWrapper()
+            LazyColorTestTab(tag: 5, selection: $tabSelection) {
+                ColorTintingTestView()
+                    .colorTestWrapper()
+            }
                 .tabItem {
                     Text("Tinting")
                 }
                 .tag(5)
-            ContrastingTestView()
-                .border(Color.accentColorAsset, width: 5)
-                .colorTestWrapper()
+            LazyColorTestTab(tag: 6, selection: $tabSelection) {
+                ContrastingTestView()
+                    .border(Color.accentColorAsset, width: 5)
+                    .colorTestWrapper()
+            }
                 .tabItem {
                     Text("Contrast")
                 }
                 .tag(6)
-            CodingDemoView()
+            LazyColorTestTab(tag: 7, selection: $tabSelection) {
+                CodingDemoView()
+            }
                 .tabItem {
                     Text("Coding")
                 }
                 .tag(7)
             if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-                ClosureTestView()
+                LazyColorTestTab(tag: 8, selection: $tabSelection) {
+                    ClosureTestView()
+                }
                     .tabItem {
                         Text("Closure")
                     }

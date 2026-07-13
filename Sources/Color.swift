@@ -10,7 +10,7 @@
 public extension Color {
     /// The version of the Color Library since cannot get directly from Package.swift.
     /// Keep this hard-coded value aligned with Package.swift so apps can display the same version that Swift Playgrounds uses.
-    static let version: Version = "1.4.6"
+    static let version: Version = "1.4.7"
 }
 @_exported import Compatibility
 
@@ -63,8 +63,9 @@ public extension UInt64 {
     }
 }
 
-// Does conform to Identifiable but can't add for older iOS    @available(iOS 13, tvOS 13, watchOS 6, *)
-// Conforms to Codable and Comparable but can't add here due to Xcode 16 warnings.  Must add anywhere we conform to KuColor.
+// Conforms to Codable and Comparable but can't add here due to Xcode 16 warnings. Must add anywhere we conform to KuColor.
+// Identifiable also remains opt-in because NSColor and UIColor are non-final
+// class clusters; requiring ID == Self becomes invalid in Swift 6 language mode.
 public protocol KuColor: Equatable, Hashable {
     /// usually 0-1 double values but SwiftUI supports extended colors beyond 0-1 for extended color spaces.
     init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
@@ -229,6 +230,64 @@ public extension KuColor {
             Self.secondaryBackport: "secondary",
             Self.background: "background",
         ]
+    }
+
+    /// Finds a fixed replacement without allocating the public compatibility
+    /// dictionary on every component extraction.
+    static func fixedReplacement(for color: UnderlyingColorType) -> Self? {
+        if color == Self.black { return .blackFixed }
+        if color == Self.blue { return .blueFixed }
+        if color == Self.brownBackport { return .brownFixed }
+        if color == Self.clear { return .clearFixed }
+        if color == Self.cyanBackport { return .cyanFixed }
+        if color == Self.gray { return .grayFixed }
+        if color == Self.lightGray { return .lightGrayFixed }
+        if color == Self.darkGray { return .darkGrayFixed }
+        if color == Self.green { return .greenFixed }
+        if color == Self.indigoBackport { return .indigoFixed }
+        if color == Self.magenta { return .magentaFixed }
+        if color == Self.mintBackport { return .mintFixed }
+        if color == Self.orange { return .orangeFixed }
+        if color == Self.pink { return .pinkFixed }
+        if color == Self.purple { return .purpleFixed }
+        if color == Self.red { return .redFixed }
+        if color == Self.tealBackport { return .tealFixed }
+        if color == Self.white { return .whiteFixed }
+        if color == Self.yellow { return .yellowFixed }
+        if color == Self.accentColorBackport { return .accentColorFixed }
+        if color == Self.primaryBackport { return .primaryFixed }
+        if color == Self.secondaryBackport { return .secondaryFixed }
+        if color == Self.background { return .backgroundFixed }
+        return nil
+    }
+
+    /// Finds the Swift spelling without recreating `swiftNameMap` merely to
+    /// label one swatch. The map remains public for source compatibility.
+    static func swiftName(for color: UnderlyingColorType) -> String? {
+        if color == Self.black { return "black" }
+        if color == Self.blue { return "blue" }
+        if color == Self.brownBackport { return "brown" }
+        if color == Self.clear { return "clear" }
+        if color == Self.cyanBackport { return "cyan" }
+        if color == Self.gray { return "gray" }
+        if color == Self.lightGray { return "lightGray" }
+        if color == Self.darkGray { return "darkGray" }
+        if color == Self.green { return "green" }
+        if color == Self.indigoBackport { return "indigo" }
+        if color == Self.magenta { return "magenta" }
+        if color == Self.mintBackport { return "mint" }
+        if color == Self.orange { return "orange" }
+        if color == Self.pink { return "pink" }
+        if color == Self.purple { return "purple" }
+        if color == Self.red { return "red" }
+        if color == Self.tealBackport { return "teal" }
+        if color == Self.white { return "white" }
+        if color == Self.yellow { return "yellow" }
+        if color == Self.accentColorBackport { return "accentColor" }
+        if color == Self.primaryBackport { return "primary" }
+        if color == Self.secondaryBackport { return "secondary" }
+        if color == Self.background { return "background" }
+        return nil
     }
 
     static var brownBackport: UnderlyingColorType {
@@ -650,7 +709,7 @@ extension Color: KuColor {
 //        }
 
         // check for built-in dynamic and symantic colors that need fixed replacements (if this already is a fixed replacement, don't delegate)
-        if let fixedReplacement = Color.fixedMap[self], fixedReplacement != self {
+        if let fixedReplacement = Color.fixedReplacement(for: self), fixedReplacement != self {
             // system values can't get RGBA so use the fixed versions instead
 //            debug("Mapped value for \(debugString) to fixed replacement version.")
             return fixedReplacement.getRed(red, green: green, blue: blue, alpha: alpha)

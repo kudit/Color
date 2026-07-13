@@ -7,9 +7,10 @@
 
 // MARK: - CSS/String intialization
 
-public extension KuColor {
-    // MARK: Parsing and Rendering
-    static var namedColorMap: [String:String] {[
+// Build the immutable CSS lookup table once on first use. This must live at file
+// scope because Swift does not allow stored static properties in generic protocol
+// extensions such as `KuColor`; the public property below returns this shared map.
+private let cachedNamedColorMap: [String: String] = [
         "AliceBlue":"#F0F8FF",
         "AntiqueWhite":"#FAEBD7",
         "Aqua":"#00FFFF",
@@ -150,7 +151,20 @@ public extension KuColor {
         "White":"#FFFFFF",
         "WhiteSmoke":"#F5F5F5",
         "Yellow":"#FFFF00",
-        "YellowGreen":"#9ACD32"]}
+        "YellowGreen":"#9ACD32"]
+
+// Cache both lookup directions when the file is first used. Parsing previously
+// lowercased and scanned all CSS names, while rendering linearly searched the
+// full dictionary for every color displayed in a SwiftUI list.
+private let cachedHexByLowercasedColorName: [String: String] =
+    Dictionary(cachedNamedColorMap.map { ($0.key.lowercased(), $0.value) }, uniquingKeysWith: { first, _ in first })
+private let cachedColorNameByHex: [String: String] =
+    Dictionary(cachedNamedColorMap.map { ($0.value, $0.key) }, uniquingKeysWith: { first, _ in first })
+
+public extension KuColor {
+    // MARK: Parsing and Rendering
+    /// The shared CSS named-color lookup table.
+    static var namedColorMap: [String: String] { cachedNamedColorMap }
     
     /**
      KF: Creates a Color from the given string in #HEX format, named CSS string, rgb(), or rgba() format.  Important to have named parameter string: to differentiate from SwiftUI Color(_:String) init for a named color in an asset bundle.
@@ -310,12 +324,11 @@ public extension KuColor {
             }
         } else {
             // check for HTML/CSS named colors.
-            // might be a CSS color string
-            for (colorName, hex) in Self.namedColorMap {
-                if colorName.lowercased() == source { // source is already lowercased above
-                    self.init(string: hex)
-                    return
-                }
+            // The source is already lowercase, so use the lazily initialized
+            // index instead of scanning and lowercasing the entire CSS table.
+            if let hex = cachedHexByLowercasedColorName[source] {
+                self.init(string: hex)
+                return
             }
             main { // due to colorLogging
                 debug("Unknown named color: \(string)", level: !DebugLevel.colorLogging ? .SILENT : .NOTICE)
@@ -389,13 +402,13 @@ public extension KuColor {
 
     /// Returns a simplified string representation of the color.  If this is a SwiftUI color, will use the SwiftUI constant with a period prefix.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  NOTE: This is not meant for encoding.  If you need to encode this, use `stringValue`.
     var debugString: String {
-        if let name = Self.swiftNameMap[self.underlying] {
+        if let name = Self.swiftName(for: self.underlying) {
             return "." + name
         }
         return stringValue
     }
     
-    /// Returns the "nicest" string encoding of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  SwiftUI colors use their fixed values.
+    /// Returns the "nicest" string encoding of the color that we can suitable for use in CSS.  If there is a CSS named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  SwiftUI colors use their fixed values.
     var stringValue: String {
         // alpha, convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space).  Also make sure that the color accuracy works with 256 mapping otherwise we want to use css for the increased fidelity.
         guard let hexColor = Self(string: hexString), hexColor.cssString == self.cssString else {
@@ -404,7 +417,7 @@ public extension KuColor {
         }
         // if we get here, we have a simple hex string.  If this happens to be a named color, use that instead of the hex for clarity and human readability.
         // we should show named color names if available
-        if let colorName = Self.namedColorMap.firstKey(for: hexString) {
+        if let colorName = cachedColorNameByHex[hexString] {
             return colorName
         } else {
             return hexString

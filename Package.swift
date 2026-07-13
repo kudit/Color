@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.4.6"
+let version = "1.4.7"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -105,7 +105,9 @@ targets += [
 			.init(stringLiteral: packageLibraryName), // have to use init since normally would be assignable by string literal but we're not using a string literal
 		],
 		path: "Development"
-		,exclude: ["Resources"]
+		// Exclude package tests from the app target so Xcode and Swift Playgrounds
+		// never try to compile the same source as both app code and test code.
+		,exclude: ["Resources", "ColorTests"]
 		// Include test app resources.
 		,resources: [
 //			.process("Resources")
@@ -124,6 +126,22 @@ targets += [
 ]
 
 #endif // for Swift Package compiling for https://swiftpackageindex.com/add-a-package
+
+// MARK: - Package tests
+// Keep the test target out of the Swift Playgrounds manifest because Playgrounds
+// only needs the library and app targets above. SwiftPM and Xcode on macOS can
+// still discover and run these tests without changing how the app package loads.
+#if !SwiftPlaygrounds && !canImport(PlaygroundSupport)
+targets += [
+	.testTarget(
+		name: "\(packageLibraryName)Tests",
+		dependencies: [
+			.init(stringLiteral: packageLibraryName), // Use the shared name while preserving the manifest pattern required by Playgrounds.
+		],
+		path: "Development/ColorTests"
+	),
+]
+#endif
 
 let package = Package(
 	name: packageLibraryName,

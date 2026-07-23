@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v1.5.1 2026-07-23
+Updated Compatibility to v1.18.2 to fix SPI issues.
+
 ## v1.5.0 2026-07-22
 Updated Compatibility to v1.18.1 (Module additions and module/version test headings).
 Adopted Compatibility's Module APIs with Color package dependency registration and open-source repository reporting.

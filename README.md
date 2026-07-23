@@ -94,12 +94,24 @@ From the package directory, run:
 swift test
 ```
 
-The tests cover representative CSS names, short and long hexadecimal strings, alpha rendering, invalid input, and Codable round trips. UI demonstrations and previews remain in the existing development app because they are useful for visually checking platform-specific color behavior.
+The reusable tests are declared inline with the module metadata in ordered
+`Color.tests` sections using Compatibility's `TestCase` values. The development
+app presents registered module tests with `AllTestsListView`, which groups the
+sections beneath a Color module-and-version heading, while the `ColorTests`
+target provides only the parameterized Swift Testing bridge needed by Xcode and
+CI. Both paths therefore cover the
+same CSS names, short and long hexadecimal strings, alpha rendering, invalid
+input, Codable round trips, and Module metadata. UI demonstrations and previews
+remain in the development app because they are useful for visually checking
+platform-specific color behavior.
 
 ### API documentation
-The package includes a DocC catalog with guides for parsing, displaying, and persisting colors. Xcode shows this documentation through **Product > Build Documentation** when the `Color Library` scheme is selected.
+The package documents its public APIs with inline DocC comments alongside the
+implementation. Xcode collects that documentation through **Product > Build
+Documentation** when the `Color Library` scheme is selected.
 
-Swift Package Index is configured through `.spi.yml` to build and host the `Color` target's documentation automatically. After this change is committed and pushed, the hosted documentation will be available from the package's **Documentation** link when Swift Package Index completes its next documentation build.
+Swift Package Index is configured through `.spi.yml` to build and host the
+`Color` target's generated API documentation automatically.
 
 
 ## Contributing

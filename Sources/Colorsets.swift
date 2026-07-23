@@ -13,11 +13,11 @@
 //    static var grayscale: [UnderlyingColorType] { [Self].grayscale }
 //}
 public extension Array where Element: KuColor, Element.UnderlyingColorType == Element {
-    /// 6 colors in logo order
+    /// Six colors in classic Apple logo order.
     static var apple: [Element] {
         return [.green, .yellow, .orange, .red, .purple, .blue]
     }
-    /// ROYGBIV(purple for violet)
+    /// ROYGBIV rainbow colors (using purple for violet).
     static var rainbow: [Element] {
         return [.red, .orange, .yellow, .green, .blue, .indigoBackport, .purple]
     }

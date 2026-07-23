@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v1.5.0 2026-07-22
+Updated Compatibility to v1.18.1 (Module additions and module/version test headings).
+Adopted Compatibility's Module APIs with Color package dependency registration and open-source repository reporting.
+Added and clarified inline DocC documentation.
+Preloaded the current Color test page and its immediate neighbors to keep interactive swipes smooth while retaining lazy loading for distant screens.
+Removed conditional lazy page replacement so every Color test tab keeps a stable hierarchy during interactive swipes, avoiding navigation-bar ownership crashes and mid-gesture jumps.
+
 ## v1.4.7 2026-07-13
 Added SwiftPM tests for common string parsing, rendering, alpha, and Codable round trips without exposing the test target to Swift Playgrounds.
 Updated Compatibility.

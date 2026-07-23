@@ -5,13 +5,112 @@
 //  Created by Ben Ku on 9/26/16.
 //  Copyright © 2016 Kudit, LLC. All rights reserved.
 //
-
+/// A native platform color extended with Color package behavior and module metadata.
+///
+/// In addition to parsing and conversion APIs, `Color` conforms to
+/// Compatibility's ``Module`` protocol. Register it once from an application's
+/// startup path with `Application.track(including: [Color.self])` so support
+/// reports include Color and its direct Compatibility dependency.
 @available(iOS 13, tvOS 13, watchOS 6, *)
 public extension Color {
-    /// The version of the Color Library since cannot get directly from Package.swift.
-    /// Keep this hard-coded value aligned with Package.swift so apps can display the same version that Swift Playgrounds uses.
-    static let version: Version = "1.4.7"
+    /// The version of the Color Library since cannot get directly from `Package.swift`.
+    /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
+    static let version: Version = "1.5.0"
+
+    /// Compatibility is the package's direct module dependency and must be
+    /// registered before Color when an application builds its support report.
+    static let dependencies: [Module.Type] = [Compatibility.self]
+
+    /// Immediately available Color module information.
+    ///
+    /// Color currently has no package-specific diagnostic fields beyond the
+    /// version that Compatibility appends automatically, so this collection is
+    /// intentionally empty and remains safe on every supported platform.
+    static let moduleInfo: [Field] = []
+
+    /// The public repository used for source discovery and opt-in license
+    /// reporting by Compatibility's support-reporting APIs.
+    static let openSourceRepository: String? = "https://github.com/kudit/Color"
+
+#if compiler(>=5.9)
+    /// Color's reusable tests, organized into ordered sections for Compatibility's module test runners.
+    ///
+    /// The in-app ``AllTestsListView`` and the package's Swift Testing bridge
+    /// execute these same ``TestCase`` instances so both paths verify identical
+    /// parsing, rendering, metadata, and persistence behavior.
+    @MainActor
+    @available(macOS 12, *)
+    static var tests: OrderedDictionary<String, [TestCase]> {
+        // Keep the section construction here beside Color's Module metadata so
+        // maintainers can inspect the public behavior and its checks together.
+        var sections: OrderedDictionary<String, [TestCase]> = [
+            "Parsing and Rendering": [
+                /// Confirms that common CSS and hexadecimal inputs normalize to stable
+                /// strings, including shorthand expansion and case-insensitive names.
+                TestCase("CSS names and hexadecimal strings parse consistently") {
+                    let named = Color(string: "LightSteelBlue")
+                    let shortHex = Color(string: "#c3a")
+                    let longHex = Color(string: "#CC33AA")
+
+                    try expect(named?.hexString == "#B0C4DE", "Expected the CSS name to resolve to #B0C4DE")
+                    try expect(shortHex?.hexString == "#CC33AA", "Expected shorthand hexadecimal input to expand")
+                    try expect(longHex?.hexString == "#CC33AA", "Expected long hexadecimal input to remain stable")
+                },
+                /// Ensures alpha survives both accepted hexadecimal forms and is included
+                /// in the canonical string used for storage and interchange.
+                TestCase("Alpha values survive hexadecimal parsing") {
+                    let shortHexWithAlpha = Color(string: "#c3a8")
+                    let longHexWithAlpha = Color(string: "#CC33AA88")
+
+                    try expect(shortHexWithAlpha?.hexString == "#CC33AA88", "Expected shorthand alpha to expand")
+                    try expect(longHexWithAlpha?.hexString == "#CC33AA88", "Expected long alpha to remain stable")
+                },
+                /// Guards the failable initializer so malformed values do not silently
+                /// produce a color that could later be persisted as valid input.
+                TestCase("Invalid color strings are rejected") {
+                    try expect(Color(string: "not-a-color") == nil, "Expected an unknown color name to fail")
+                    try expect(Color(string: "#12") == nil, "Expected an incomplete hexadecimal color to fail")
+                },
+                TestCase("Color rainbow contains seven colors") {
+                    // Verify the indigo entry that distinguishes Color's
+                    // seven-color rainbow from Compatibility's preview fallback.
+                    let rainbow = [Color].rainbow
+                    try expect(rainbow.count == 7, "Expected Color's seven-color rainbow, but received \(rainbow.count) colors")
+                    try expect(rainbow[5] == Color.indigoBackport, "Expected indigo before the final purple entry")
+                },
+            ],
+            "Module Metadata": [
+                TestCase("Module metadata describes Color") {
+                    try expectEqual(Color.version, "1.5.0", "Expected the runtime and manifest versions to match")
+                    try expect(Color.dependencies.contains { $0.moduleIdentifier == Compatibility.moduleIdentifier }, "Expected Compatibility to be a direct module dependency")
+                    try expect(Color.openSourceRepository == "https://github.com/kudit/Color", "Expected the public repository metadata")
+                    try expect(Color.moduleInfo.isEmpty, "Color does not provide package-specific immediate module information")
+                },
+            ],
+        ]
+
+#if canImport(Foundation) && !(os(WASM) || os(WASI))
+        // Color's custom Codable implementation requires the complete
+        // Foundation surface that remains unavailable in WASM and WASI builds.
+        sections["Persistence"] = [
+            /// Verifies that the library's public Codable implementation round-trips
+            /// through JSON using its stable string representation rather than a
+            /// platform-specific archived color object.
+            TestCase("Codable colors round-trip through JSON") {
+                let original = Color(string: "rgba(255,57,46,0.3)")!
+                let encoded = try JSONEncoder().encode(original)
+                let decoded = try JSONDecoder().decode(Color.self, from: encoded)
+
+                try expect(decoded.stringValue == original.stringValue, "Expected Codable to preserve the stable string representation")
+            },
+        ]
+#endif
+        return sections
+    }
+#endif
 }
+@available(iOS 13, tvOS 13, watchOS 6, *)
+extension Color: @retroactive Module {}
 @_exported import Compatibility
 
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
@@ -123,6 +222,15 @@ public protocol KuColor: Equatable, Hashable {
 
 // the LosslessStringConvertible extension does not work for KuColor since a color may be initialized by a string but the corresponding unlabelled init function is not the one we want since it returns an optional.
 public extension KuColor {
+    /// Creates a color from a supported string, using a fallback when the value cannot be parsed.
+    ///
+    /// This nonfailable initializer accepts the same CSS names, hexadecimal
+    /// values, and RGB or RGBA strings as ``init(string:)``. It also accepts
+    /// `nil`, which produces `defaultColor`.
+    ///
+    /// - Parameters:
+    ///   - string: The optional color representation to parse.
+    ///   - defaultColor: The color to use when `string` is `nil` or invalid.
     init(string: String?, defaultColor: Self) {
         guard let string else {
             self = defaultColor

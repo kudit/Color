@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.4.7"
+let version = "1.5.0"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -150,7 +150,7 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.10.13"),
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.18.0"),
 	],
 	targets: targets
 )

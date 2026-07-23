@@ -5,7 +5,7 @@
 //  Created by Ben Ku on 7/5/24.
 //
 
-#if canImport(SwiftUI) && !(os(WASM) || os(WASI))
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
@@ -410,112 +410,92 @@ public struct SimpleDemoRainbowView: View {
     SimpleDemoRainbowView()
 }
 
-/// Defers construction of an expensive test screen until its tab is selected.
-///
-/// SwiftUI may ask every child of a `TabView` for its body while preparing page
-/// navigation. Returning a clear placeholder for inactive tabs prevents color
-/// parsing, sorting, and conversion tests from running during the first frame.
-@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
-private struct LazyColorTestTab<Content: View>: View {
-    let tag: Int
-    @Binding var selection: Int
-    let content: () -> Content
-
-    init(tag: Int, selection: Binding<Int>, @ViewBuilder content: @escaping () -> Content) {
-        self.tag = tag
-        self._selection = selection
-        self.content = content
-    }
-
-    @ViewBuilder
-    var body: some View {
-        if selection == tag {
-            content()
-        } else {
-            // A lightweight placeholder preserves the tab without initializing
-            // the expensive view hierarchy until the user selects it.
-            Color.clear
-        }
-    }
-}
-
 @available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 public struct ColorTestView: View {
     public init() {}
     @State private var tabSelection = 0
     public var body: some View {
-        TabView(selection: $tabSelection.animation()) {
-            LazyColorTestTab(tag: 0, selection: $tabSelection) {
-                SimpleDemoRainbowView()
-            }
+        // Keep every page as a stable, direct child. Replacing pages with lazy
+        // placeholders during an interactive swipe can make UIKit transfer a
+        // navigation item between navigation bars and can visibly jump when
+        // SwiftUI constructs the destination hierarchy halfway through a gesture.
+        TabView(selection: $tabSelection) {
+            SimpleDemoRainbowView()
                 .tabItem {
                     Text("Demo")
                 }
                 .tag(0)
-            LazyColorTestTab(tag: 1, selection: $tabSelection) {
-                ColorsetsTestView()
-                    .padding()
-                    .colorTestWrapper()
-            }
+            ColorsetsTestView()
+                .padding()
+                .colorTestWrapper()
                 .tabItem {
                     Text("Colorset")
                 }
                 .tag(1)
-            LazyColorTestTab(tag: 2, selection: $tabSelection) {
-                HSVConversionTestView()
-                    .colorTestWrapper()
-            }
+            HSVConversionTestView()
+                .colorTestWrapper()
                 .tabItem {
                     Text("HSV")
                 }
                 .tag(2)
-            LazyColorTestTab(tag: 3, selection: $tabSelection) {
-                ColorPrettyTestView()
-            }
+            ColorPrettyTestView()
                 .tabItem {
                     Text("Pretty")
                 }
                 .tag(3)
-            LazyColorTestTab(tag: 4, selection: $tabSelection) {
-                NamedColorsListTestView()
-            }
+            NamedColorsListTestView()
                 .tabItem {
                     Text("Named CSS")
                 }
                 .tag(4)
-            LazyColorTestTab(tag: 5, selection: $tabSelection) {
-                ColorTintingTestView()
-                    .colorTestWrapper()
-            }
+            ColorTintingTestView()
+                .colorTestWrapper()
                 .tabItem {
                     Text("Tinting")
                 }
                 .tag(5)
-            LazyColorTestTab(tag: 6, selection: $tabSelection) {
-                ContrastingTestView()
-                    .border(Color.accentColorAsset, width: 5)
-                    .colorTestWrapper()
-            }
+            ContrastingTestView()
+                .border(Color.accentColorAsset, width: 5)
+                .colorTestWrapper()
                 .tabItem {
                     Text("Contrast")
                 }
                 .tag(6)
-            LazyColorTestTab(tag: 7, selection: $tabSelection) {
-                CodingDemoView()
-            }
+            CodingDemoView()
                 .tabItem {
                     Text("Coding")
                 }
                 .tag(7)
-            if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-                LazyColorTestTab(tag: 8, selection: $tabSelection) {
-                    ClosureTestView()
-                }
-                    .tabItem {
-                        Text("Closure")
+            RadialStack {
+                Group {
+                    ForEach([Color].rainbow, id: \.self) { color in
+                        Circle().fill(color)
                     }
-                    .tag(8)
+                }
+                .frame(size: 80)
             }
+            .tabItem {
+                Text("Rainbow")
+            }
+            .tag(8)
+            if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+                ClosureTestView()
+                .tabItem {
+                    Text("Closure")
+                }
+                .tag(9)
+            }
+#if compiler(>=5.9)
+            if #available(iOS 15, macOS 12, tvOS 17, watchOS 8, *) {
+                // Present Color's own ordered test catalog so Compatibility
+                // supplies the enclosing module-and-version heading automatically.
+                AllTestsListView()
+                .tabItem {
+                    Text("Tests")
+                }
+                .tag(10)
+            }
+#endif
         }
         .backport.tabViewStyle(.page)
 //        .tabViewStyle(.page(indexDisplayMode: .never))

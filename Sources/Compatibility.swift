@@ -8,12 +8,9 @@
 
 public extension DebugLevel {
     /// Set this to `true` to log failed color parsing notices when returning `nil`
-#if !(os(WASM) || os(WASI))
     @MainActor
-#endif
     static var colorLogging = false
 
-#if !(os(WASM) || os(WASI))
     // TODO: Change this to generic type matching protocol instead of boxed any type?
     @available(iOS 13, tvOS 13, watchOS 6, *)
     var color: any KuColor {
@@ -33,24 +30,6 @@ public extension DebugLevel {
             return type.black
         }
     }
-#else
-    var color: Color {
-        switch self {
-        case .OFF:
-            return .gray
-        case .ERROR:
-            return .red
-        case .WARNING:
-            return .yellow
-        case .NOTICE:
-            return .blue
-        case .DEBUG:
-            return .green
-        case .SILENT: // should not typically be used
-            return .black
-        }
-    }
-#endif
 }
 
 #if canImport(SwiftUI)
@@ -74,5 +53,4 @@ public extension Color {
 }
 
 #endif
-
 

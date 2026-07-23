@@ -7,6 +7,12 @@ import Color
 @available(iOS 15, macOS 12, tvOS 17, watchOS 8, *)
 @main
 struct MyApp: App {
+    init() {
+        // Register the highest-level Color module once at startup so
+        // Compatibility support reports include Color and its dependencies.
+        Application.track(including: [Color.self])
+    }
+
     var body: some Scene {
         WindowGroup {
             ColorTestView()

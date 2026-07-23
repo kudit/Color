@@ -1,6 +1,6 @@
 //
 //  CSSColors.swift
-//  
+//
 //
 //  Created by Ben Ku on 7/5/24.
 //
@@ -165,12 +165,31 @@ public extension KuColor {
     // MARK: Parsing and Rendering
     /// The shared CSS named-color lookup table.
     static var namedColorMap: [String: String] { cachedNamedColorMap }
-    
+
     /**
-     KF: Creates a Color from the given string in #HEX format, named CSS string, rgb(), or rgba() format.  Important to have named parameter string: to differentiate from SwiftUI Color(_:String) init for a named color in an asset bundle.
-     
+     Create native colors from named CSS string, #HEX format hexadecimal values, rgb(), or rgba() format.
+
+     This uses the named parameter string: to differentiate from SwiftUI `Color(_:String)` init for a named color in an asset bundle.
+
+     Use this failable `init(string:)` initializer when input may be invalid:
+
+     ```swift
+     let named = Color(string: "LightSteelBlue")
+     let hexadecimal = Color(string: "#CC33AA")
+     let translucent = Color(string: "rgba(255, 57, 46, 0.3)")
+     ```
+
+     To ensure a non-optional is returned, use the `init(string:defaultValue:)` version to ensure a valid color is returned.
+
+     CSS names are case-insensitive. Hexadecimal input supports short and long RGB
+     forms and their alpha-bearing variants. Invalid or incomplete input returns
+     `nil`, allowing callers to choose an explicit fallback.
+
+     Use `hexString` for a normalized hexadecimal representation and `stringValue`
+     for stable persistence.
+
      - Parameter string: The string to be converted.
-     
+
      - Returns: A new color or`nil` if we cannot parse the string.
      */
     init?(string: String) {
@@ -179,7 +198,7 @@ public extension KuColor {
         if source.contains("#") {
             // decode hex
             source = source.removing(characters: "#").uppercased()
-            
+
             var shortForm = false
             // convert to long-form 8 or 4 character for scanning
             switch source.count {
@@ -220,7 +239,7 @@ public extension KuColor {
                 bString += bString
                 aString += aString
             }
-            
+
             // Scan values
             var r: UInt64 = 0
             var g: UInt64 = 0
@@ -260,7 +279,7 @@ public extension KuColor {
             var b: UInt64 = chunks[2]
             var a: UInt64 = chunks[3]
             #endif
-            
+
             self.init(
                 red: r.eightBitToDouble,
                 green: g.eightBitToDouble,
@@ -268,10 +287,10 @@ public extension KuColor {
                 alpha: a.eightBitToDouble)
         } else if includesAlpha || source.contains("rgb(") {
             // css rgb color style
-            
+
             // decode RGBA
             source = source.replacingOccurrences(of: ["rgba(","rgb(",")"," "], with: "")
-                        
+
             // Separate into components by removing commas and spaces
             let components = source.components(separatedBy: ",")
             if (components.count != 4 && includesAlpha) || (components.count != 3 && !includesAlpha) {
@@ -280,9 +299,9 @@ public extension KuColor {
                 }
                 return nil
             }
-            
+
             let componentValues = components.map { Double($0) }
-            
+
             // make sure cast succeeded
             for value in componentValues {
                 guard value != nil else {
@@ -292,7 +311,7 @@ public extension KuColor {
                     return nil
                 }
             }
-            
+
             // Create the color
             var alphaValue:Double = 1.0
             if includesAlpha {
@@ -336,7 +355,7 @@ public extension KuColor {
             return nil
         }
     }
-    
+
     static func cssFrom(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> String {
         // Round each value so that we don't end up flooring values when converting to Int.
         let eightBits = "\(red.hexIntSnapped),\(green.hexIntSnapped),\(blue.hexIntSnapped)"
@@ -348,13 +367,13 @@ public extension KuColor {
         let string = "rgb\(opaque ? "" : "a")(\(eightBits)\(alphaComponentString))"
         return string
     }
-    
+
     /// Returns a string in the form rgba(R,G,B,A) (should be URL safe as well). Will drop the alpha if it is 1.0 and do rgb(R,G,B) in double numbers from 0 to 255.
     var cssString: String {
         let components = rgbaComponents
         return Self.cssFrom(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
     }
-    
+
     /// This will return a string in the form #RRGGBB or #RRGGBBAA where this is the hexadecimal representation.  Note that this isn't necessarily a perfect match as this may round values and values outside 0-255 range will be snapped to that range.
     static func hexFrom(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> String {
         // Get component values and fix ranges if needed since extended color space isn't suppported.
@@ -387,12 +406,12 @@ public extension KuColor {
         return string
 #endif
     }
-    
+
     var hexString: String {
         let components = rgbaComponents
         return Self.hexFrom(red: components.red, green: components.green, blue: components.blue, alpha: components.alpha)
     }
-    
+
     @available(*, deprecated, renamed: "stringValue")
     /// Returns the "nicest" version of the color that we can.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.
     /// DEPRECATED: Use `stringValue` if we need the nicest text encoding or `debugString` if we want to output something for display/debug instead.
@@ -401,14 +420,34 @@ public extension KuColor {
     }
 
     /// Returns a simplified string representation of the color.  If this is a SwiftUI color, will use the SwiftUI constant with a period prefix.  If there is a named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  NOTE: This is not meant for encoding.  If you need to encode this, use `stringValue`.
+    /// Use `debugString` for human-readable display. It may prefer a convenient native or named representation and should not replace `stringValue` in persistent data.
     var debugString: String {
         if let name = Self.swiftName(for: self.underlying) {
             return "." + name
         }
         return stringValue
     }
-    
-    /// Returns the "nicest" string encoding of the color that we can suitable for use in CSS.  If there is a CSS named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  SwiftUI colors use their fixed values.
+
+    /**
+     Preserve colors with their stable string or Codable representation.
+
+     The package's `stringValue` is designed for storage and interchange:
+
+     ```swift
+     let storedValue = color.stringValue
+     let restoredColor = Color(string: storedValue)
+     ```
+
+     Where Foundation is available, supported color types also round-trip through
+     `JSONEncoder` and `JSONDecoder`:
+
+     ```swift
+     let data = try JSONEncoder().encode(color)
+     let restored = try JSONDecoder().decode(Color.self, from: data)
+     ```
+
+     Preferred stable value for encoding and persistence.  Returns the "nicest" string encoding of the color that we can suitable for use in CSS.  If there is a CSS named color, we use that.  If HEX is available, use that, otherwise, use rgb or rgba versions if there is extended color space or alpha.  SwiftUI colors use their fixed values.
+     */
     var stringValue: String {
         // alpha, convert to hex and make sure converting back gets the same numbers (otherwise, it's probably an extended color space).  Also make sure that the color accuracy works with 256 mapping otherwise we want to use css for the increased fidelity.
         guard let hexColor = Self(string: hexString), hexColor.cssString == self.cssString else {

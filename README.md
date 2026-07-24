@@ -66,7 +66,7 @@ Here are some usage examples.
 
 ### Get the version of Color that is imported.
 ```swift
-let version = Color.version
+let version = ColorKit.version
 ```
 
 ### Create a color from a hex string.
@@ -95,7 +95,7 @@ swift test
 ```
 
 The reusable tests are declared inline with the module metadata in ordered
-`Color.tests` sections using Compatibility's `TestCase` values. The development
+`ColorKit.tests` sections using Compatibility's `TestCase` values. The development
 app presents registered module tests with `AllTestsListView`, which groups the
 sections beneath a Color module-and-version heading, while the `ColorTests`
 target provides only the parameterized Swift Testing bridge needed by Xcode and
@@ -126,7 +126,7 @@ This was a lot of work.  If you find this useful particularly if you use this in
 ## License
 Feel free to use this in projects, however, please include a link back to this project and credit somewhere in the app.  Example Markdown and string interpolation for the version:
 ```swift
-Text("Open Source projects used include [Color](https://github.com/kudit/Color) v\(Color.version)
+Text("Open Source projects used include [Color](https://github.com/kudit/Color) v\(ColorKit.version)
 ```
 
 

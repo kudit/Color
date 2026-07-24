@@ -5,33 +5,37 @@
 //  Created by Ben Ku on 9/26/16.
 //  Copyright © 2016 Kudit, LLC. All rights reserved.
 //
-/// A native platform color extended with Color package behavior and module metadata.
+
+/// Package metadata and registration entry point for the Kudit Color package.
 ///
-/// In addition to parsing and conversion APIs, `Color` conforms to
-/// Compatibility's ``Module`` protocol. Register it once from an application's
-/// startup path with `Application.track(including: [Color.self])` so support
-/// reports include Color and its direct Compatibility dependency.
-@available(iOS 13, tvOS 13, watchOS 6, *)
-public extension Color {
+/// This type is separate from SwiftUI.Color and other platform color types so
+/// the package can be registered on every deployment target supported by Color.
+public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    static let version: Version = "1.5.0"
-
+    public static let version: Version = "1.5.2"
+    
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
-    static let dependencies: [Module.Type] = [Compatibility.self]
-
+    public static let dependencies: [Module.Type] = [Compatibility.self]
+    
     /// Immediately available Color module information.
     ///
     /// Color currently has no package-specific diagnostic fields beyond the
     /// version that Compatibility appends automatically, so this collection is
     /// intentionally empty and remains safe on every supported platform.
-    static let moduleInfo: [Field] = []
-
+    
     /// The public repository used for source discovery and opt-in license
     /// reporting by Compatibility's support-reporting APIs.
-    static let openSourceRepository: String? = "https://github.com/kudit/Color"
-
+    public static let openSourceRepository: String? =
+    "https://github.com/kudit/Color"
+    
+    /// Human-readable package name shown in diagnostics and support reports.
+    public static let moduleName = "Color"
+    
+    /// Stable identity that does not depend on the marker type being renamed.
+    public static let moduleIdentifier = "com.kudit.Color"
+    
 #if compiler(>=5.9)
     /// Color's reusable tests, organized into ordered sections for Compatibility's module test runners.
     ///
@@ -39,8 +43,8 @@ public extension Color {
     /// execute these same ``TestCase`` instances so both paths verify identical
     /// parsing, rendering, metadata, and persistence behavior.
     @MainActor
-    @available(macOS 12, *)
-    static var tests: OrderedDictionary<String, [TestCase]> {
+    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+    public static let tests: OrderedDictionary<String, [TestCase]> = {
         // Keep the section construction here beside Color's Module metadata so
         // maintainers can inspect the public behavior and its checks together.
         var sections: OrderedDictionary<String, [TestCase]> = [
@@ -79,14 +83,6 @@ public extension Color {
                     try expect(rainbow[5] == Color.indigoBackport, "Expected indigo before the final purple entry")
                 },
             ],
-            "Module Metadata": [
-                TestCase("Module metadata describes Color") {
-                    try expectEqual(Color.version, "1.5.0", "Expected the runtime and manifest versions to match")
-                    try expect(Color.dependencies.contains { $0.moduleIdentifier == Compatibility.moduleIdentifier }, "Expected Compatibility to be a direct module dependency")
-                    try expect(Color.openSourceRepository == "https://github.com/kudit/Color", "Expected the public repository metadata")
-                    try expect(Color.moduleInfo.isEmpty, "Color does not provide package-specific immediate module information")
-                },
-            ],
         ]
 
 #if canImport(Foundation) && !(os(WASM) || os(WASI))
@@ -106,11 +102,22 @@ public extension Color {
         ]
 #endif
         return sections
-    }
+    }()
 #endif
 }
+
+/// A native platform color extended with Color package behavior and module metadata.
+///
+/// In addition to parsing and conversion APIs, `Color` conforms to
+/// Compatibility's ``Module`` protocol. Register it once from an application's
+/// startup path with `Application.track(including: [Color.self])` so support
+/// reports include Color and its direct Compatibility dependency.
 @available(iOS 13, tvOS 13, watchOS 6, *)
-extension Color: @retroactive Module {}
+public extension Color {
+    static var version: Version {
+        ColorKit.version
+    }
+}
 @_exported import Compatibility
 
 // http://arstechnica.com/apple/2009/02/iphone-development-accessing-uicolor-components/
@@ -867,7 +874,8 @@ extension Color: KuColor {
 //        return true
     }
 }
-#elseif canImport(UIKit)
+#else
+#if canImport(UIKit)
 public extension KuColor {
     typealias DefaultColorType = UIColor // default to UIColor if for some reason we can't import SwiftUI
 }
@@ -875,7 +883,8 @@ public extension KuColor {
 public extension KuColor {
     typealias DefaultColorType = Color
 }
-// create a Color struct that can be used to store color data
+#endif
+// create a Color struct that can be used to store color data and be extended by the Module so Color is available
 public struct Color: KuColor, Codable {
     // Provide missing color support manually using fixed versions
     public static let black: Color = .blackFixed

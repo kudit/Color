@@ -10,7 +10,7 @@ struct MyApp: App {
     init() {
         // Register the highest-level Color module once at startup so
         // Compatibility support reports include Color and its dependencies.
-        Application.track(including: [Color.self])
+        Application.track(including: [ColorKit.self])
     }
 
     var body: some Scene {

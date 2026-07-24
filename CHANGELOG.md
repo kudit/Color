@@ -1,5 +1,10 @@
 # ChangeLog
 
+## v1.5.2 2026-07-23
+Fixed missed surface of Color.version.
+Extracted Color module code into ColorKit so that it can be included regardless of Color availability and without having to extend Color.
+Fixed so that if not SwiftUI but UIKit, Color struct is still provided.
+
 ## v1.5.1 2026-07-23
 Updated Compatibility to v1.18.2 to fix SPI issues.
 

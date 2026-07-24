@@ -13,15 +13,6 @@ import Color
 import Compatibility
 import Testing
 
-#if canImport(SwiftUI)
-import SwiftUI
-/// Selects SwiftUI's concrete color type so the bridge can reach the module's reusable tests without ambiguity.
-private typealias TestedColor = SwiftUI.Color
-#else
-/// Selects the package's fallback concrete color type on platforms where SwiftUI is unavailable.
-private typealias TestedColor = Color.Color
-#endif
-
 /// Bridges each ordered Color test section into Swift Testing without duplicating the behavioral assertions.
 @Suite("Color Tests")
 struct ColorTestsSuite {
@@ -30,7 +21,7 @@ struct ColorTestsSuite {
         "Reusable Color test",
         .serialized,
         arguments: await MainActor.run {
-            TestedColor.tests.flatMap { section, tests in
+            ColorKit.tests.flatMap { section, tests in
                 tests.map { (section: section, test: $0) }
             }
         }

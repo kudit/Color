@@ -10,29 +10,24 @@
 // Xcode/CI and the in-app test UI execute identical checks.
 #if compiler(>=5.9) && canImport(Color) && canImport(Testing)
 import Color
-import Compatibility
+import CompatibilityTesting
 import Testing
 
-/// Bridges each ordered Color test section into Swift Testing without duplicating the behavioral assertions.
+/// Presents every reusable Color `TestCase` as its own named Swift Testing argument.
 @Suite("Color Tests")
 struct ColorTestsSuite {
-    /// Runs one reusable test while retaining its section name in Swift Testing's argument report.
+    /// Runs the same ordered reusable tests used by Compatibility's in-app test UI.
     @Test(
         "Reusable Color test",
         .serialized,
         arguments: await MainActor.run {
-            ColorKit.tests.flatMap { section, tests in
-                tests.map { (section: section, test: $0) }
-            }
+            ModuleTestEntry.entries(for: ColorKit.self, tests: ColorKit.tests)
         }
     )
     @MainActor
     @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
-    func reusableColorTest(section: String, test: TestCase) async throws {
-        // Execute the shared closure directly so thrown failures retain Swift
-        // Testing's native context while the section argument identifies its group.
-        _ = section
-        try await test.execute()
+    func reusableColorTest(_ entry: ModuleTestEntry) async throws {
+        try await entry.execute()
     }
 }
 #endif

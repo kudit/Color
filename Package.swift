@@ -137,6 +137,7 @@ targets += [
 		name: "\(packageLibraryName)Tests",
 		dependencies: [
 			.init(stringLiteral: packageLibraryName), // Use the shared name while preserving the manifest pattern required by Playgrounds.
+            .product(name: "Compatibility Testing Library", package: "compatibility"),
 		],
 		path: "Development/ColorTests"
 	),
@@ -150,7 +151,7 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.18.0"),
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.19.0"),
 	],
 	targets: targets
 )

@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.5.2"
+let version = "1.5.3"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -137,6 +137,7 @@ targets += [
 		name: "\(packageLibraryName)Tests",
 		dependencies: [
 			.init(stringLiteral: packageLibraryName), // Use the shared name while preserving the manifest pattern required by Playgrounds.
+			.product(name: "Compatibility Testing Library", package: "compatibility"), // Reuse Compatibility's public test adapter so Color's plan includes its module tests.
 		],
 		path: "Development/ColorTests"
 	),
@@ -150,7 +151,8 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.18.0"),
+        // Color's adaptive sidebar tab style requires the Compatibility API introduced in 1.19.2.
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.19.4"),
 	],
 	targets: targets
 )

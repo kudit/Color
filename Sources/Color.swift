@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.2"
+    public static let version: Version = "1.5.3"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
@@ -129,10 +129,13 @@ public typealias CGFloat = Double
 #endif
 
 // DoubleConvertible may not be implemented in CGFloat if the architecture doesn't use a Double underlying.  This guarantees that CGFloat conforms.
-#if canImport(Foundation) && compiler(>=6.0)
+#if canImport(CoreGraphics)
+import CoreGraphics
+#if compiler(>=6.0)
 extension CGFloat: @retroactive DoubleConvertible {}
 #else
 extension CGFloat: DoubleConvertible {}
+#endif
 #endif
 public extension CGFloat {
     var doubleValue: Double {

@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.5.3 2026-08-27
+Added a shared Xcode test plan to the Color app scheme so Command-U runs the SwiftPM ColorTests target alongside the app scheme.
+Added platform-appropriate SF Symbol icons to the Color test tabs, removed unused integer tab tags, and raised the Compatibility minimum to 1.19.2 for the adaptive sidebar tab style.
+Color's test target now reuses Compatibility's public `ModuleTestEntry` adapter so the Color test plan runs the complete reusable Compatibility module suite.
+Made Color's synchronous logging preference concurrency-safe with a `Synchronization.Mutex` on supported Swift 6 toolchains and retained compatible fallbacks elsewhere.
+
 ## v1.5.2 2026-07-23
 Fixed missed surface of Color.version.
 Extracted Color module code into ColorKit so that it can be included regardless of Color availability and without having to extend Color.

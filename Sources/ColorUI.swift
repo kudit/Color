@@ -413,59 +413,52 @@ public struct SimpleDemoRainbowView: View {
 @available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
 public struct ColorTestView: View {
     public init() {}
-    @State private var tabSelection = 0
     public var body: some View {
         // Keep every page as a stable, direct child. Replacing pages with lazy
         // placeholders during an interactive swipe can make UIKit transfer a
         // navigation item between navigation bars and can visibly jump when
         // SwiftUI constructs the destination hierarchy halfway through a gesture.
-        TabView(selection: $tabSelection) {
+        // Let SwiftUI infer tab identity from the ordered children; the app does not need
+        // programmatic selection, so integer tags would add maintenance without behavior.
+        TabView {
             SimpleDemoRainbowView()
                 .tabItem {
-                    Text("Demo")
+                    Backport.Label("Demo", systemImage: "paintpalette")
                 }
-                .tag(0)
             ColorsetsTestView()
                 .padding()
                 .colorTestWrapper()
                 .tabItem {
-                    Text("Colorset")
+                    Backport.Label("Colorset", systemImage: "square.grid.2x2")
                 }
-                .tag(1)
             HSVConversionTestView()
                 .colorTestWrapper()
                 .tabItem {
-                    Text("HSV")
+                    Backport.Label("HSV", systemImage: "slider.horizontal.3")
                 }
-                .tag(2)
             ColorPrettyTestView()
                 .tabItem {
-                    Text("Pretty")
+                    Backport.Label("Pretty", systemImage: "wand.and.stars")
                 }
-                .tag(3)
             NamedColorsListTestView()
                 .tabItem {
-                    Text("Named CSS")
+                    Backport.Label("Named CSS", systemImage: "list.bullet.rectangle")
                 }
-                .tag(4)
             ColorTintingTestView()
                 .colorTestWrapper()
                 .tabItem {
-                    Text("Tinting")
+                    Backport.Label("Tinting", systemImage: "paintbrush")
                 }
-                .tag(5)
             ContrastingTestView()
                 .border(Color.accentColorAsset, width: 5)
                 .colorTestWrapper()
                 .tabItem {
-                    Text("Contrast")
+                    Backport.Label("Contrast", systemImage: "circle.lefthalf.filled")
                 }
-                .tag(6)
             CodingDemoView()
                 .tabItem {
-                    Text("Coding")
+                    Backport.Label("Coding", systemImage: "doc.text")
                 }
-                .tag(7)
             RadialStack {
                 Group {
                     ForEach([Color].rainbow, id: \.self) { color in
@@ -475,15 +468,13 @@ public struct ColorTestView: View {
                 .frame(size: 80)
             }
             .tabItem {
-                Text("Rainbow")
+                Backport.Label("Rainbow", systemImage: "rainbow")
             }
-            .tag(8)
             if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
-                ClosureTestView()
+                RadialTestView()
                 .tabItem {
-                    Text("Closure")
+                    Label("Radial Compatibility", systemImage: "arrow.triangle.2.circlepath")
                 }
-                .tag(9)
             }
 #if compiler(>=5.9)
             if #available(iOS 15, macOS 12, tvOS 17, watchOS 8, *) {
@@ -491,13 +482,12 @@ public struct ColorTestView: View {
                 // supplies the enclosing module-and-version heading automatically.
                 AllTestsListView()
                 .tabItem {
-                    Text("Tests")
+                    Label("All Tests", systemImage: "checkmark.seal")
                 }
-                .tag(10)
             }
 #endif
         }
-        .backport.tabViewStyle(.page)
+        .backport.tabViewStyle(.sidebarAdaptable)
 //        .tabViewStyle(.page(indexDisplayMode: .never))
 //        .safeAreaInset(edge: .bottom) {
 //            HStack(spacing: 6){

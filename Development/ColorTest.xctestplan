@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "45A88BEA-0855-421E-9A28-2A4812BED761",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : true,
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Color.xcodeproj",
+      "identifier" : "B5E5FC502C386144004F2009",
+      "name" : "ColorTest"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "ColorTests",
+        "name" : "ColorTests"
+      }
+    }
+  ],
+  "version" : 1
+}

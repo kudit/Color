@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.3"
+    public static let version: Version = "1.5.4"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
@@ -43,7 +43,9 @@ public enum ColorKit: Module {
     /// execute these same ``TestCase`` instances so both paths verify identical
     /// parsing, rendering, metadata, and persistence behavior.
     @MainActor
-    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+    // Keep the catalog available wherever Compatibility's Module test requirement is available so
+    // existential module discovery in AllTestsListView does not fall back to an empty default catalog.
+    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     public static let tests: OrderedDictionary<String, [TestCase]> = {
         // Keep the section construction here beside Color's Module metadata so
         // maintainers can inspect the public behavior and its checks together.

@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.5.4 2026-09-01
+Superseded the obsolete Color PR #2 work: Compatibility 1.19 and Color 1.5.3 now include the mutex-backed logging, platform/toolchain fallbacks, CoreGraphics-gated CGFloat conformance, and passing Swift Package Index validation that PR #2 was intended to provide.
+Updated the Compatibility resolution to 1.19.8 and corrected the reusable module test bridge to register ColorKit; the remaining no-test-cases report is tracked separately.
+Aligned ColorKit's reusable test-catalog availability with Compatibility's Module requirement so AllTestsListView can discover and display Color tests on macOS 10.15 and later.
+Added a Color UI-test runner that launches the sample app, verifies its demo and All Tests tabs, and confirms the Color module heading is rendered.
+
 ## v1.5.3 2026-08-27
 Added a shared Xcode test plan to the Color app scheme so Command-U runs the SwiftPM ColorTests target alongside the app scheme.
 Added platform-appropriate SF Symbol icons to the Color test tabs, removed unused integer tab tags, and raised the Compatibility minimum to 1.19.2 for the adaptive sidebar tab style.

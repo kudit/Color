@@ -7,7 +7,7 @@
 
 import PackageDescription
 
-let version = "1.5.3"
+let version = "1.5.4"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -152,7 +152,7 @@ let package = Package(
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
         // Color's adaptive sidebar tab style requires the Compatibility API introduced in 1.19.2.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.19.4"),
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.19.9"),
 	],
 	targets: targets
 )

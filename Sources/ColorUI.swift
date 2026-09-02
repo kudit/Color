@@ -422,40 +422,48 @@ public struct ColorTestView: View {
         // programmatic selection, so integer tags would add maintenance without behavior.
         TabView {
             SimpleDemoRainbowView()
+                .backport.accessibilityIdentifier("color.demo")
                 .tabItem {
                     Backport.Label("Demo", systemImage: "paintpalette")
                 }
             ColorsetsTestView()
                 .padding()
                 .colorTestWrapper()
+                .backport.accessibilityIdentifier("color.colorset")
                 .tabItem {
                     Backport.Label("Colorset", systemImage: "square.grid.2x2")
                 }
             HSVConversionTestView()
                 .colorTestWrapper()
+                .backport.accessibilityIdentifier("color.hsv")
                 .tabItem {
                     Backport.Label("HSV", systemImage: "slider.horizontal.3")
                 }
             ColorPrettyTestView()
+                .backport.accessibilityIdentifier("color.pretty")
                 .tabItem {
                     Backport.Label("Pretty", systemImage: "wand.and.stars")
                 }
             NamedColorsListTestView()
+                .backport.accessibilityIdentifier("color.namedColors")
                 .tabItem {
                     Backport.Label("Named CSS", systemImage: "list.bullet.rectangle")
                 }
             ColorTintingTestView()
                 .colorTestWrapper()
+                .backport.accessibilityIdentifier("color.tinting")
                 .tabItem {
                     Backport.Label("Tinting", systemImage: "paintbrush")
                 }
             ContrastingTestView()
                 .border(Color.accentColorAsset, width: 5)
                 .colorTestWrapper()
+                .backport.accessibilityIdentifier("color.contrast")
                 .tabItem {
                     Backport.Label("Contrast", systemImage: "circle.lefthalf.filled")
                 }
             CodingDemoView()
+                .backport.accessibilityIdentifier("color.coding")
                 .tabItem {
                     Backport.Label("Coding", systemImage: "doc.text")
                 }
@@ -467,11 +475,13 @@ public struct ColorTestView: View {
                 }
                 .frame(size: 80)
             }
+            .backport.accessibilityIdentifier("color.rainbow")
             .tabItem {
                 Backport.Label("Rainbow", systemImage: "rainbow")
             }
             if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
                 RadialTestView()
+                    .accessibilityIdentifier("color.radialCompatibility")
                 .tabItem {
                     Label("Radial Compatibility", systemImage: "arrow.triangle.2.circlepath")
                 }
@@ -481,6 +491,7 @@ public struct ColorTestView: View {
                 // Present Color's own ordered test catalog so Compatibility
                 // supplies the enclosing module-and-version heading automatically.
                 AllTestsListView()
+                    .accessibilityIdentifier("color.allTests")
                 .tabItem {
                     Label("All Tests", systemImage: "checkmark.seal")
                 }

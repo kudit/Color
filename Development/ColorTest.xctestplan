@@ -20,6 +20,13 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:Color.xcodeproj",
+        "identifier" : "B50707012C60A00100000001",
+        "name" : "ColorUITests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:..",
         "identifier" : "ColorTests",
         "name" : "ColorTests"

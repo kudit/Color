@@ -7,7 +7,8 @@
 
 import PackageDescription
 
-let version = "1.5.4"
+// Keep the Swift Playgrounds display version aligned with ColorKit and the Xcode project.
+let version = "1.5.5"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.

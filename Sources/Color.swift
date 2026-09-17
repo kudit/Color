@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.4"
+    public static let version: Version = "1.5.5"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.

@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v1.5.5 2026-09-17
+Updated the Compatibility to 1.20.0.
+
 ## v1.5.4 2026-09-01
 Superseded the obsolete Color PR #2 work: Compatibility 1.19 and Color 1.5.3 now include the mutex-backed logging, platform/toolchain fallbacks, CoreGraphics-gated CGFloat conformance, and passing Swift Package Index validation that PR #2 was intended to provide.
 Updated the Compatibility resolution to 1.19.8 and corrected the reusable module test bridge to register ColorKit; the remaining no-test-cases report is tracked separately.

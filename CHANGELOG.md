@@ -1,7 +1,12 @@
 # ChangeLog
 
+## v1.5.6 2026-10-14
+Moved the Color app footer into the tab view so it stays above the iPhone tab bar.
+Updated Compatibility.
+Test coverage at 70%.
+
 ## v1.5.5 2026-09-17
-Updated the Compatibility to 1.20.0.
+Updated Compatibility to 1.20.0.
 
 ## v1.5.4 2026-09-01
 Superseded the obsolete Color PR #2 work: Compatibility 1.19 and Color 1.5.3 now include the mutex-backed logging, platform/toolchain fallbacks, CoreGraphics-gated CGFloat conformance, and passing Swift Package Index validation that PR #2 was intended to provide.

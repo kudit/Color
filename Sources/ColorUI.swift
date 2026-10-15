@@ -367,6 +367,9 @@ public struct SimpleDemoRainbowView: View {
             chosenColor = Color(cgColor: cgColor)
         })
         List {
+			Section {
+				Text("Color v\(Color.version) © \(String(Date.nowBackport.year)) Kudit LLC").font(.caption)
+			}
             #if !os(tvOS) && !os(watchOS)
             if #available(iOS 14, macOS 11, *) {
                 Section {

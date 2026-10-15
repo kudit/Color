@@ -2,7 +2,7 @@
 //  ColorUITests.swift
 //  ColorUITests
 //
-
+#if canImport(XCTest)
 import XCTest
 
 /// Exercises the sample application through its public UI so app-level wiring is covered in addition
@@ -78,3 +78,4 @@ final class ColorUITests: XCTestCase {
         return element.exists
     }
 }
+#endif

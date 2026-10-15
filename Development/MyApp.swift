@@ -16,12 +16,6 @@ struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ColorTestView()
-                .safeAreaInset(edge: .bottom) {
-                    HStack {
-                        Spacer()
-                        Text("Color v\(Color.version) © \(String(Date.now.year)) Kudit LLC").font(.caption) // (C\(Compatibility.version))
-                    }.padding()
-                }
         }
     }
 }

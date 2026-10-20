@@ -47,7 +47,7 @@ public extension DebugLevel {
 #endif
 
     // TODO: Change this to generic type matching protocol instead of boxed any type?
-    @available(iOS 13, tvOS 13, watchOS 6, *)
+	@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     var color: any KuColor {
         let type = KuColor.DefaultColorType.self
         switch self {
@@ -70,7 +70,7 @@ public extension DebugLevel {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public extension Color {
     /// Use this instead of .accentColor so that the color actually appears in tvOS and can properly be used.
     static var accentColorAsset: Color {
@@ -82,7 +82,7 @@ public extension Color {
     }
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview {
     Color.brownBackport
 }

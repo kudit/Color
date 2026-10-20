@@ -467,17 +467,17 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Coding") {
     CodingDemoView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Named Colors") {
     NamedColorsListTestView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Pretty Text") {
     ColorPrettyTestView()
 }

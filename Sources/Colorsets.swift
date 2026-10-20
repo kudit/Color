@@ -102,7 +102,7 @@ public extension KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct ColorBarTestView: View {
     public var text: String?
     public var colors: [Color]
@@ -132,7 +132,7 @@ public struct ColorBarTestView: View {
     }
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct ColorsetsTestView: View {
     var colorsets = [Color].namedColorsets
     public var body: some View {
@@ -145,7 +145,7 @@ public struct ColorsetsTestView: View {
     }
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Colorsets") {
     ColorsetsTestView()
 }

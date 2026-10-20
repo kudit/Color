@@ -4,7 +4,8 @@ import SwiftUI
 import Color
 #endif
 
-@available(iOS 15, macOS 12, tvOS 17, watchOS 8, *)
+// The SwiftUI App lifecycle starts at iOS/tvOS 14, macOS 11, and watchOS 7.
+@available(iOS 14, macOS 11, tvOS 14, watchOS 7, *)
 @main
 struct MyApp: App {
     init() {
@@ -19,17 +20,18 @@ struct MyApp: App {
         }
     }
 }
+
 #if swift(>=5.9)
 // README examples
-@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("ColorTest") {
     ColorTestView()
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Rainbow Colors") {
     RadialStack {
         Group {

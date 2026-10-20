@@ -8,7 +8,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct Swatch: View {
     public var color: Color
     public var label: String?
@@ -37,8 +37,8 @@ public struct Swatch: View {
                         Text("\(label)")
                             .bold()
                     } else {
-                        Image(systemName: "applelogo")
-                            .imageScale(.large)
+						Backport.Image(systemName: "applelogo")
+							.backport.imageScale(.large)
                     }
                     //Text("\(Int(color.luminance * 100))").shadow(color: color, radius: 1)
                 }
@@ -47,14 +47,14 @@ public struct Swatch: View {
             .backport.focusable()
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct SwatchTest: View {
     var color: Color
     var body: some View {
         Swatch(color: color, logo: true)
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct HSVConversionTestView: View {
     public var body: some View {
         VStack {
@@ -74,11 +74,11 @@ struct HSVConversionTestView: View {
         }
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("HSV") {
     HSVConversionTestView()
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct ColorTintingTestView: View {
     public var body: some View {
         VStack {
@@ -100,11 +100,11 @@ struct ColorTintingTestView: View {
         }
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Color Tinting") {
     ColorTintingTestView()
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct ContrastingTestView: View {
     var body: some View {
         VStack {
@@ -165,12 +165,12 @@ struct ContrastingTestView: View {
         }.padding().backport.background { Color.gray }
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Lightness") {
     ContrastingTestView()
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct NamedColorsListTestView: View {
     @State private var alphaSort = false
 
@@ -229,7 +229,7 @@ struct NamedColorsListTestView: View {
         .listStyle(.plain)
         .closure { view in
             Group {
-                if #available(iOS 17, macOS 99, tvOS 17, watchOS 10, *) {
+                if #available(iOS 17, macOS 14, tvOS 17, watchOS 10, *) {
                     view
                         .contentMargins(.bottom, Self.bottomMargin, for: .automatic)
                 } else {
@@ -240,12 +240,12 @@ struct NamedColorsListTestView: View {
         }
     }
 }
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Named") {
     NamedColorsListTestView()
 }
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct PrettySwatch: View {
     var source: String
     var color: Color {
@@ -290,7 +290,7 @@ struct PrettySwatch: View {
 //        .padding()
 //}
 
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 struct ColorPrettyTestView: View {
     let prettyTests = [
         "rEd",
@@ -323,12 +323,12 @@ struct ColorPrettyTestView: View {
         }
     }
 }
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Pretty") {
     ColorPrettyTestView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public extension CGColor {
     /// Returns a string in the form rgba(R,G,B,A) (should be URL safe as well). Will drop the alpha if it is 1.0 and do rgb(R,G,B) in double numbers from 0 to 255.
     var cssString: String {
@@ -347,7 +347,7 @@ public extension CGColor {
     }
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct SimpleDemoRainbowView: View {
     @Environment(\.self) var environment
     @CloudStorage("chosenColor") var chosenColor = Color.accentColor
@@ -386,8 +386,8 @@ public struct SimpleDemoRainbowView: View {
             // stable row ID without performing the expensive CSS conversion.
             ForEach([Color].named, id: \.self) { color in
                 HStack {
-                    Image(systemName: "globe")
-                        .imageScale(.large)
+					Backport.Image(systemName: "globe")
+						.backport.imageScale(.large)
                     Text("Compatibility v\(Compatibility.version) \(color.stringValue)")
                     Spacer()
                 }
@@ -408,25 +408,62 @@ public struct SimpleDemoRainbowView: View {
     }
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Demo") {
     SimpleDemoRainbowView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct ColorTestView: View {
     public init() {}
     public var body: some View {
+#if os(watchOS)
+        if #available(watchOS 7, *) {
+            tabbedContent
+        } else {
+            legacyWatchContent
+        }
+#else
+        tabbedContent
+#endif
+    }
+
+    /// Mirrors Compatibility's watchOS 6 scroll-container fallback, which predates native tabs.
+    private var legacyWatchContent: some View {
+        ScrollView {
+            VStack(spacing: 12) {
+                SimpleDemoRainbowView().backport.accessibilityIdentifier("color.demo")
+                ColorsetsTestView().padding().colorTestWrapper().backport.accessibilityIdentifier("color.colorset")
+                HSVConversionTestView().colorTestWrapper().backport.accessibilityIdentifier("color.hsv")
+                ColorPrettyTestView().backport.accessibilityIdentifier("color.pretty")
+                NamedColorsListTestView().backport.accessibilityIdentifier("color.namedColors")
+                ColorTintingTestView().colorTestWrapper().backport.accessibilityIdentifier("color.tinting")
+                ContrastingTestView().border(Color.accentColorAsset, width: 5).colorTestWrapper().backport.accessibilityIdentifier("color.contrast")
+                CodingDemoView().backport.accessibilityIdentifier("color.coding")
+                RadialStack {
+                    ForEach([Color].rainbow, id: \.self) { color in
+                        Circle().fill(color)
+                    }
+                    .frame(size: 80)
+                }
+                .backport.accessibilityIdentifier("color.rainbow")
+            }
+            .padding()
+        }
+    }
+
+    @available(watchOS 7, *)
+    private var tabbedContent: some View {
         // Keep every page as a stable, direct child. Replacing pages with lazy
         // placeholders during an interactive swipe can make UIKit transfer a
         // navigation item between navigation bars and can visibly jump when
         // SwiftUI constructs the destination hierarchy halfway through a gesture.
         // Let SwiftUI infer tab identity from the ordered children; the app does not need
         // programmatic selection, so integer tags would add maintenance without behavior.
-        TabView {
+		TabView {
             SimpleDemoRainbowView()
                 .backport.accessibilityIdentifier("color.demo")
-                .tabItem {
+				.tabItem {
                     Backport.Label("Demo", systemImage: "paintpalette")
                 }
             ColorsetsTestView()
@@ -524,12 +561,12 @@ public struct ColorTestView: View {
     }
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("All Tests") {
     ColorTestView()
 }
 
-@available(watchOS 6, iOS 13, tvOS 13, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public extension View {
     static var bottomMargin: Double { 35 }
     func colorTestWrapper() -> some View {
@@ -552,7 +589,7 @@ public extension View {
             .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
             .closure { view in
                 Group {
-                    if #available(iOS 17, macOS 99, tvOS 17, watchOS 10, *) {
+                    if #available(iOS 17, macOS 14, tvOS 17, watchOS 10, *) {
                         view
                             .contentMargins(.bottom, Self.bottomMargin, for: .scrollIndicators)
                     } else {
@@ -566,7 +603,7 @@ public extension View {
 }
 
 /// For KuditConnect for testing
-@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public extension View {
     @MainActor
     func testBackground() -> some View {
@@ -574,7 +611,7 @@ public extension View {
             Color.clear
             self
         }
-        .background(.conicGradient(colors: .rainbow, center: .center))
+		.backport.background(.conicGradient(colors: .rainbow, center: .center))
         .backport.ignoresSafeArea()
     }
 }

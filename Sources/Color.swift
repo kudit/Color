@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.6"
+    public static let version: Version = "1.5.7"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
@@ -45,7 +45,7 @@ public enum ColorKit: Module {
     @MainActor
     // Keep the catalog available wherever Compatibility's Module test requirement is available so
     // existential module discovery in AllTestsListView does not fall back to an empty default catalog.
-    @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
+	@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     public static let tests: OrderedDictionary<String, [TestCase]> = {
         // Keep the section construction here beside Color's Module metadata so
         // maintainers can inspect the public behavior and its checks together.
@@ -114,7 +114,7 @@ public enum ColorKit: Module {
 /// Compatibility's ``Module`` protocol. Register it once from an application's
 /// startup path with `Application.track(including: [Color.self])` so support
 /// reports include Color and its direct Compatibility dependency.
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public extension Color {
     static var version: Version {
         ColorKit.version
@@ -181,6 +181,7 @@ public protocol KuColor: Equatable, Hashable {
     /// usually 0-1 double values but SwiftUI supports extended colors beyond 0-1 for extended color spaces.
     init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     init(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)
+	init(white: CGFloat, alpha: CGFloat)
     func getRed(_ red: UnsafeMutablePointer<CGFloat>?, green: UnsafeMutablePointer<CGFloat>?, blue: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool
     func getWhite(_ white: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool
     func getHue(_ hue: UnsafeMutablePointer<CGFloat>?, saturation: UnsafeMutablePointer<CGFloat>?, brightness: UnsafeMutablePointer<CGFloat>?, alpha: UnsafeMutablePointer<CGFloat>?) -> Bool
@@ -254,6 +255,32 @@ public extension KuColor {
         }
         self = color
     }
+
+	/// Creates a constant grayscale color.
+	///
+	/// This initializer creates a constant color that doesn't change based
+	/// on context. For example, it doesn't have distinct light and dark
+	/// appearances, unlike various system-defined colors, or a color that
+	/// you load from an Asset Catalog with ``init(_:bundle:)``.
+	///
+	/// A standard sRGB color space clamps the `white` component
+	/// to a range of `0` to `1`, but SwiftUI colors
+	/// use an extended sRGB color space, so
+	/// you can use component values outside that range. This makes it
+	/// possible to create colors using the ``RGBColorSpace/sRGB`` or
+	/// ``RGBColorSpace/sRGBLinear`` color space that make full use of the wider
+	/// gamut of a diplay that supports ``RGBColorSpace/displayP3``.
+	///
+	/// - Parameters:
+	///   - white: A value that indicates how white
+	///     the color is, with higher values closer to 100% white, and lower
+	///     values closer to 100% black.
+	///   - opacity: An optional degree of opacity, given in the range `0` to
+	///     `1`. A value of `0` means 100% transparency, while a value of `1`
+	///     means 100% opacity. The default is `1`.
+	init(white: CGFloat, alpha: CGFloat) {
+		self.init(red: white, green: white, blue: white, alpha: alpha)
+	}
     
     /// Returns `self` as the `UnderlyingColorType` (typically for internal usage).
     var underlying: UnderlyingColorType {
@@ -292,8 +319,13 @@ public extension KuColor {
     static var whiteFixed: Self { Self(red: .one, green: .one, blue: .one, alpha: .one)}
     static var yellowFixed: Self { Self(red: .one, green: 204/255, blue: .zero, alpha: .dynamicAlpha)}
     static var accentColorFixed: Self { Self(red: .zero, green: 112/255, blue: .one, alpha: .symanticAlpha) }
-    static var primaryFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .symanticAlpha)}
-    static var secondaryFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .symanticAlpha)}
+    // Replaced 2026-10-19: fixed semantic colors now share Compatibility's hierarchical opacity values.
+    // Previous primary color retained for review: static var primaryFixed: Self { Self(red: .zero, green: .zero, blue: .zero, alpha: .symanticAlpha)}
+	static var primaryFixed: Self { Self(white : BackportHierarchicalShapeStyle.primary.opacity, alpha: .symanticAlpha) }
+    // Previous secondary color retained for review: static var secondaryFixed: Self { Self(red: 81/255, green: 81/255, blue: 82/255, alpha: .symanticAlpha)}
+    static var secondaryFixed: Self { Self(white : BackportHierarchicalShapeStyle.secondary.opacity, alpha: .symanticAlpha) }
+	static var tertiaryFixed: Self { Self(white : BackportHierarchicalShapeStyle.tertiary.opacity, alpha: .symanticAlpha) }
+	static var quaternaryFixed: Self { Self(white : BackportHierarchicalShapeStyle.quaternary.opacity, alpha: .symanticAlpha) }
     static var backgroundFixed: Self { Self(red: .one, green: .one, blue: .one, alpha: .symanticAlpha)}
 
     static var fixedMap: [UnderlyingColorType: Self] {
@@ -752,24 +784,23 @@ public extension UIColor {
 
 #if canImport(SwiftUI)
 import SwiftUI
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 //extension Color: Identifiable {
 //    public var id: String {
 //        self.pretty
 //    }
 //}
 public extension KuColor {
-    @available(iOS 13, tvOS 13, watchOS 6, *)
     typealias DefaultColorType = Color
 }
 #if compiler(>=6.0)
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 extension Color: @retroactive Codable {}
 #else
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 extension Color: Codable {}
 #endif
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 extension Color: KuColor {
     // available in UIColor but not SwiftUI.Color
     public static var lightGray: Color {
@@ -836,7 +867,7 @@ extension Color: KuColor {
         }
         
         // not dynamic/symantic color
-        if #available(iOS 14, macOS 11, tvOS 14, watchOS 8, *) {
+        if #available(iOS 14, macOS 11, tvOS 14, watchOS 7, *) {
             guard let cgColor = cgColor, let components = cgColor.components, components.count >= 3 else {
                 return false
             }
@@ -1056,7 +1087,7 @@ public extension KuColor {
 }
 
 #if canImport(SwiftUI)
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("HSV Conversion") {
     HSVConversionTestView()
 }
@@ -1114,7 +1145,7 @@ public extension KuColor {
         let alphaComponent = components[3]
         self.init(red: redComponent, green: greenComponent, blue: blueComponent, alpha: alphaComponent)
     }
-    @available(iOS 13, tvOS 13, watchOS 6, *)
+	@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     var cgColorBackport: CGColor {
         return CGColor(red: redComponent, green: greenComponent, blue: blueComponent, alpha: alphaComponent)
     }
@@ -1185,17 +1216,17 @@ public extension KuColor {
 
 #if canImport(SwiftUI)
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Color Tinting") {
     ColorTintingTestView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Lightness Tests") {
     ContrastingTestView()
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 7, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("All Tests") {
     ColorTestView()
 }

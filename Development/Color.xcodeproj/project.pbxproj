@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B50707092C60A00100000001 /* ColorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50707082C60A00100000001 /* ColorUITests.swift */; };
 		B50162712E84ABD100B39DEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5FC822C3863B9004F2009 /* Assets.xcassets */; };
+		B50707092C60A00100000001 /* ColorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50707082C60A00100000001 /* ColorUITests.swift */; };
 		B52C8E0B2C387BE9008EBD2D /* Color Library in Frameworks */ = {isa = PBXBuildFile; productRef = B52C8E0A2C387BE9008EBD2D /* Color Library */; };
 		B56797382C3F1B8700B6443E /* Compatibility Library in Frameworks */ = {isa = PBXBuildFile; productRef = B56797372C3F1B8700B6443E /* Compatibility Library */; };
 		B567973A2C3F96A700B6443E /* Color Library in Frameworks */ = {isa = PBXBuildFile; productRef = B56797392C3F96A700B6443E /* Color Library */; };
@@ -58,7 +58,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B50707032C60A00100000001 /* Frameworks */ = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		B50707032C60A00100000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5E5FC4E2C386144004F2009 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -82,7 +88,9 @@
 /* Begin PBXGroup section */
 		B50707062C60A00100000001 /* ColorUITests */ = {
 			isa = PBXGroup;
-			children = ( B50707082C60A00100000001 /* ColorUITests.swift */, );
+			children = (
+				B50707082C60A00100000001 /* ColorUITests.swift */,
+			);
 			path = ColorUITests;
 			sourceTree = "<group>";
 		};
@@ -143,11 +151,19 @@
 		B50707012C60A00100000001 /* ColorUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ColorUITests" */;
-			buildPhases = ( B50707022C60A00100000001 /* Sources */, B50707032C60A00100000001 /* Frameworks */, B50707042C60A00100000001 /* Resources */ );
-			buildRules = ( );
-			dependencies = ( B5070700C60A00100000001 /* PBXTargetDependency */ );
+			buildPhases = (
+				B50707022C60A00100000001 /* Sources */,
+				B50707032C60A00100000001 /* Frameworks */,
+				B50707042C60A00100000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5070700C60A00100000001 /* PBXTargetDependency */,
+			);
 			name = ColorUITests;
-			packageProductDependencies = ( );
+			packageProductDependencies = (
+			);
 			productName = ColorUITests;
 			productReference = B50707072C60A00100000001 /* ColorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -237,7 +253,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B50707042C60A00100000001 /* Resources */ = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		B50707042C60A00100000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5E5FC4F2C386144004F2009 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -257,7 +279,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B50707022C60A00100000001 /* Sources */ = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( B50707092C60A00100000001 /* ColorUITests.swift in Sources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		B50707022C60A00100000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B50707092C60A00100000001 /* ColorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5E5FC4D2C386144004F2009 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,8 +314,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		B507070CC60A00100000001 /* Debug */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ColorTest; }; name = Debug; };
-		B507070DC60A00100000001 /* Release */ = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = 3QPV894C33; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.UITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; SWIFT_VERSION = 5.0; TEST_TARGET_NAME = ColorTest; }; name = Release; };
+		B507070CC60A00100000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3QPV894C33;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ColorTest;
+			};
+			name = Debug;
+		};
+		B507070DC60A00100000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3QPV894C33;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ColorTest;
+			};
+			name = Release;
+		};
 		B50E7B7E2C385BD8002D3F53 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -343,21 +402,20 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.5.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.5.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -411,19 +469,18 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.5.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.5.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Release;
 		};
@@ -438,20 +495,20 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -462,6 +519,8 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -476,20 +535,20 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -500,6 +559,8 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Release;
 		};
@@ -518,11 +579,12 @@
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kudit.ColorTest;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				INFOPLIST_KEY_WKWatchOnly = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -530,7 +592,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
 		};
@@ -549,11 +613,12 @@
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kudit.ColorTest;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				INFOPLIST_KEY_WKWatchOnly = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kudit.ColorTest.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -561,15 +626,25 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				VALIDATE_PRODUCT = YES;
+				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				XROS_DEPLOYMENT_TARGET = "$(RECOMMENDED_XROS_DEPLOYMENT_TARGET)";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ColorUITests" */ = { isa = XCConfigurationList; buildConfigurations = ( B507070CC60A00100000001 /* Debug */, B507070DC60A00100000001 /* Release */ ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		B50707052C60A00100000001 /* Build configuration list for PBXNativeTarget "ColorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B507070CC60A00100000001 /* Debug */,
+				B507070DC60A00100000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B50E7B662C385BD8002D3F53 /* Build configuration list for PBXProject "Color" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

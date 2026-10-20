@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v1.5.7 2026-10-20
+Improved availability constraints to be more backwards compatible.
+Made fixed hierarchical color construction accept SwiftUI's ColorScheme when SwiftUI is available.
+Set the demo app's deployment minimum to iOS/tvOS 14 to match SwiftUI's App lifecycle; the library deployment minimum remains unchanged.
+Updated Compatibility.
+Improved Test coverage to 71%.
+
 ## v1.5.6 2026-10-14
 Moved the Color app footer into the tab view so it stays above the iPhone tab bar.
 Updated Compatibility.

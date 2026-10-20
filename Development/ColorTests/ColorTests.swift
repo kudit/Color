@@ -24,7 +24,7 @@ struct ColorTestsSuite {
         arguments: await ColorKit.testEntries()
     )
     @MainActor
-    @available(iOS 13, macOS 12, tvOS 13, watchOS 6, *)
+	@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
     func moduleTest(entry: ModuleTestEntry) async throws {
         // Swift Testing invokes this method once per argument; the adapter preserves the
         // original TestCase execution mode and reports the originating module and section.

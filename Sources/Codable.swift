@@ -83,7 +83,7 @@ public extension KuColor {
 }
 
 #if compiler(>=5.9) && canImport(Combine)
-@available(iOS 13, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 extension CloudStorage where Value: KuColor {
     public init(wrappedValue: Value, _ key: String) {
         self.init(
@@ -97,7 +97,7 @@ extension CloudStorage where Value: KuColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 public struct CodingDemoView: View {
     @State private var jsonString: String = ([Color(string: "rgba(255,57,46,0.3)", defaultColor: .black),.accentColor,.primary,.secondary,.background,]+[Color].rainbow).asJSON()
     public init() {
@@ -149,7 +149,7 @@ public struct CodingDemoView: View {
     }
 }
 
-@available(iOS 13, macOS 11, tvOS 13, watchOS 6, *)
+@available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
 #Preview("Coding") {
     CodingDemoView()
 }

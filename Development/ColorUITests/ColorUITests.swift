@@ -7,6 +7,7 @@ import XCTest
 
 /// Exercises the sample application through its public UI so app-level wiring is covered in addition
 /// to the package's Swift Testing catalog.
+@available(iOS 13, *) // XCTest's async UI APIs require iOS 13 even though the library supports iOS 8.
 final class ColorUITests: XCTestCase {
     private let tabs = [
         (name: "Demo", identifier: "color.demo"),

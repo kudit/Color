@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.7"
+    public static let version: Version = "1.5.8"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
@@ -621,7 +621,12 @@ extension NSColor {
     }
     
     public static var indigo: NSColor {
-        return .systemIndigo
+		if #available(macOS 10.15, *) {
+			return .systemIndigo
+		} else {
+			// Fallback on earlier versions
+			return .indigoFixed
+		}
     }
 
     public static var mint: NSColor {
@@ -637,7 +642,12 @@ extension NSColor {
     }
     
     public static var accentColor: NSColor {
-        return .controlAccentColor
+		if #available(macOS 10.14, *) {
+			return .controlAccentColor
+		} else {
+			// Fallback on earlier versions
+			return .accentColorFixed
+		}
     }
     
     public static var primary: NSColor {

@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v1.5.8 2026-10-24
+Lowered the Swift package deployment floors to macOS 10.10 and iOS 8 while keeping newer SwiftUI APIs availability-gated.
+
 ## v1.5.7 2026-10-20
 Improved availability constraints to be more backwards compatible.
 Made fixed hierarchical color construction accept SwiftUI's ColorScheme when SwiftUI is available.

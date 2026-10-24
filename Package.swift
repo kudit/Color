@@ -8,7 +8,7 @@
 import PackageDescription
 
 // Keep the Swift Playgrounds display version aligned with ColorKit and the Xcode project.
-let version = "1.5.7"
+let version = "1.5.8"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -39,7 +39,7 @@ var targets = [
 ]
 
 var platforms: [SupportedPlatform] = [
-	.macOS("10.15"), // 10.15 minimum for SwiftUI on macOS, macOS 11 required for cgColor support, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal.
+	.macOS("10.10"), // SwiftPM floor matches the first macOS release with Swift; SwiftUI requires macOS 10.15, macOS 11 required for cgColor support, macOS 12 minimum for .brown, .cyan, .indigo, .mint, and .teal.
 	.tvOS("11"), // 13 minimum for SwiftUI, 15 minimum for Date.now, 17 minimum for Menu
 	.watchOS("4"), // 6 minimum for SwiftUI, watchOS 8 minimum for .brown, .cyan, .indigo, .mint, and .teal.
 
@@ -51,7 +51,8 @@ platforms += [
 ]
 #else
 platforms += [
-	.iOS("11"), // 13 minimum for Combine/SwiftUI, 15 minimum for Date.now, (maximum version for test iPhone 7)
+	.iOS("8"), // SwiftPM floor matches the first iOS release with Swift; Combine/SwiftUI require iOS 13, iOS 15 minimum for Date.now, (iOS 15 is the maximum version supported by test iPhone 7)
+
 ]
 #endif
 

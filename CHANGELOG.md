@@ -1,5 +1,10 @@
 # ChangeLog
 
+## v1.5.9 2026-10-27
+Fixed macOS 27 sidebar UI tests by targeting visible row coordinates when accessibility reports rows as disabled.
+Reduced tab-switch waits and scoped UI-test queries to the sidebar instead of searching repeated SwiftUI identifiers.
+Added `delta()` function to compare colors.
+
 ## v1.5.8 2026-10-24
 Lowered the Swift package deployment floors to macOS 10.10 and iOS 8 while keeping newer SwiftUI APIs availability-gated.
 

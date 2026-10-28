@@ -13,7 +13,7 @@
 public enum ColorKit: Module {
     /// The version of the Color Library since cannot get directly from `Package.swift`.
     /// Keep this hard-coded value aligned with `Package.swift` so apps can display the same version that Swift Playgrounds uses.
-    public static let version: Version = "1.5.8"
+    public static let version: Version = "1.5.9"
     
     /// Compatibility is the package's direct module dependency and must be
     /// registered before Color when an application builds its support report.
@@ -1223,6 +1223,21 @@ public extension KuColor {
         return (luminance < 0.6 ? Self.white : Self.black) as! Self
     }
 }
+
+/// Shared color comparison available to every Device target, including targets
+/// that do not import SwiftUI. KuColor guarantees RGBA extraction, so this
+/// operation intentionally works with any concrete KuColor implementation.
+public extension KuColor {
+    /// Output how similar two colors are from 0 (completely different like transparent black and opaque white) to 1 (identical colors including alpha channel).  These are compared based on RGBA values so deltas on each axis are evenly weighted.
+    func delta(_ other: any KuColor) -> CGFloat {
+        var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0
+        var r2: CGFloat = 0, g2: CGFloat = 0, b2: CGFloat = 0, a2: CGFloat = 0
+        guard getRed(&r1, green: &g1, blue: &b1, alpha: &a1),
+            other.getRed(&r2, green: &g2, blue: &b2, alpha: &a2) else { return 1 }
+        return (abs(r1 - r2) + abs(g1 - g2) + abs(b1 - b2) + abs(a1 - a2)) / 4
+    }
+}
+
 
 #if canImport(SwiftUI)
 

@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v1.5.10 2026-11-09
+Updated the Compatibility dependency to 1.21.4.
+Added the version-matched `spichecks` wrapper.
+
 ## v1.5.9 2026-10-27
 Fixed macOS 27 sidebar UI tests by targeting visible row coordinates when accessibility reports rows as disabled.
 Reduced tab-switch waits and scoped UI-test queries to the sidebar instead of searching repeated SwiftUI identifiers.

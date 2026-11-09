@@ -8,7 +8,7 @@
 import PackageDescription
 
 // Keep the Swift Playgrounds display version aligned with ColorKit and the Xcode project.
-let version = "1.5.9"
+let version = "1.5.10"
 let packageLibraryName = "Color"
 
 // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -153,8 +153,8 @@ let package = Package(
 	// include dependencies
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
-        // Shared hierarchical opacity values and Color's KuColor initializer require Compatibility 1.21.0.
-        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.21.0"),
+        // Shared hierarchical opacity values and Color's KuColor initializer require Compatibility 1.21.4.
+        .package(url: "https://github.com/kudit/Compatibility.git", from: "1.21.4"),
 	],
 	targets: targets
 )
